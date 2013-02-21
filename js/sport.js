@@ -1,11 +1,11 @@
 var zns=
 {
-    site:{			//官网空间
-        fx: {}			//效果
+    site:{
+        fx: {}  //效果方法存储
     }
 };
 
-function setStyle(obj, json){
+function setStyle(obj, json){       // element add style
     if(obj.length){
         for(var i=0;i<obj.length;i++){
             setStyle(obj[i], json);
@@ -21,7 +21,7 @@ function setStyle(obj, json){
     }
 }
 
-function getEle(ele,type){
+function getEle(ele,type){  //getElement
     type=type||'id';
     if(type==='id'){
         return typeof ele=="object"?ele:document.getElementById(ele);
@@ -29,7 +29,7 @@ function getEle(ele,type){
 
 }
 
-function setStyle3(obj, name, value){
+function setStyle3(obj, name, value){      //css3兼容 样式
     name=name.charAt(0).toUpperCase()+name.substring(1);
     obj.style['Webkit'+name]=value;
     obj.style['Moz'+name]=value;
@@ -39,16 +39,15 @@ function setStyle3(obj, name, value){
 }
 
 
-function sprintf(format){
+function sprintf(format){       //字符串拼接
     var _arguments=arguments;
-
     return format.replace(/%\d+/g, function (str){
         return _arguments[parseInt(str.substring(1))];
     });
 }
 
 
-function rnd(n, m){
+function rnd(n, m){         //获取指定数字间的随机数
     return Math.random()*(m-n)+n;
 }
 
@@ -57,17 +56,25 @@ function rnd(n, m){
 var flex=zns.site.fx.flex=function (obj, cur, target, fnDo, fnEnd, fs, ms){
     var MAX_SPEED=16;
 
-    if(!fs)fs=6;
-    if(!ms)ms=0.75;
-    var now={};
-    var x=0;	//0-100
+    if(!fs){
+        fs=6;
+    }
+    if(!ms){
+        ms=0.75;
+    }
+    var now={},
+        x= 0,
+        t=new Date().getTime();
 
-    if(!obj.__flex_v)obj.__flex_v=0;
+    if(!obj.__flex_v){
+        obj.__flex_v=0;
+    }
 
-    if(!obj.__last_timer)obj.__last_timer=0;
-    var t=new Date().getTime();
-    if(t-obj.__last_timer>20)
-    {
+    if(!obj.__last_timer){
+        obj.__last_timer=0;
+    }
+
+    if(t-obj.__last_timer>20){
         fnMove();
         obj.__last_timer=t;
     }
@@ -79,20 +86,21 @@ var flex=zns.site.fx.flex=function (obj, cur, target, fnDo, fnEnd, fs, ms){
         obj.__flex_v+=(100-x)/fs;
         obj.__flex_v*=ms;
 
-        if(Math.abs(obj.__flex_v)>MAX_SPEED)obj.__flex_v=obj.__flex_v>0?MAX_SPEED:-MAX_SPEED;
+        if(Math.abs(obj.__flex_v)>MAX_SPEED){
+            obj.__flex_v=obj.__flex_v>0?MAX_SPEED:-MAX_SPEED;
+        }
 
         x+=obj.__flex_v;
 
-        for(var i in cur)
-        {
+        for(var i in cur){
             now[i]=(target[i]-cur[i])*x/100+cur[i];
         }
 
+        if(fnDo){
+            fnDo.call(obj, now);
+        }
 
-        if(fnDo)fnDo.call(obj, now);
-
-        if(Math.abs(obj.__flex_v)<1 && Math.abs(100-x)<1)
-        {
+        if(Math.abs(obj.__flex_v)<1 && Math.abs(100-x)<1){
             clearInterval(obj.timer);
             if(fnEnd)fnEnd.call(obj, target);
             obj.__flex_v=0;
@@ -101,15 +109,19 @@ var flex=zns.site.fx.flex=function (obj, cur, target, fnDo, fnEnd, fs, ms){
 };
 
 var buffer=zns.site.fx.buffer=function (obj, cur, target, fnDo, fnEnd, fs){
-    if(!fs)fs=6;
-    var now={};
-    var x=0;
-    var v=0;
+    if(!fs){
+        fs=6;
+    }
+    var now={},
+        x= 0,
+        v= 0,
+        t=new Date().getTime();
 
-    if(!obj.__last_timer)obj.__last_timer=0;
-    var t=new Date().getTime();
-    if(t-obj.__last_timer>20)
-    {
+    if(!obj.__last_timer){
+        obj.__last_timer=0;
+    }
+
+    if(t-obj.__last_timer>20){
         fnMove();
         obj.__last_timer=t;
     }
@@ -117,37 +129,39 @@ var buffer=zns.site.fx.buffer=function (obj, cur, target, fnDo, fnEnd, fs){
     clearInterval(obj.timer);
     obj.timer=setInterval(fnMove, 20);
     function fnMove(){
-        v=Math.ceil((100-x)/fs);
 
+        v=Math.ceil((100-x)/fs);
         x+=v;
 
-        for(var i in cur)
-        {
+        for(var i in cur){
             now[i]=(target[i]-cur[i])*x/100+cur[i];
         }
 
+        if(fnDo){
+            fnDo.call(obj, now);
+        }
 
-        if(fnDo)fnDo.call(obj, now);
-
-        if(Math.abs(v)<1 && Math.abs(100-x)<1)
-        {
+        if(Math.abs(v)<1 && Math.abs(100-x)<1){
             clearInterval(obj.timer);
             if(fnEnd)fnEnd.call(obj, target);
         }
     }
 };
 
-var linear=zns.site.fx.linear=function (obj, cur, target, fnDo, fnEnd, fs)
-{
-    if(!fs)fs=50;
-    var now={};
-    var x=0;
-    var v=0;
+var linear=zns.site.fx.linear=function (obj, cur, target, fnDo, fnEnd, fs){
+    if(!fs){
+        fs=50;
+    }
 
-    if(!obj.__last_timer)obj.__last_timer=0;
-    var t=new Date().getTime();
-    if(t-obj.__last_timer>20)
-    {
+    var now={},
+        x= 0,
+        v= 0,
+        t=new Date().getTime();
+
+    if(!obj.__last_timer){
+        obj.__last_timer=0;
+    }
+    if(t-obj.__last_timer>20){
         fnMove();
         obj.__last_timer=t;
     }
@@ -159,100 +173,107 @@ var linear=zns.site.fx.linear=function (obj, cur, target, fnDo, fnEnd, fs)
     function fnMove(){
         x+=v;
 
-        for(var i in cur)
-        {
+        for(var i in cur){
             now[i]=(target[i]-cur[i])*x/100+cur[i];
         }
 
-        if(fnDo)fnDo.call(obj, now);
+        if(fnDo){
+            fnDo.call(obj, now);
+        }
 
-        if(Math.abs(100-x)<1)
-        {
+        if(Math.abs(100-x)<1){
             clearInterval(obj.timer);
             if(fnEnd)fnEnd.call(obj, target);
         }
     }
 };
 
-
-
-/*3*/
-
-
-
+//开始为事件绑定函数
 
 document.onmousedown=function (){
     return false;
 };
 
-
 window.onload=function (){
 
     var now= 0,
-        oDiv=document.getElementById('img'),
+        oDiv=getEle('img'),
         ready=true,
         W=700,
-        H=400;
+        H=400,
+        isIE=document.documentMode;
 
     function next(){
         return (now+1)%3;
     }
 
     //爆炸
+    /*
+    *   原理：
+    *   利用定时器 重复且随机将图片的大小缩小到一小快 分别进行单独旋转  造成爆炸效果
+    * */
     getEle('btn_explode').onclick=function (){
-        if(!ready)return;
+
+        if(isIE&&isIE<9){
+            alert('soory <ie9 不支持');
+            return
+        }
+
+        if(!ready){   //防止1次执行过程中多次点击
+            return;
+        }
         ready=false;
 
-        var R=4;
-        var C=7;
+        var R= 4,
+            C= 7,
+            cw=W/ 2,
+            ch=H/ 2,
+            imgUrl='imgs/'+(next()+1)+'.jpg';
 
-        var cw=W/2;
-        var ch=H/2;
-
+        //修改备用div的背景图片--第二张图片
         oDiv.innerHTML='';
-        oDiv.style.background='url(imgs/'+(next()+1)+'.jpg) center no-repeat';
+        oDiv.style.background='url('+imgUrl+') center no-repeat';
 
-        var aData=[];
+        var aData=[],
+            wait=R*C;
 
-        var wait=R*C;
-
-        for(var i=0;i<R;i++)
-        {
-            for(var j=0,k=0;j<C;j++,k++)
-            {
+        for(var i=0;i<R;i++){
+            for(var j=0,k=0;j<C;j++,k++){
                 aData[i]={left: W*j/C, top: H*i/R};
+
+                //添加缓存div 并放入到备用div
                 var oNewDiv=document.createElement('div');
 
                 setStyle(oNewDiv, {
                     position: 'absolute',
-                    background: 'url(imgs/'+(now+1)+'.jpg)'+-aData[i].left+'px '+-aData[i].top+'px no-repeat',
+                    background: 'url('+imgUrl+')'+-aData[i].left+'px '+-aData[i].top+'px no-repeat',
                     width:Math.ceil(W/C)+'px', height: Math.ceil(H/R)+'px', left: aData[i].left+'px', top: aData[i].top+'px'
                 });
                 //setStyle3(oNewDiv, 'transition', '0.5s all ease-out');
-
                 oDiv.appendChild(oNewDiv);
 
-                var l=((aData[i].left+W/(2*C))-cw)*rnd(2,3)+cw-W/(2*C);
-                var t=((aData[i].top+H/(2*R))-ch)*rnd(2,3)+ch-H/(2*R);
+                var l=((aData[i].left+W/(2*C))-cw)*rnd(2,3)+cw-W/(2*C),
+                    t=((aData[i].top+H/(2*R))-ch)*rnd(2,3)+ch-H/(2*R);
 
                 setTimeout((function (oNewDiv,l,t){
-                    return function ()
-                    {
+                    return function (){
                         buffer(
                             oNewDiv,
                             {left: oNewDiv.offsetLeft, top: oNewDiv.offsetTop, opacity: 100, x:0,y:0,z:0,scale:1, a:0},
                             {left: l, top: t, opacity: 0,x:rnd(-180, 180),y:rnd(-180, 180),z:rnd(-180, 180),scale:rnd(1.5, 3), a:1},
                             function (now){
-                                this.style.left=now.left+'px';
-                                this.style.top=now.top+'px';
-                                this.style.opacity=now.opacity/100;
+                                setStyle(this,{
+                                    left:now.left+'px',
+                                    top:now.top+'px',
+                                    opacity:now.opacity/100
+                                });
+
                                 setStyle3(oNewDiv, 'transform', 'perspective(500px) rotateX('+now.x+'deg) rotateY('+now.y+'deg) rotateZ('+now.z+'deg) scale('+now.scale+')')
                             }, function (){
                                 setTimeout(function (){
                                     oDiv.removeChild(oNewDiv);
                                 }, 200);
-                                if(--wait==0)
-                                {
+                                if(--wait==0){
                                     ready=true;
                                     now=next();
                                 }
@@ -266,27 +287,25 @@ window.onload=function (){
 
     //翻转
     getEle('btn_tile').onclick=function (){
+
         if(!ready)return;
         ready=false;
 
-        var R=3;
-        var C=6;
+        var R= 3,
+            C= 6,
+            wait=R* C,
+            dw=Math.ceil(W/C),
+            dh=Math.ceil(H/R);
 
-        var wait=R*C;
-
-        var dw=Math.ceil(W/C);
-        var dh=Math.ceil(H/R);
-
-        oDiv.style.background='none';
         oDiv.innerHTML='';
+        oDiv.style.background='none';
 
-        for(var i=0;i<C;i++)
-        {
-            for(var j=0;j<R;j++)
-            {
-                var oNewDiv=document.createElement('div');
-                var t=Math.ceil(H*j/R);
-                var l=Math.ceil(W*i/C);
+        for(var i=0;i<C;i++){
+            for(var j=0;j<R;j++){
+
+                var oNewDiv=document.createElement('div'),
+                    t=Math.ceil(H*j/R),
+                    l=Math.ceil(W*i/C);
 
                 setStyle(oNewDiv, {
                     position: 'absolute', background: 'url(imgs/'+(now+1)+'.jpg) '+-l+'px '+-t+'px no-repeat',
@@ -298,28 +317,23 @@ window.onload=function (){
 
                     setTimeout(function (){
                         linear(oNewDiv, {y:0}, {y:180}, function (now){
-                            if(now.y>90 && !oNewDiv.ch)
-                            {
-                                oNewDiv.ch=true;
-                                oNewDiv.style.background='url(imgs/'+(next()+1)+'.jpg) '+-l+'px '+-t+'px no-repeat';
-                            }
+                                if(now.y>90 && !oNewDiv.ch){
+                                    oNewDiv.ch=true;
+                                    oNewDiv.style.background='url(imgs/'+(next()+1)+'.jpg) '+-l+'px '+-t+'px no-repeat';
+                                }
 
-                            if(now.y>90)
-                            {
-                                setStyle3(oNewDiv, 'transform', 'perspective(500px) rotateY('+now.y+'deg) scale(-1,1)');
-                            }
-                            else
-                            {
-                                setStyle3(oNewDiv, 'transform', 'perspective(500px) rotateY('+now.y+'deg)');
-                            }
+                                if(now.y>90){
+                                    setStyle3(oNewDiv, 'transform', 'perspective(500px) rotateY('+now.y+'deg) scale(-1,1)');
+                                }else{
+                                    setStyle3(oNewDiv, 'transform', 'perspective(500px) rotateY('+now.y+'deg)');
+                                }
                         }, function (){
-                            if((--wait)==0)
-                            {
+                            if((--wait)==0){
                                 ready=true;
                                 now=next();
                             }
                         }, 22);
-                    }, /*(i+j*R)*120*/(i+j)*200);
+                    }, (i+j)*200);
                 })(oNewDiv, l, t);
 
                 oDiv.appendChild(oNewDiv);
@@ -328,8 +342,11 @@ window.onload=function (){
     };
 
     //扭曲
-    getEle('btn_bars').onclick=function ()
-    {
+    getEle('btn_bars').onclick=function (){
+        if(isIE&&isIE<10){
+            alert('sorry <ie10不支持这玩意 ie9有bug');
+            return
+        }
         if(!ready)return;
         ready=false;
         var C=7;
@@ -350,7 +367,6 @@ window.onload=function (){
             });
             setStyle3(oNewDiv, 'transformStyle', 'preserve-3d');
             setStyle3(oNewDiv, 'transform', 'perspective(1000px) rotateX(0deg)');
-            //setStyle3(oNewDiv, 'transition', '0.5s all linear');
 
             (function (oNewDiv,i){
                 oNewDiv.style.zIndex=C/2-Math.abs(i-C/2);
@@ -403,6 +419,10 @@ window.onload=function (){
 
     //立方体
     getEle('btn_cube').onclick=function (){
+        if(isIE){
+            alert('立方体在ie上表现不好 ie10也无法正常显示');
+            return
+        }
         if(!ready)return;
         ready=false;
 
@@ -450,6 +470,11 @@ window.onload=function (){
 
     //翻页
     getEle('btn_turn').onclick=function () {
+
+        if(isIE&&isIE<10){
+            alert('sorry <ie10不支持这玩意 ie9有bug');
+            return
+        }
         if(!ready)return;
         ready=false;
 
