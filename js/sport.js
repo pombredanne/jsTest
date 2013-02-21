@@ -51,7 +51,7 @@ function rnd(n, m){         //获取指定数字间的随机数
     return Math.random()*(m-n)+n;
 }
 
-//运动框架
+//运动框架  TODO 明天研究这三个方法 不同点 以及封装
 
 var flex=zns.site.fx.flex=function (obj, cur, target, fnDo, fnEnd, fs, ms){
     var MAX_SPEED=16;
