@@ -111,7 +111,7 @@
               background: #6d6;
           }
         /*//hover状态下或单击click按钮后demo-box产生属性变化*/
-        #timings-demo.timings-demo-hover .demo-box,#timings-demo:hover .demo-box {
+        #timings-demo.timings-demo-hover .demo-box, #timings-demo:hover .demo-box {
               -moz-transform: rotate(360deg) scale(1.2);
               -webkit-transform: rotate(360deg) scale(1.2);
               -o-transform: rotate(360deg) scale(1.2);
@@ -191,6 +191,44 @@
     <div id="linear" class="demo-box">Linear</div>
     <div id="cubic-bezier" class="demo-box">Cubic-bezier</div>
 </div>
-<a href="" class="btn">呼吸灯</a>
+<a id="timings-demo-btn" class="btn">呼吸灯</a>
+<script type="text/javascript">
+    (function(){
+
+        function trim(str){
+            return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g,'');
+        }
+
+        var demo=document.getElementById('timings-demo');
+        _toggleClass(document.getElementById('timings-demo-btn'),demo,'timings-demo-hover');
+        function _toggleClass(el,el2,className){   //仿造jquery的toggle方法
+            var fns=[className],backup=fns.concat();
+            el.onclick=function(){
+                if(fns.length===1){
+                    el2.className+=fns.shift();
+                }else{
+                    el2.className = trim((' ' + el2.className + ' ').replace(' ' + className + ' ', ' '));
+                    fns=backup.concat();
+                }
+            };
+        };
+//        _toggle(document.getElementById('timings-demo-btn'),function(){
+//            // console.log(this);   //这里的this 指向document.getElementById('timings-demo-btn')
+//            demo.className+='timings-demo-hover';
+//        },function(){
+//            demo.className = trim((' ' + demo.className + ' ').replace('timings-demo-hover',' '));
+//        })
+//        function _toggleClass(el,className){   //仿造jquery的toggle方法
+//            var fns=[].slice.call(arguments,1),backup=fns.concat();
+//            el.onclick=function(){
+//                if(!fns.length){
+//                    fns=backup.concat();
+//                }
+//                fns.shift().call(this,event);
+//                //fns.shift();
+//            }
+//        }
+    })();
+</script>
 </body>
 </html>

@@ -2,30 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 <title>无标题文档</title>
 	<style>
 		.test{
 			border:5px #FF9900 double ;
 			position:absolute;
 			height:400px;
-			width:400px;
+			width:420px;
 			background:#009;
-			/*top:10px;*/
-            margin: 40px 100px;
-			left:0px;
-            /* 设置阴影 */
-            box-shadow:2px 2px 5px #969696;
-            transition: all 5s ease 0.2s;
-            /*-webkit-transition: all 3s ease-in 0.5s;*/
+			
 		}
-        .test:hover{
-            opacity: 0;
-            /*-moz-transform: rotate(360deg) scale(1.2);*/
-            /*-webkit-transform: rotate(360deg) scale(1.2);*/
-            /*-o-transform: rotate(360deg) scale(1.2);*/
-            transform: rotate(180deg) scale(1.2);
-        }
         #fix{
             position: fixed;
             background-color: #007000;
@@ -45,6 +32,33 @@
     <button id='sub'>确定</button>
     <!--<div class='test' id='fix'>我是固定的</div>-->
     <div style="position: absolute; top: 400px;">
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
+        我是捣乱的<br>
         我是捣乱的<br>
         我是捣乱的<br>
         我是捣乱的<br>
@@ -168,15 +182,26 @@
         我是捣乱的<br>
         我是捣乱的<br>
     </div>
-
+<input type="text" id='te'/>
 </body>
 </html>
 <script type="text/javascript">
-    $('#sub').click(function(){
-        var top=$(document).scrollTop(),
-            center=($(window).height()-$('#scroll').height())/2;
+    $(function(){
+        
+        $('#sub').bind('click',function(){
+             var top=$(document).scrollTop(),
+                center=($(window).height()-$('#scroll').height())/2;
 
-        $('#scroll').css('top',top+center+'px');
+            $('#scroll').css('top',top+center+'px');
+        })
+        var t=$(window).height();    
+        $('#te').click(function(event){
+            alert(2);
+
+        })
+        // $('input').focus(function(event){
+        //     event.preventDefault();
+        // })
     })
-	var t=$(window).height();
+    
 </script>
