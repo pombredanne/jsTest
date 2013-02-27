@@ -504,7 +504,7 @@
 		html5Validate: function(options,callback) {
 			var defaults = {
 				// 取消浏览器默认的HTML验证
-				novalidate: true,
+				novalidate: false,
 				// 禁用submit按钮可用
 				submitEnabled: false,
 				submitBtn:'submit'
