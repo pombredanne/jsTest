@@ -313,7 +313,7 @@ function formatDate(date,style){        //此方法在FF中会将数据缓存 �
 
             if (!hasClass(target, 'is-disabled')) {
                 if (hasClass(target, 'pika-button') && !hasClass(target, 'is-empty')) {
-                    self.setDate(new Date(self._y, self._m, parseInt(target.innerHTML, 10)));
+                    self.setDate(new Date(self._y, self._m, parseInt(getText(target), 10)));
                     if (opts.bound) {
                         sto(function() {
                             self.hide();
@@ -452,7 +452,6 @@ function formatDate(date,style){        //此方法在FF中会将数据缓存 �
                 if(opts.isInput){
                     _value=opts.field.value;
                 }else{
-                   // _value=trim(getText(opts.fieldInp));TODO 查询这里为什么不需要trim
                     _value=getText(opts.fieldInp);
                 }
                 if (hasMoment && _value) {
@@ -580,9 +579,10 @@ function formatDate(date,style){        //此方法在FF中会将数据缓存 �
             var min = this._o.minDate,
                 max = this._o.maxDate;
 
-            if (isDate(min) && date < min) {
+
+            if (isDate(min) && date.getTime() < min.getTime()) {
                 date = min;
-            } else if (isDate(max) && date > max) {
+            } else if (isDate(max) && date.getTime() > max.getTime()) {
                 date = max;
             }
 
