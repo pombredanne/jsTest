@@ -35,7 +35,7 @@ input, textarea{font-size:100%;}
         <div class="zxx_main_con">
 			<form id="testForm" action="" method="post">
                 <div class="mb10">
-                	邮箱：<input type="email " name="email" data-type="required" multiple />
+                	邮箱：<input type="email" name="email" data-type="required" multiple />
                     <span class="f9 g6 ml10">无label无required, type=email+空格, multiple</span>
                     <span class="ml20 g9">方便复制：a@a.com</span>
                 </div>
@@ -112,7 +112,8 @@ input, textarea{font-size:100%;}
                      <label for="comment" class="db"><span class="dn">评论</span>内容：</label><textarea id="comment" class="w460" rows="5" data-max="100" data-min="5" required></textarea>
                     <p class="mt5 f9 g6">5-100字的限制, required, label标签中部分提示文字隐藏</p>
                 </div>
-                <input type="submit" class="submit" value="提交测试" disabled />
+                <input type="submit" class="submit" value="测试实时监控失败 disabled提交" disabled />
+                <input type="submit" class="submit" value="提交测试"  />
             </form>        
         </div>
         <div class="zxx_footer">
@@ -132,14 +133,14 @@ $("#testForm").html5Validate(function() {
 }, {
 	// novalidate: false	
 });
-// 拖选
+//拖选
 var mousedownleft, btnmarginleft, flagFollow = false;
 $(".bar_btn").bind({
 	"mousedown": function(e) {
 		mousedownleft = e.pageX;
 		btnmarginleft = parseInt($(this).css("marginLeft")) || 0;
 		flagFollow = $(this);
-	}	
+	}
 });
 $(document).bind({
 	"mousemove": function(e) {

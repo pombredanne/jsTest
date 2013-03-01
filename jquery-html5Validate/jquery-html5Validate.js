@@ -3,17 +3,8 @@
  * 有4个自定义扩展属性 data-key, data-target, data-min, data-max
  * 文档：http://www.zhangxinxu.com/wordpress/?p=2857
  * 如果您有任何问题，可以邮件至zhangxinxu@zhangxinxu.com
- * create by zhangxinxu 2012-12-05   
- * v1.0 beta
- 		on 2012-12-05 创建
- 		on 2012-12-06 兼容性调试
-		on 2012-12-14 增加对multiple属性支持
-		              testRemind方法的最大宽度限制
-		on 2012-12-17 增加submitEnabled参数
-		on 2012-12-19 暴露testRemind方法的CSS参数
-		on 2012-12-20 testRemind尖角设置overflow: hidden for IE6
-	v1.0 publish on 2012-12-20
-	v1.2 on 2012-12-21 尖角实际高度可能覆盖单复选框的问题，做了高度限制处理
+ * create by zhangxinxu 2012-12-05
+ *关于 step  --http://www.zhangxinxu.com/wordpress/2012/12/html5-number-input-step-invidate/
 **/
 (function($, undefined) {
 
@@ -100,9 +91,9 @@
 	
 	$.html5Attr = function(ele, attr) {	//获取html5专属的一些属性 主要指type
 	    if(!ele || !attr){
-	    		return undefined
+	    	return undefined
 	    } 
-         return ele.getAttribute(attr);
+        return ele.getAttribute(attr);
 	};
 
 	$.html5Validate = (function() {	
@@ -111,20 +102,19 @@
 				return $('<input type="email">').attr("type") === "email";	
 			})(),
 			isEmpty: function(ele, value) {	//是否为空?
-				value = value || $.html5Attr(ele, "placeholder");
+				//value = value || $.html5Attr(ele, "placeholder");  //TODO 不检验placeholder 规范html5就不需要检测这个
 				var trimValue = ele.value;
 				(ele.type !== "password") && (trimValue = $.trim(trimValue));
-				if (trimValue === "" || trimValue === value){return true;}
-				return false;	
+                if (!!trimValue){return false;}
+				return true;
 			},
-			isRegex: function(ele, regex, params) {	//是否为
-				// 原始值和处理值
+			isRegex: function(ele, regex, params) {
 				var inputValue = ele.value,
-                      dealValue = inputValue, 
-                      type = ele.getAttribute("type") + "";
+                    dealValue = inputValue,
+                    type = ele.getAttribute("type");
 
 				type = type.replace(/\W+$/, "");
-				
+				if(!type){return}
 				if (type !== "password") {
 					dealValue = DBC2SBC($.trim(inputValue));
 					(dealValue !== inputValue) && (ele.value=dealValue);
@@ -133,7 +123,7 @@
 				// 获取正则表达式，pattern属性获取优先，然后通过type类型匹配。注意，不处理为空的情况
 				regex=regex || $.html5Attr(ele, "pattern")||(function() {
 					// 文本框类型处理，可能有管道符——多类型重叠，如手机或邮箱
-					return type && $.map(type.split("|"), function(typeSplit) {
+					return $.map(type.split("|"), function(typeSplit) {
 						var matchRegex = OBJREG[typeSplit.toUpperCase()];
 						if (matchRegex){return matchRegex;}
 					}).join("|");	
@@ -141,7 +131,7 @@
 				
 				if (dealValue === "" || !regex){return true};
 				
-				// multiple多数据的处理
+				// select multiple多数据的处理
 				var isMultiple = $(ele).hasProp("multiple"), newRegExp = new RegExp(regex, params || 'i');
 				// number类型下multiple是无效的
 				if (isMultiple && !/^number|range$/i.test(type)) {
@@ -161,15 +151,15 @@
 			isOverflow: function(ele) {
 				if (!ele){return false;}
 				//  大小限制
-				var attrMin = $(ele).attr("min"), 
-				    attrMax = $(ele).attr("max"),
+				var attrMin = ele.getAttribute('min'),
+				    attrMax = ele.getAttribute('max'),
 				    attrStep,
 				    attrDataMin, 
 				    attrDataMax,
 				    value = ele.value;
 					
-				if (!attrMin && !attrMax) {
-					attrDataMin = $(ele).attr("data-min"), attrDataMax = $(ele).attr("data-max");
+				if (!attrMin && !attrMax) {	//判断textarea
+					attrDataMin = ele.getAttribute("data-min"), attrDataMax = ele.getAttribute("data-max");
 					if (attrDataMin && value.length < attrDataMin) {
 						$(ele).testRemind("至少输入" + attrDataMin + "个字符");
 						ele.focus();
@@ -179,10 +169,9 @@
 					} else {
 						return false;	
 					}
-				} else {
-					// 数值大小限制
+				} else {		//判断input number
 					value -=0;
-					attrStep = ($(ele).attr("step"))-0 || 1;
+					attrStep = (ele.getAttribute("step"))-0 || 1;
 					if (attrMin && value < attrMin) {
 						$(ele).testRemind("值必须大于或等于" + attrMin);	
 					} else if (attrMax && value > attrMax) {
@@ -204,40 +193,40 @@
 					labelDrive: true
 				};
 				params = $.extend({}, defaults, options || {});
-				var isFrom=elements[0].tagName.toLowerCase()||elements.tagName.toLowerCase();
-				if ( isFrom === "form") {
-					elements =$(elements).find(":input")||elements.find(":input");
-				}
+
+//				var isFrom=(elements[0]||elements).tagName.toLowerCase();
+//				if ( isFrom === "form") {
+//					elements =(elements.jquery?elements:$(elements)).find(":input");
+//				}
 
 				var self = this,
 					allpass = true,
 					remind = function(control, type, tag) {
-					var key = $(control).attr("data-key"), label = $("label[for='"+ control.id +"']"), text= '', placeholder;
+					var key = control.getAttribute("data-key"), label = $("label[for='"+ control.id +"']"), text, placeholder;
 					
 					if (params.labelDrive) {
-						placeholder = $.html5Attr(control, "placeholder");
-						//label.each(function() {
-							var txtLabel = label.text();
-							if (txtLabel !== placeholder) {
-								text += txtLabel.replace(/\*|:|：/g, "");
-							}
-						//});
+						placeholder = control.getAttribute('placeholder');
+						var txtLabel = label.text();
+						if (txtLabel !== placeholder) {
+							text = txtLabel.replace(/\*|:|：/g, "");
+						}
 					}
 					
 					// 如果元素完全显示
-					if ($(control).isVisible()) {
+                    var $control=$(control);
+					if ($control.isVisible()) {
 						if (type == "radio" || type == "checkbox") {
-							$(control).testRemind(OBJREG.prompt[type], {
+                            $control.testRemind(OBJREG.prompt[type], {
 								align: "left"	
 							});
 							control.focus();
 						} else if (tag == "select" || tag == "empty") {
 							// 下拉值为空或文本框文本域等为空
-							$(control).testRemind((tag == "empty" && text)? "您尚未输入"+ text : OBJREG.prompt[tag]);
+                            $control.testRemind((tag == "empty" && text)? "您尚未选择"+ text : OBJREG.prompt[tag]);
 							control.focus();
-						} else if (/^range|number$/i.test(type) && Number(control.value)) {
+						} else if (/^range|number$/i.test(type) && ~~control.value) {
 							// 整数值与数值的特殊提示
-							$(control).testRemind("值无效");
+                            $control.testRemind("值无效");
 							control.focus();
 							control.select();
 						} else {
@@ -303,7 +292,7 @@
 						});
 						
 						if (radiopass == false) {
-							allpass = remind(eleRadios.get(0), type, tag);
+							allpass = remind(eleRadios[0], type, tag);
 						}
 					} else if (type == "checkbox" && isRequired && !$(el).attr("checked")) {
 						// 复选框是，只有要required就验证，木有就不管
@@ -334,16 +323,16 @@
 		hasProp: function(prop) {
 			if (typeof prop !== "string"){return undefined;}
 			var hasProp = false;
-			if (document.querySelector) {
-				var attrProp = $(this).attr(prop);
-				if (attrProp !== undefined && attrProp !== false) {
-					hasProp = true;
-				}
-			} else {
+//			if (document.querySelector) {
+//				var attrProp = $(this).attr(prop);
+//				if (attrProp !== undefined && attrProp !== false) {
+//					hasProp = true;
+//				}
+//			} else {
 				// IE6, IE7
 				var outer = $(this)[0].outerHTML, part = outer.slice(0, outer.search(/\/?['"]?>(?![^<]*<['"])/));
 				hasProp = new RegExp("\\s" + prop + "\\b", "i").test(part);
-			}
+			//}
 			return hasProp;
 		},
 		selectRange: function(start, end) {
@@ -504,15 +493,20 @@
 		html5Validate: function(options,callback) {
 			var defaults = {
 				// 取消浏览器默认的HTML验证
-				novalidate: false,
+				novalidate: true,
 				// 禁用submit按钮可用
 				submitEnabled: false,
-				submitBtn:'submit'
+				// 发送按钮
+                submitBtn:'input:submit',
+                placeholder:false
 			};
-			var params = $.extend({}, defaults, options || {});
-			var elements = $(this).find(":input");
+			var params = $.extend({}, defaults, options || {}),
+                elements = $(this).find(":input"),
+                subBtn=$(params.submitBtn),
+                self=this;
+
 			if ($.html5Validate.isSupport) {
-				if (params.novalidate) {
+				if (params.novalidate||$(this).attr('novalidate')) {
 					$(this).attr("novalidate", "novalidate");
 				} else {
 					elements.each(function() {
@@ -525,22 +519,45 @@
 					});	
 					params.hasTypeNormally = true;
 				}
-			}
+			}else{
+                if(params.placeholder){
+                    var place=$(this).find('input[placeholder]');
+                    place.each(function(i,x){
+                        var self=this,
+                            placeho=this.getAttribute('placeholder');
+                        this.value=placeho;
+                        $(this).focus(function(){
+                           if(this.value===placeho){
+                               this.value=''
+                           }
+                        });
+                        $(this).blur(function(){
+                            if(this.value===''){
+                                this.value=placeho;
+                            }
+                        });
+                    });
+                }
+            }
 		
 			if (params.submitEnabled) {
-				$(params.submitBtn).attr('disabled',true);
+                subBtn.attr('disabled',true);
 				elements.blur(function(){
 					if ($.html5Validate.isAllpass(elements, params)) {
-						$(params.submitBtn).removeAttr('disabled');
+                        subBtn.removeAttr('disabled');
 					}
 				});
 			}
+
+            subBtn.click(function(){
+               $(self).submit();
+            });
 			
 			$(this).bind("submit", function() {
 				if ($.html5Validate.isAllpass(elements, params)) {
 					$.isFunction(callback) && callback.call(this);	
 				}
-				return false;	
+				return false;// TODO 默认事件
 			});
 			
 			return $(this);
