@@ -1,0 +1,147 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var mouseX = 0,		//鼠标移动的位置X
+                mouseY = 0,		//鼠标移动的位置Y
+                maxLeft ,	//最右边
+                maxTop ,		//最下边
+                markLeft = 0,	//放大镜移动的左部距离
+                markTop = 0,	//放大镜移动的顶部距离
+                perX = 0,	//移动的X百分比
+                perY = 0,	//移动的Y百分比
+                bigLeft = 0,	//大图要移动left的距离
+                bigTop = 0,	//大图要移动top的距离
+                EleLeft,
+                EleTop,
+                markHig,
+                markWid,
+                smallHig,
+                smallWid,
+                bigHig,
+                bigWid;
+
+            //改变放大镜的位置
+            function updataMark($mark){
+                //通过判断，让小框只能在小图区域中移动
+                if(markLeft<0){
+                    markLeft = 0;
+                }else if(markLeft>maxLeft){
+                    markLeft = maxLeft;
+                }
+
+                if(markTop<0){
+                    markTop = 0;
+                }else if(markTop>maxTop){
+                    markTop = maxTop;
+                }
+
+                //获取放大镜的移动比例，即这个小框在区域中移动的比例 关键思想
+                perX = markLeft/smallWid;
+                perY = markTop/smallHig;
+                bigLeft = -perX*bigWid;
+                bigTop = -perY*bigHig;
+
+                //设定小框的位置
+                $mark.css({"left":markLeft,"top":markTop});
+
+                $(".big").css({"left":bigLeft,"top":bigTop});
+            }
+
+            //鼠标小图上移动时
+            function imgMouseMove(event){
+
+                var $mark = $(this).find(".mark");
+
+                //鼠标在小图的位置
+                markLeft = event.pageX-EleLeft - markWid/2;
+                markTop = event.pageY-EleTop - markHig/2;
+
+                updataMark($mark);
+            }
+
+            $(".small").bind("mousemove",imgMouseMove);
+            $('.small').hover(function(){
+
+                EleLeft=$('.small').offset().left;
+                EleTop=$('.small').offset().top;
+                markHig=$('.mark').outerHeight();
+                markWid=$('.mark').outerWidth();
+                smallHig=$('.small').height();
+                smallWid=$('.small').width();
+                bigHig=$('.big').outerHeight();
+                bigWid=$('.big').outerWidth();
+                maxLeft = smallWid-markWid;
+                maxTop =smallHig -markHig;
+                $('.big').add($('.mark')).show();
+            },function(){
+                $('.big').add($('.mark')).hide();
+            });
+        })
+    </script>
+    <style type="text/css">
+        *{ margin:0px; padding:0px;}
+
+        .box{
+            position:relative;
+            margin:10px auto;
+            padding:10px;
+            border:1px solid #666;
+            background:#CCC;
+            width:250px;
+        }
+
+        .box .small{
+            position:relative;
+            text-align:center;
+            background:#FFF;}
+
+        .box .small .mark{
+            position:absolute;
+            top:0;
+            left:0;
+            z-index:2;
+            width:80px;
+            height:80px;
+            background:#FFFFFF;
+            filter:alpha(opacity:50);
+            opacity:0.5;
+            border:1px solid #333;
+            display:none;
+        }
+
+        .box .big{
+            position:absolute;
+            left:225px;
+            top:0;
+            display:none;
+        }
+
+        .boxbig{
+            position:absolute;
+            left:275px;
+            top:0;
+            width:160px;
+            height:160px;
+            overflow:hidden;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="small">
+        <span class="mark"></span>
+        <img src="http://demo.jb51.net/js/2012/mymagnifier/images/1_s.jpg" alt="" />
+    </div>
+    <div class="boxbig">
+        <div class="big"><img src="http://demo.jb51.net/js/2012/mymagnifier/images/1_b.jpg" alt="" /></div>
+    </div>
+</div>
+</body>
+</html>
