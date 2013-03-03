@@ -5,83 +5,77 @@
     <title>无标题文档</title>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script type="text/javascript">
-        $(function(){
-            var mouseX = 0,		//鼠标移动的位置X
-                mouseY = 0,		//鼠标移动的位置Y
-                maxLeft ,	//最右边
-                maxTop ,		//最下边
-                markLeft = 0,	//放大镜移动的左部距离
-                markTop = 0,	//放大镜移动的顶部距离
-                perX = 0,	//移动的X百分比
-                perY = 0,	//移动的Y百分比
-                bigLeft = 0,	//大图要移动left的距离
-                bigTop = 0,	//大图要移动top的距离
-                EleLeft,
-                EleTop,
-                markHig,
-                markWid,
-                smallHig,
-                smallWid,
-                bigHig,
-                bigWid;
+//        $(document).ready(function(){
+//            $('.small,.boxbig img').load(function(){  //这种方法不适用于ie
+                   // code
+//             });
+//        });
 
-            //改变放大镜的位置
-            function updataMark($mark){
+        $(window).load(function(){
+            var mouseX,		//鼠标移动的位置X
+                    mouseY,		//鼠标移动的位置Y
+                    markLeft,	//放大镜移动的左部距离
+                    markTop,	//放大镜移动的顶部距离
+                    perX,	//移动的X百分比
+                    perY,	//移动的Y百分比
+                    bigLeft ,	//大图要移动left的距离
+                    bigTop,	//大图要移动top的距离
+                    ELELEFT=$('.small').offset().left,
+                    ELETOP=$('.small').offset().top,
+                    MARKHIG=$('.mark').outerHeight(),
+                    MARKWID=$('.mark').outerWidth(),
+                    SMALLHIG=$('.small').height(),
+                    SMALLWID=$('.small').width(),
+                    BIGHIG=$('.big').outerHeight(),
+                    BIGWID=$('.big').outerWidth(),
+                    MAXLEFT = SMALLWID-MARKWID,
+                    MAXTOP =SMALLHIG -MARKHIG;
+
+
+            //鼠标小图上移动时
+            function imgMouseMove(event){
+                //console.log(this)   //使用(1),(2)方法 此处this为当前dom元素 使用(2)方法 此处this指向window
+                var $mark = $(this).find(".mark");
+
+                //鼠标在小图的位置
+                markLeft = event.pageX-ELELEFT - MARKWID/2;
+                markTop = event.pageY-ELETOP - MARKHIG/2;
+
                 //通过判断，让小框只能在小图区域中移动
                 if(markLeft<0){
                     markLeft = 0;
-                }else if(markLeft>maxLeft){
-                    markLeft = maxLeft;
+                }else if(markLeft>MAXLEFT){
+                    markLeft = MAXLEFT;
                 }
 
                 if(markTop<0){
                     markTop = 0;
-                }else if(markTop>maxTop){
-                    markTop = maxTop;
+                }else if(markTop>MAXTOP){
+                    markTop = MAXTOP;
                 }
 
                 //获取放大镜的移动比例，即这个小框在区域中移动的比例 关键思想
-                perX = markLeft/smallWid;
-                perY = markTop/smallHig;
-                bigLeft = -perX*bigWid;
-                bigTop = -perY*bigHig;
+                perX = markLeft/SMALLWID;
+                perY = markTop/SMALLHIG;
+                bigLeft = -perX*BIGWID;
+                bigTop = -perY*BIGHIG;
 
                 //设定小框的位置
                 $mark.css({"left":markLeft,"top":markTop});
-
                 $(".big").css({"left":bigLeft,"top":bigTop});
             }
 
-            //鼠标小图上移动时
-            function imgMouseMove(event){
+            //$(".small").bind("mousemove",imgMouseMove);  //  (1)  这种方法可以默认传event
+//                    $('.small').bind('hover',function(event){   //   (2)  这种方法会让imgMouseMove方法在jquery函数中参与回调 因此会改变this指向
+//                        $('.big').add($('.mark')).toggle();
+//                    }).bind('mousemove',function(event){
+//                        imgMouseMove(event);
+//                    })
 
-                var $mark = $(this).find(".mark");
-
-                //鼠标在小图的位置
-                markLeft = event.pageX-EleLeft - markWid/2;
-                markTop = event.pageY-EleTop - markHig/2;
-
-                updataMark($mark);
-            }
-
-            $(".small").bind("mousemove",imgMouseMove);
-            $('.small').hover(function(){
-
-                EleLeft=$('.small').offset().left;
-                EleTop=$('.small').offset().top;
-                markHig=$('.mark').outerHeight();
-                markWid=$('.mark').outerWidth();
-                smallHig=$('.small').height();
-                smallWid=$('.small').width();
-                bigHig=$('.big').outerHeight();
-                bigWid=$('.big').outerWidth();
-                maxLeft = smallWid-markWid;
-                maxTop =smallHig -markHig;
-                $('.big').add($('.mark')).show();
-            },function(){
-                $('.big').add($('.mark')).hide();
-            });
-        })
+            $('.small').hover(function(){           //  (3)  同(1)一样
+                $('.big').add($('.mark')).toggle();
+            }).mousemove(imgMouseMove);
+        });
     </script>
     <style type="text/css">
         *{ margin:0px; padding:0px;}
