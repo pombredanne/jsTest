@@ -3,17 +3,21 @@
  * Copyright © 2012 David Bushell | BSD & MIT license | http://dbushell.com/
  */
 
-(function(window, document, undefined){
-
+(function(window, document, undefined)
+{
     'use strict';
 
+    /**
+     * feature detection and helper functions
+     */
     var hasMoment = typeof window.moment === 'function',
 
         hasEventListeners = !!window.addEventListener,
 
         sto = window.setTimeout,
 
-        addEvent = function(el, e, callback, capture){
+        addEvent = function(el, e, callback, capture)
+        {
             if (hasEventListeners) {
                 el.addEventListener(e, callback, !!capture);
             } else {
@@ -21,7 +25,8 @@
             }
         },
 
-        removeEvent = function(el, e, callback, capture){
+        removeEvent = function(el, e, callback, capture)
+        {
             if (hasEventListeners) {
                 el.removeEventListener(e, callback, !!capture);
             } else {
@@ -29,7 +34,8 @@
             }
         },
 
-        fireEvent = function(el, eventName, data){  //触发事件
+        fireEvent = function(el, eventName, data)
+        {
             var ev;
 
             if (document.createEvent) {
@@ -44,45 +50,57 @@
             }
         },
 
-        trim = function(str){
+        trim = function(str)
+        {
             return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g,'');
         },
 
-        hasClass = function(el, cn){
+        hasClass = function(el, cn)
+        {
             return (' ' + el.className + ' ').indexOf(' ' + cn + ' ') !== -1;
         },
 
-        addClass = function(el, cn){
+        addClass = function(el, cn)
+        {
             if (!hasClass(el, cn)) {
                 el.className = (el.className === '') ? cn : el.className + ' ' + cn;
             }
         },
 
-        removeClass = function(el, cn){
+        removeClass = function(el, cn)
+        {
             el.className = trim((' ' + el.className + ' ').replace(' ' + cn + ' ', ' '));
         },
 
-        isArray = function(obj){
+        isArray = function(obj)
+        {
             return (/Array/).test(Object.prototype.toString.call(obj));
         },
 
-        isDate = function(obj){
+        isDate = function(obj)
+        {
             return (/Date/).test(Object.prototype.toString.call(obj)) && !isNaN(obj.getTime());
         },
 
-        isLeapYear = function(year){    // 润年
+        isLeapYear = function(year)
+        {
+            // solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
             return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
         },
 
-        getDaysInMonth = function(year, month){
+        getDaysInMonth = function(year, month)
+        {
             return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
         },
 
-        compareDates = function(a,b){
+        compareDates = function(a,b)
+        {
+            // weak date comparison (use date.setHours(0,0,0,0) to ensure correct result)
             return a.getTime() === b.getTime();
         },
 
-        extend = function(to, from, overwrite){
+        extend = function(to, from, overwrite)
+        {
             var prop, hasProp;
             for (prop in from) {
                 hasProp = to[prop] !== undefined;
@@ -105,8 +123,8 @@
             }
             return to;
         },
-
         formatDate=function(date,style){        //此方法在FF中会将数据缓存 因此 平均时间大约在0.5ms  chrome不缓存数据,但平均速度老大 ie你懂得  相比moment速度相当
+            style=style||'YYYY-MM-DD';
             var o = {
                 "M+" : date.getMonth() + 1, //month
                 "D+" : date.getDate(),      //day
@@ -130,117 +148,157 @@
             }
             return style;
         },
-        push=function(array,str){
-            array[array.length]=str;
-        },
+
 
         /**
          * defaults and localisation
          */
-        defaults = {
+            defaults = {
 
-            // 绑定到表单
+            // bind the picker to a form field
             field: null,
 
-            // 是否自动获取焦点显示?
-            bound: true,
+            // automatically show/hide the picker on `field` focus (default `true` if `field` is set)
+            bound: undefined,
 
-            // 格式化时间   需要moment.js的帮助
+            // the default output format for `.toString()` and `field` value
             format: 'YYYY-MM-DD',
 
-            //设置默认时间
+            // the initial date to view when first opened
             defaultDate: null,
+
+            // make the `defaultDate` the initial selected value
             setDefaultDate: false,
 
-            // 规定周日 周一的安排
+            // first day of week (0: Sunday, 1: Monday etc)
             firstDay: 0,
 
-            // 设定最大时间大小
-            minDate: new Date(1990,0,1),
-            maxDate: new Date(2080,0,1),
-            //阿拉伯日历
+            // the minimum/earliest date that can be selected
+            minDate: null,
+            // the maximum/latest date that can be selected
+            maxDate: null,
+
+            // number of years either side, or array of upper/lower range
+            yearRange: 10,
+
+            // used internally (don't config outside)
+            minYear: 0,
+            maxYear: 9999,
+            minMonth: undefined,
+            maxMonth: undefined,
+
             isRTL: false,
 
+            // how many months are visible (not implemented yet)
+            numberOfMonths: 1,
+
+            // internationalization
             i18n: {
-                    previousMonth : '上一月',
-                    nextMonth     : '下一月',
-                    months        : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-                    //monthsShort   : ['Jan_Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-                    weekdays      : ['周日','周一','周二','周三','周四','周五','周六'],
-                    weekdaysShort : ['日','一','二','三','四','五','六']
+                previousMonth : '上一月',
+                nextMonth     : '下一月',
+                months        : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+                //monthsShort   : ['Jan_Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                weekdays      : ['周日','周一','周二','周三','周四','周五','周六'],
+                weekdaysShort : ['日','一','二','三','四','五','六']
             },
 
-            // 回调函数
+            // callback function
             onSelect: null,
             onOpen: null,
             onClose: null,
             onDraw: null
         },
 
-        renderDayName = function(opts, day, abbr){  //week名称
+
+        /**
+         * templating functions to abstract HTML rendering
+         */
+            renderDayName = function(opts, day, abbr)
+        {
             day += opts.firstDay;
             while (day >= 7) {
                 day -= 7;
             }
             return abbr ? opts.i18n.weekdaysShort[day] : opts.i18n.weekdays[day];
         },
-        //组装日历 -- 天  行 内容
-        renderDay = function(i, isSelected, isToday, isDisabled, isEmpty){
+
+        renderDay = function(i, isSelected, isToday, isDisabled, isEmpty)
+        {
             if (isEmpty) {
                 return '<td class="is-empty"></td>';
             }
             var arr = [];
-
-            isDisabled && push(arr,'is-disabled');
-            isToday && push(arr,'is-today');
-            isSelected && push(arr,'is-selected');
-
+            if (isDisabled) {
+                arr.push('is-disabled');
+            }
+            if (isToday) {
+                arr.push('is-today');
+            }
+            if (isSelected) {
+                arr.push('is-selected');
+            }
             return '<td data-day="' + i + '" class="' + arr.join(' ') + '"><button class="pika-button" type="button">' + i + '</button>' + '</td>';
         },
-        renderRow = function(days, isRTL){
+
+        renderRow = function(days, isRTL)
+        {
             return '<tr>' + (isRTL ? days.reverse() : days).join('') + '</tr>';
         },
-        renderBody = function(rows){
+
+        renderBody = function(rows)
+        {
             return '<tbody>' + rows.join('') + '</tbody>';
         },
-        renderHead = function(opts){
+
+        renderHead = function(opts)
+        {
             var i, arr = [];
             for (i = 0; i < 7; i++) {
                 arr.push('<th scope="col"><abbr title="' + renderDayName(opts, i) + '">' + renderDayName(opts, i, true) + '</abbr></th>');
             }
             return '<thead>' + (opts.isRTL ? arr.reverse() : arr).join('') + '</thead>';
         },
-        renderTitle = function(instance){   //绘制头部 包括上月 下月
+
+        renderTitle = function(instance)
+        {
             var i, j, arr,
                 opts = instance._o,
                 month = instance._m,
                 year  = instance._y,
-                selectYearMin=opts.selectYear===opts.minYear,
-                selectYearMax=opts.selectYear===opts.maxYear-1,
+                isMinYear = year === opts.minYear,
+                isMaxYear = year === opts.maxYear,
                 html = '<div class="pika-title">',
                 prev = true,
                 next = true;
 
             for (arr = [], i = 0; i < 12; i++) {
-                var disabled=((selectYearMin && i < opts.minMonth) || (selectYearMax && i > opts.maxMonth) ? 'disabled' : '');
-                push(arr,'<option value="' + i + '"' +(i === month ? ' selected': '') + disabled+ '>' +opts.i18n.months[i] + '</option>');
+                arr.push('<option value="' + i + '"' +
+                    (i === month ? ' selected': '') +
+                    ((isMinYear && i < opts.minMonth) || (isMaxYear && i > opts.maxMonth) ? 'disabled' : '') + '>' +
+                    opts.i18n.months[i] + '</option>');
             }
             html += '<div class="pika-label">' + opts.i18n.months[month] + '<select class="pika-select pika-select-month">' + arr.join('') + '</select></div>';
 
-            i=opts.minYear;
-            j=opts.maxYear;
+            if (isArray(opts.yearRange)) {
+                i = opts.yearRange[0];
+                j = opts.yearRange[1] + 1;
+            } else {
+                i = year - opts.yearRange;
+                j = 1 + year + opts.yearRange;
+            }
 
             for (arr = []; i < j && i <= opts.maxYear; i++) {
                 if (i >= opts.minYear) {
-                    push(arr,'<option value="' + i + '"' + (i === year ? ' selected': '') + '>' + (i) + '</option>')
+                    arr.push('<option value="' + i + '"' + (i === year ? ' selected': '') + '>' + (i) + '</option>');
                 }
             }
             html += '<div class="pika-label">' + year + '<select class="pika-select pika-select-year">' + arr.join('') + '</select></div>';
 
-            if (selectYearMin && (month === 0 || opts.minMonth >= month)) {
+            if (isMinYear && (month === 0 || opts.minMonth >= month)) {
                 prev = false;
             }
-            if (selectYearMax && (month === 11 || opts.maxMonth <= month)) {
+
+            if (isMaxYear && (month === 11 || opts.maxMonth <= month)) {
                 next = false;
             }
 
@@ -259,22 +317,18 @@
     /**
      * Pikaday constructor
      */
-    window.Pikaday = function(options){
-
+    window.Pikaday = function(options)
+    {
         var self = this,
             opts = self.config(options);
 
-        self._onMouseDown = function(e){
-
+        self._onMouseDown = function(e)
+        {
             if (!self._v) {
                 return;
             }
-
             e = e || window.event;
-
-            var target = e.target || e.srcElement,
-                 id=target.id;
-
+            var target = e.target || e.srcElement;
             if (!target) {
                 return;
             }
@@ -296,13 +350,6 @@
                     self.nextMonth();
                 }
             }
-            
-            if(id){ 
-                id==='clear' && (self._o.field.value='');
-                id==='today' && (self.setDate(new Date(),true));
-                self.hide();
-            }
-
             if (!hasClass(target, 'pika-select')) {
                 if (e.preventDefault) {
                     e.preventDefault();
@@ -312,10 +359,10 @@
             } else {
                 self._c = true;
             }
-
         };
 
-        self._onChange = function(e){
+        self._onChange = function(e)
+        {
             e = e || window.event;
             var target = e.target || e.srcElement;
             if (!target) {
@@ -329,7 +376,8 @@
             }
         };
 
-        self._onInputChange = function(e){
+        self._onInputChange = function(e)
+        {
             var date;
 
             if (e.firedBy === self) {
@@ -348,22 +396,28 @@
             }
         };
 
-        self._onInputFocus = function(e){
+        self._onInputFocus = function(e)
+        {
             self.show();
         };
 
-        self._onInputClick = function(e){
+        self._onInputClick = function(e)
+        {
             self.show();
         };
 
-        self._onInputBlur = function(e){
+        self._onInputBlur = function(e)
+        {
             if (!self._c) {
-               self._b=self.hide();
+                self._b = sto(function() {
+                    self.hide();
+                }, 50);
             }
             self._c = false;
         };
 
-        self._onClick = function(e){
+        self._onClick = function(e)
+        {
             e = e || window.event;
             var target = e.target || e.srcElement,
                 pEl = target;
@@ -415,9 +469,9 @@
 
         if (isDate(defDate)) {
             if (opts.setDefaultDate) {
-                self.gotoDate(defDate);
-            } else {
                 self.setDate(defDate, true);
+            } else {
+                self.gotoDate(defDate);
             }
         } else {
             self.gotoDate(new Date());
@@ -451,36 +505,56 @@
                 this._o = extend({}, defaults, true);
             }
 
-            var opts = extend(this._o, options, true),
-                minDate=opts.minDate,
-                maxDate=opts.maxDate;
+            var opts = extend(this._o, options, true);
 
-            opts.minYear=function(){
-                return minDate.getFullYear();
-            }()
-            opts.maxYear=function(){
-                return maxDate.getFullYear()+1;
-            }()
-            opts.maxMonth=function(){
-                return maxDate.getMonth();
-            }()
-            opts.minMonth=function(){
-                return minDate.getMonth();
-            }()
-            opts.selectYear=new Date().getFullYear();
+            opts.isRTL = !!opts.isRTL;
+
+            opts.field = (opts.field && opts.field.nodeName) ? opts.field : null;
+
+            opts.bound = !!(opts.bound !== undefined ? opts.field && opts.bound : opts.field);
+
+            var nom = parseInt(opts.numberOfMonths, 10) || 1;
+            opts.numberOfMonths = nom > 4 ? 4 : nom;
+
+            if (!isDate(opts.minDate)) {
+                opts.minDate = false;
+            }
+            if (!isDate(opts.maxDate)) {
+                opts.maxDate = false;
+            }
+            if ((opts.minDate && opts.maxDate) && opts.maxDate < opts.minDate) {
+                opts.maxDate = opts.minDate = false;
+            }
+            if (opts.minDate) {
+                opts.minYear = opts.minDate.getFullYear();
+                opts.minMonth = opts.minDate.getMonth();
+            }
+            if (opts.maxDate) {
+                opts.maxYear = opts.maxDate.getFullYear();
+                opts.maxMonth = opts.maxDate.getMonth();
+            }
+
+            if (isArray(opts.yearRange)) {
+                var fallback = new Date().getFullYear() - 10;
+                opts.yearRange[0] = parseInt(opts.yearRange[0], 10) || fallback;
+                opts.yearRange[1] = parseInt(opts.yearRange[1], 10) || fallback;
+            } else {
+                opts.yearRange = Math.abs(parseInt(opts.yearRange, 10)) || defaults.yearRange;
+                if (opts.yearRange > 100) {
+                    opts.yearRange = 100;
+                }
+            }
+
             return opts;
         },
+
         /**
          * return a formatted string of the current selection (using Moment.js if available)
          */
-        toString: function(format){
-            var self=this,
-                date=self._d;
-            format=format||self._o.format;
-            //return !isDate(this._d) ? '' : hasMoment ? window.moment(this._d).format(format || this._o.format) : this._d.toDateString();
-
-            return !isDate(date)?'':hasMoment?window.moment(date).format(format):formatDate(date,format);
-
+        toString: function(format)
+        {
+           // return !isDate(this._d) ? '' : hasMoment ? window.moment(this._d).format(format || this._o.format) : this._d.toDateString();
+            return !isDate(this._d) ? '' : hasMoment ? window.moment(this._d).format(format || this._o.format) : formatDate(this._d);
         },
 
         /**
@@ -597,10 +671,10 @@
         /**
          * change view to a specific full year (e.g. "2012")
          */
-        gotoYear: function(year){
+        gotoYear: function(year)
+        {
             if (!isNaN(year)) {
                 this._y = parseInt(year, 10);
-                this._o.selectYear=this._y;
                 this.draw();
             }
         },
@@ -688,15 +762,14 @@
                     isToday = compareDates(day, now),
                     isEmpty = i < before || i >= (days + before);
 
-                push(row,renderDay(1 + (i - before), isSelected, isToday, isDisabled, isEmpty))
-                // row.push(renderDay(1 + (i - before), isSelected, isToday, isDisabled, isEmpty));
+                row.push(renderDay(1 + (i - before), isSelected, isToday, isDisabled, isEmpty));
+
                 if (++r === 7) {
-                    data.push(renderRow(row, opts.isRTL))
-;                    row = [];
+                    data.push(renderRow(row, opts.isRTL));
+                    row = [];
                     r = 0;
                 }
             }
-            data.push('<tr><th scope="col" colspan="2"><abbr id="clear">清空</abbr></th><th scope="col" colspan="3"><abbr id="today">今天</abbr></th><th scope="col" colspan="2"><abbr id="close">关闭</abbr></th></tr>')
             return renderTable(opts, data);
         },
 
@@ -759,25 +832,4 @@
 
     };
 
-    var dynamicLoading = {
-        css: function(path){
-        if(!path || path.length === 0){
-                throw new Error('argument "path" is required !');
-        }
-        var head = document.getElementsByTagName('head')[0];
-            var link = document.createElement('link');
-            link.href = path;
-            link.rel = 'stylesheet';
-            link.type = 'text/css';
-            head.appendChild(link);
-        }
-    }
-    window.onload=function(){
-        dynamicLoading.css('dateStyle.css')
-    }
-    
 })(window, window.document);
-
-
-
-

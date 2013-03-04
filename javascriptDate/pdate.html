@@ -5,35 +5,42 @@
         <script type="text/javascript" src="../../jquery-1.7.1.min.js"></script>
 		
 		<script type="text/javascript" src="pdate.js"></script>
-		<!--<link rel="stylesheet" href="style.css">-->
+		<link rel="stylesheet" href="dateStyle.css">
+
 	</head>
 	<body>
+		<a href='https://github.com/dbushell/Pikaday'>父亲</a>
 		<input type="text" id="datepicker">
 		<input type="text" id="datepicker1">
 
         <button>fdf</button>
 	</body>
 	<script type="text/javascript">
-    		var picker = new Pikaday({ field: document.getElementById('datepicker') });
-    		var picker1 = new Pikaday({
-                field: document.getElementById('datepicker1') ,
-                bound:true,
-                defaultDate:new Date(2013,9,10),
-                setDefaultDate:false,
-                firstDay:1,
-                //想要3 设置2
-                minDate:new Date(2013,3,1),
-                maxDate:new Date(2014,6,1),
+    		var picker = new Pikaday({
+                field: document.getElementById('datepicker'),
+                maxDate:new Date(),
                 onSelect: function(date) {
-                    //alert(this.field.value);
-                    alert(picker1.toString())
+                    alert(picker.toString())
                 }
             });
-
-            $('button').toggle(function(){
-                $(document.getElementById('datepicker1')).click();
-            },function(){
-                $(document).click()
-            })
+//    		var picker1 = new Pikaday({
+//                field: document.getElementById('datepicker1') ,
+//                bound:true,
+//                defaultDate:new Date(2013,9,10),
+//                setDefaultDate:false,
+//                firstDay:1,
+//                //想要3 设置2
+//                minDate:new Date(2013,3,1),
+//                maxDate:new Date(2014,5,1),
+//                onSelect: function(date) {
+//                    alert(picker1.toString())
+//                }
+//            });
+//
+//            $('button').toggle(function(){
+//                $(document.getElementById('datepicker1')).click();
+//            },function(){
+//                $(document).click()
+//            })
 	</script>
 </html>
