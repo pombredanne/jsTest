@@ -1,0 +1,233 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+            fieldset {
+                font-size: 12px;
+                padding: 10px;
+                width: 50%;
+                margin: auto;
+            }
+            
+            input {
+                font-size: 12px;
+                font-family: Tahoma;
+            }
+        </style>
+    <title>排序</title>
+</head>
+<body>
+    <form name="myform">
+        <h3 align="center">排序</h3>
+        <fieldset>
+            <legend>插入排序</legend>
+            <b>直接插入排序</b>
+            请输入一段要排序的字符，用半角逗号隔开<br>
+            <input name="insert" type=text size=100 value="g,v,u,f,p,o,i,a,t,j,e,l,k">
+            <br>
+            <input type=button value=" 排序 " onclick="alert(InsertSort(myform.insert.value.split(',')));">
+            <p>
+                <b style='color:red'>希儿排序</b>
+                <br>
+                <input name=Shell type=text size=100 value="g,v,u,f,p,o,i,a,t,j">
+                <br>
+                <input type=button value=" 排序 " onclick="alert(ShellSort(myform.Shell.value.split(',')));">
+            </p>
+        </fieldset>
+        <fieldset>
+            <legend>交换排序</legend>
+            <b>冒泡排序</b>
+            <br>
+            <input name=bubble type=text size=100 value="g,v,u,f,p,o,i,a,t,j,e,l,k">
+            <br>
+            <input type=button value=" 排序 " onclick="alert(BubbleSort(myform.bubble.value.split(',')));">
+            <p>
+                <b>快速排序
+                    <br></b>
+                <input name=quick type=text size=100 value="3,1,5,4,6">
+                <br>
+                <input type=button value=" 排序 " onclick="alert(QuickSortDemo(myform.quick.value.split(',')));"></fieldset>
+            </p>
+        </fieldset>
+        <fieldset>
+            <legend>选择排序</legend>
+            <b>直接选择排序</b>
+            <br>
+            <input name=select1 type=text size=100 value="g,v,u,f,p,o,i,a,t,j,e,l,k">
+            <br>
+            <input type=button value=" 排序 " onclick="alert(SelectSort(myform.select1.value.split(',')));">
+            <p>... ...</p>
+        </fieldset>
+        <!-- <fieldset>
+            <legend>网上的中文&英语排序</legend>
+            <b>直接选择排序</b>
+            <br>
+            <input name=select1 type=text size=100 value="g,v,u,f,p,o,i,a,t,j,e,l,k">
+            <br>
+            <input type=button value=" 排序 " onclick="alert(SelectSort(myform.select1.value.split(',')));">
+            <p>... ...</p>
+        </fieldset> -->
+    </form>
+    <script>
+    
+        /*
+            插入排序
+
+            1:用第一个往后面找,找出比他小/大的,找到了,放到右边,遇到比它大/小的A
+            2:用这个A开始往后找找到比它小/大的,找到了放到右边,并且右边保持顺序
+            ```
+            ```
+            ```
+            返回数组
+
+        */
+        function InsertSort(arr){
+            var temp, j;
+            for (var i = 1,length=arr.length; i < length; i++) {
+                if ((arr[i]) < (arr[i - 1])) {
+                    temp = arr[i];
+                    j = i - 1;
+                    do {
+                        arr[j + 1] = arr[j];
+                        j--;
+                    }while (j > -1 && (temp) < (arr[j]));
+                    arr[j + 1] = temp;
+                }
+            }
+            return arr;
+        }
+
+        /*
+          插入排序->希儿排序
+          
+          原理同"插入排序"一样 只是这里一段一段比较
+
+        */
+        function ShellSort(arr){
+            var increment = arr.length;
+            do {
+                increment = (increment / 3 | 0) + 1;  //取整数
+                arr = ShellPass(arr, increment);
+            }while (increment > 1)
+            return arr;
+        }
+
+        /*希儿排序分段执行函数*/
+        function ShellPass(arr, d){
+            var temp, j;
+            for (var i = d; i < arr.length; i++) {
+                //进行分段比较
+                if ((arr[i]) < (arr[i - d])) {
+                    temp = arr[i];
+                    j = i - d;
+                    do {
+                        arr[j + d] = arr[j];
+                        j = j - d;
+                    }while (j > -1 && (temp) < (arr[j]));
+                    arr[j + d] = temp;
+                }
+            }
+            return arr;
+        }
+    
+
+        /*
+            冒泡排序
+
+        */
+        function BubbleSort(arr){
+              var length=arr.length, j,tempExchangVal;
+
+              while(length>0){
+                for(j=0;j<length-1;j++){
+                  if(arr[j]>arr[j+1]){
+                    tempExchangVal = arr[j];
+                    arr[j]=arr[j+1];
+                    arr[j+1]=tempExchangVal;
+                  }
+                }
+                length--;
+              }
+              return arr;
+        }
+    
+        //快速排序  http://www.ruanyifeng.com/blog/2011/04/quicksort_in_javascript.html
+        function QuickSortDemo(arr){
+            var result = QuickSort(arr);
+            return result;
+        }
+        
+        function QuickSort(arr){
+            if (arr.length <= 1) { return arr; }
+            //随机选择一个基点  并设立两个缓存数组
+        　　var pivotIndex = Math.floor(arr.length / 2),
+                pivot = arr.splice(pivotIndex, 1)[0],
+                left = [],right = [];
+        　　
+            for (var i = 0,length=arr.length; i < length; i++){
+        　　　　if (arr[i] < pivot) {
+                    left[left.length]=arr[i];
+        　　　　} else {
+                    right[right.length]=arr[i];
+        　　　　}
+        　　}
+        　　return QuickSort(left).concat([pivot], QuickSort(right)); //最后连接这三个数组
+        }
+    
+        /*
+        快速排序, 对待排序的数组进行划分
+        function Partition(arr, i, j) {
+         var pivot = arr[i];
+         while(i<j) {
+            while(arr[j]>=pivot)
+              j--;
+              if(i<j){
+                  arr[i++] = arr[j];
+                }
+              while(arr[i]<=pivot)
+              i++;
+              if(i<j)
+              arr[j--] = arr[i];
+         }
+         arr[i] = pivot;
+         return arr;
+         }*/
+
+         /*
+           选择排序->直接选择排序
+           第一次找出最大/最小 并将最大/最小放到arr[0] 把最小/最大放在arr[最大/最小的位置]
+           然后第二次再在剩下的数组中找最大最小
+           ```
+           ```
+           ```
+           最后一个新数组返回
+        */
+        function SelectSort(arr){
+            var temp;
+            for (var i = 0,length=arr.length; i < length; i++) {
+                var k = i;
+                for (var j = i + 1; j < arr.length; j++) {
+                    if ((arr[j]) < (arr[k])){
+                        k = j;
+                    }
+                }
+                if (k != i) {
+                    temp = arr[i];
+                    arr[i] = arr[k];
+                    arr[k] = temp;
+                }
+            }
+            return arr;
+        }
+        
+        /*求字符串的unicode码*/
+        function unicode(str){
+            var uni = 0;
+            for (var i = 0; i < str.length; i++) {
+                uni += str.charCodeAt(i) / 6553.5 * Math.pow(10, str.length - i);
+            }
+            return uni;
+        }
+    </script>
+</body>
+</html>
