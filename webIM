@@ -1,0 +1,728 @@
+--------------------------------------------------思想----------------------------------------------
+
+    Class方法----core.js
+        对其最大的感触就是 不错的继承 以及this之间的转换 很好的达到了jQuery的$.proxy的效果  
+        要求:彻底掌握这种思想
+     
+     搭建思想
+        一直在无法改变那种 先css后js的习惯
+        要求:尽快 一定要修改过来
+     
+     OO思想
+        给我最大感触的就是黄哥给我写ui帮助的时候,从他流畅的输入中,可以看到 他对oo思想的掌握非常娴熟.
+        要求:不管怎么,今年过年[JS面向对象]达到黄哥在JS中的地步 明年争取超越 一定
+        
+     大型项目命名规范
+        第一次使用命名空间,虽然感觉上有那么点不是真正的命名空间(即直接使用对象定义的).真正见识到大型项目的'复杂',也真正意识到老师说的--"真正的锻炼,真正的思想成熟,真正的良好的代  码结构,在你经历过一个优良的大型项目的时候".
+        要求:一定要掌握 大型项目的代码格式以及 整理思想
+     
+     代码就是代码:
+        要求:eg:  var str="<div>`````</div>";  你需要尽量使用create这种形式
+     
+     
+------------------------------------------------------拖动层--------------------------------------------
+
+    zIndex 界限的处理
+        zIndex
+            总结:最好将其设定一个全局变量或者封装在全局对象中
+            疑问:什麽时候将全局zIndex归0?   ----初步答案 隔断时间判断页面上是否有弹出层?0:"";  (zIndex自我感觉没有必要归0操作)
+         
+         界限问题:
+            总结:document.body.clientWidth  获取页面可视的高度---ＦＦ不兼容(document.documentElement.clientHeight)
+                 获取ｄｉｖ的高度宽度Div.scrollHeight
+          
+    释放焦点:
+        $(self).releaseCapture && $(self).releaseCapture(); //IE下释放焦点
+    
+    规范拖动层基本标准        
+            总结:跟黄哥一起讨论 总结如下:
+                1:要实现 拖动 内容div的分别实现(内容div不能拖动)
+                2:界限
+              3:zIndex
+                4:拖动点的位置设置(拖动的时候鼠标位置 是指在鼠标位置 还是指在拖动右上角)
+                
+------------------------------------------------------回收----------------------------------------------------
+    回收:
+        主要代码:  destroy-----ui.js
+         this[i] = undefined;//这种写法 不推荐 
+         this[i] = null;// 推荐这种写法
+         if (CollectGarbage) CollectGarbage(); ie回收
+         null:将其设置为null对象
+         undefined:干掉所有  
+          总结:
+          想了解一下:http://www.cnblogs.com/xiaohui108/archive/2011/08/31/2160488.html  仅限了解 深入的话就有点钻牛角尖啦
+          
+---------------------------------------------------可编辑div操作-------------------------------------------------
+    http://hi.baidu.com/louve01/item/efb14e1add258f6b3f87cedb  -------------DIV(contenteditable="true")鼠标光标处插入图片
+    http://hi.baidu.com/tjy9999/item/bdbd56e1051ce9adcf2d4f1f  --------------input textarea光标读写操作
+    http://www.jb51.net/article/31795.htm                      --------------兼容包括div
+    http://hi.baidu.com/alimyself/item/0ce9d8f76e441dbe30c19939  ---------selection() range方法讲解
+    当有焦点的时候,里面默认的<br>就取消了  没有焦点的时候 里面会自带一个<br>
+    目标:
+        把编译器搞定就OK
+        
+----------------------------------------------this.src $(this).src------------------------------------
+    获取图片src:
+        this.src:获取Dom处理后的结构 比如:files://rambo/work/rambo.jpg
+        this.getAttribute('src')===$(this).attr('src'): 获取属性上真是的结构   eg: ../work/rambo.jpg
+ 
+ ----------------------------------------------多个相同ID 只取第一个----------------------------
+ ----------------------------------------------点击div之外 该div隐藏----------------------------
+ ----------------------------------------------滚动到底部----------------------------------------
+    document.getElementById('div1').scrollHeight
+          
+ ----------------------------------------if else简写-------摘自:http://www.jb51.net/article/21339.htm------------------------
+     一:
+         var add_level={'5':1,'10':2,'12':3,'15':4}[add_step] || 0; 
+         var add_level = (add_step==5 && 1) || (add_step==10 && 2) || (add_step==12 && 3) || (add_step==15 && 4) || 0; 
+         
+         '>的时候'
+        var add_level = (add_step>12 && 4) || (add_step>10 && 3) || (add_step>5 && 2) || (add_step>0 && 1) || 0; 
+    二:
+        if(a)alert(2),alert(4);  ==> if(a){alert(2);alert(4)} //不推荐
+
+-------------------------------------------<img>---------------------------------------------
+    <img alt="fdfsd" src="faceimg/2.gif">   在火狐上如果这张图片不存在 那么就是空白 并不出现其他浏览器的那种默认找不到图片   
+
+----------------------------------------------------数组彻底去重复-----------------------------------------
+function uniquerArr(arr){
+    var temp=[];
+    for(var i=0;i<arr.length;i++){
+        if(!contains(temp,arr[i]))temp.push(a[i]);
+    }
+    return temp;
+}
+/*辅助工具*/
+function contains(arr,val){
+    for (var i = 0,length=arr.length; i < length; i++)if(arr[i]===val)return true;
+}
+
+-----------------------------------------------------小知识点-------------------------------------------------
+    //关闭浏览器的时候 区分是刷新还是关闭
+    window.onbeforeunload=function(e){
+            return '确定离开?'
+    }
+    $(document).keydown(function(e){
+       if(e.keyCode===116||(e.keyCode===116&&e.ctrlKey)){    //116=F5键 ctrl+f5
+           window.onbeforeunload=function(){};
+        }
+    })
+    
+    //检测鼠标是否在页面内
+    $(document).bind('click',function(event){
+        var height=$(window).height(),
+             width=$(window).width(),
+             mouseX=event.clientX,
+             mouseY=event.clientY;
+        if(!(0<mouseY&& mouseY<height && 0<mouseX&&mouseX< width)){ 
+             console.log('你们是没有能力点到我的 我是在窗体外面的')
+        }
+    })
+    
+    //onbeforeunload触发条件
+        http://www.cnblogs.com/meteoric_cry/archive/2012/08/21/2649104.html
+         防止空a链接影响,并且不影响自定义事件(click)解决办法:
+             1:
+            $(document).on('click','a',function(){
+                window.onbeforeunload=function(){};
+                setTimeout(function(){
+                    ieClose();
+                },1000)
+            });
+            2:
+            <a href="javascript:;" onclick='return false'>test</a>
+              =>ie8||正常浏览器 可以给a动态添加 onclick
+                   $('a').attr('onclick','return false') 
+            3:
+            <a href='###'>test</a>
+            4:
+            $(document).on('click','a',function(event){
+                var target=this.target,
+                     href=this.href,
+                     locHref=location.href,
+                     rub=/javascript|_self/i;
+
+                if (locHref.length-1===locHref.search('#')) {
+                    locHref=locHref.slice(0,locHref.length-1);      //防止自动+一个'#'  刷新就无效了
+                };
+                //var bool=(target&&rub.test(target))||rub.test(href)||href===locHref+'#';
+                var bool=(target&&!rub.test(target))||rub.test(href);
+                if(bool){ 
+                     event.preventDefault();
+                }
+            });
+            5:
+            <a>发动机就</a>
+            <style>
+                a{
+                    cursor:pointer;/*去掉href 利用样式来模拟  ie8 ie7可以*/
+                }
+            </style>
+----------------------------------------------------------工作条例--------------------------------------
+尽量做到分细化 这样待接口全部整理完毕的时候,只需要接口一对即可完成
+
+-------------------------------------------------jquery toggle bug------------------------
+    问题:
+        checkbox不能使用toggle
+     解决办法:
+          1:使用click 推荐
+          2:使用自定义toggle
+     code:
+        问题代码:
+            <html>
+            <head>
+	            <meta http-equiv="content-type" content="text/html; charset=utf-8">
+	            <title>Test</title>
+	            <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+            </head>
+            <body>
+	            <input type="checkbox" id="aaa">
+	            <input type="text" id="bbb" style="display:none;"/>
+            </body>
+	            <script type="text/javascript" charset="utf-8">
+                    $("#aaa").toggle(function() {
+			            $("#bbb").toggle();
+			            $(this).attr('checked', true);
+		            }, function() {
+			            $("#bbb").toggle();
+			            $(this).attr('checked', false);
+	               });
+                </script>
+            </html>
+         第2解决代码:
+                /*
+                    使用:
+                        toggle2(element, function(e) {
+                            alert(e.type)
+                            alert("这是回调函数一")
+                        }, function(e) {
+                            alert("切换到回调函数二")
+                        });
+                */
+                var toggle2 = function(el) {
+                        var fns = [].slice.call(arguments, 1),
+                            backup = fns.concat(); //相当于备份克隆一下
+                        addEvent(el, 'click', function(e) {
+                            if(!fns.length) {
+                                fns = backup.concat()
+                            }
+                            fns[0].call(this, e);
+                            fns.shift();
+                        });
+                };
+                function addEvent(element, type,handler){
+                            if (element.addEventListener){
+                                element.addEventListener(type, handler, false);
+                            } else if (element.attachEvent){
+                                element.attachEvent("on" + type, handler);
+                            } else {
+                                element["on" + type] = handler;
+                            }
+                }
+
+------------------------------------------------------数组最大数目---------------------------------------
+var t=Math.max.apply(Math,Array);  var nm=Math.max.call(this,2,3,4,8,1222,5,10);  //this Math一般都可以
+
+-------------------------------------------------IE BUG---------------------------------------
+    一:
+        $('<div class="gouriie">') //不能用
+    二:
+        class为关键字 不能使用class为变量名   eg:$('<div>').attr({class:'ui'}); 禁止使用这种方法
+    三:
+        可编辑div无法自动添加br标签
+        解决办法:
+            if($.browser.msie&&e.keyCode ===13){     //TODO 兼容ie8 暂未测试ie9
+                var sel=document.selection.createRange();
+                sel.pasteHTML('<br>');
+                sel.collapse(false);
+                sel=null;
+                return false;//这里不能去掉 必须
+             }
+     四:
+        ie8下  聊天窗口丢失焦点事件
+         解决办法:
+            有时候html('')或者empty()这两个都不行的话,考虑html(' '); 具体为什么?还在探索中
+         附加bug:
+            当修正后竟然 连问题三 也解决了 这是百思不得其解啊!!!!!
+                
+----------------------------------------------jquery append 原理--------------------------------------
+    A.append(B);   将B剪切到A中(clone也是如此)   如果在for循环中使用  不考虑这一点的话 很可能造成 闭包 导致 B只在最后一个A中有 别的都没有
+    
+--------------------------------------- self.style.color  问题--------------------------------------
+    function flash(){
+       var col=self.style.color;//你直接使用col  这是不行的  因为var 是变量 会形成一个'定量'  但是self.style.color 这是一个方法(function) 可以随时重新定义
+       //比如 var ui=$('#hj').css('color');    这并不是不变的  因为css也是一个变量
+       self.style.color=self.style.color==='red'?'black':'red';
+    }
+
+---------------------------------------------documetn $ 的问题------------------------------------
+    if (id==='keer3@163.com'){//一个email
+        $('#'+id);//错误 为空
+        document.getElementById(id);//yes  可以的
+        $(document.getElementById(id));
+    }
+
+-------------------------------------------------jquery hide意外---------------------------------
+    $('div.box').hide(e);   //意外的惊喜 哈哈 效果为 slide上下缓慢卷动
+
+-------------------------------------------------var 小细节----------------------------------------
+    var b={};
+    var t='rambo',
+        age=19,
+        b=b||{},
+        b.k=b.k||{};/*这一行 错误的  因为b是一个Object 不能这样对Object的子属性进行分配*/
+
+--------------------------------------------------------顺序-----------------------------------------------
+    function a(){
+        var t='rambo'  //1
+        var k=function(){}; //2
+        function b(){};  //3
+    }   
+    a() //进入a后 顺序为  3 1 2
+
+--------------------------------------------------------判断ie----------------------------------------
+
+    var isIE=!!window.ActiveXObject;
+    var isIE6=isIE&&!window.XMLHttpRequest;
+    var isIE8=isIE&&!!document.documentMode;
+    var isIE7=isIE&&!isIE6&&!isIE8;
+    if (isIE){
+        if (isIE6){
+            alert(”ie6″);
+        }else if (isIE8){
+            alert(”ie8″);
+        }else if (isIE7){
+            alert(”ie7″);
+        }
+    }
+    然后是一个稍微短的js判断是否ie的方法：
+    2010年1月一位俄国人利用了IE与标准浏览器在处理数组的toString方法的差异，仅仅6bytes就完美完成了是否IE浏览器的检测：
+    var var ie = 0
+    一个最短的js判断ie或非ie的代码，大小仅仅7bytes：
+    var ie = !+'\v1';
+    2010年1月，一位俄国人利用了IE与标准浏览器在处理数组的toString方法的差异，仅6bytes就完美完成了是否IE浏览器的检测：
+    var ie = !-[1,];
+    
+    var IE = eval('"v"=="\v"');
+    利用这些发现，我们可以使代码写的更短。如今检测是否为IE6其实可以写成：
+    var ie6=!-[1,]&&!window.XMLHttpRequest;
+    
+    
+    [注意----注意]  !-[-1,]  !+[1,]    !+"v1"   这些无法判断ie9,10 因此如果需要判断9,10不要使用它们
+
+
+-------------------------------------------jquery ajax-------------------------------------
+    注意url后面的'?'
+    if(url==='http://192.168.1.85:8081/chat.app?'){
+        $.ajax({
+            data:data,
+            url:url;
+        })
+        //最终结果为 url&data
+    }else if(url==='http://192.168.1.85:8081/chat.app'){
+         $.ajax({
+            data:data,
+            url:url;
+        })
+        //最终结果为 url?data         正确
+    }
+
+------------------------------------------------js判断当前窗口是否被激活(获取焦点)-----------------
+    http://blog.sina.com.cn/s/blog_4d38a3b001019zd6.html
+    // $(document).one('mouseenter',function(){ // $(window)  在ie中不管用
+                stop(); 
+            })
+
+
+----------------------------------------------------------原生js 链式写法缺陷--------------------------------------
+    一:
+     var tempEle = document.createElement("div");
+     tempEle.innerHTML = str;   //yes
+     
+      var tempEle = document.createElement("div").innerHTML = str;   //no
+    二:
+      <script type="text/javascript">
+        function sub(){
+                   document.getElementById("textarea").innerHTML=editor.html();  //如果不写清楚 <script type="text/javascript">  则将会在IE中报无权限错误
+            }
+    </script>
+  
+-------------------------------------mouseout mouseover mouseenter mouseleave-------------------------
+        mouseenter mouseleave -----禁止冒泡 这种冒泡有时候你使用return false 是难以阻止 不知道在那冒泡
+        mouseover:从子元素中出来到(事件元素)父元素还会触发一次 不仅仅在子元素冒泡 父元素也会冒泡
+         说明案例:http://blog.csdn.net/ocean1010/article/details/7394599
+
+            网上看到的 解决冒泡 兼容方法
+
+            /*
+               mouseover mouseout      mouseenter mouseleave
+               作用: mouseover mouseout 去掉冒泡 达到mouseenter mouseleave 效果
+               使用: 
+                  jquery:
+                    $('#parentDiv').mouseover(function(){
+                      if(fixedMouse(event, this)){//使用
+                          logs.innerHTML+="MouseOver<br />";
+                      }
+                    });
+                 js:
+                    addListener(target,'mouseover',function(e){
+                    e=e||window.event;
+                    if(fixedMouse(e, target)){
+                        //do something
+                    }
+                },false);
+            */
+            function fixedMouse(e, target) {
+                var related, type = e.type.toLowerCase();
+                if(type === 'mouseover') {
+                  related = e.relatedTarget || e.fromElement;
+                } else if(type === 'mouseout') {
+                  related = e.relatedTarget || e.toElement;
+                } else {
+                  return true;
+                }
+                return related && related.prefix != 'xul' && !contains(target, related) && related !== target;
+
+            }
+
+            function contains(parent, child) { //检测child节点是否存在于parent节点中
+                // FF:parent.contains(child)
+                return parent.contains ? parent != child && parent.contains(child) : !! (parent.compareDocumentPosition(child) & 16);
+            }
+
+
+            //自我总结的方法  解决另一种[重复(这种重复还不知道是不是冒泡造成的,因此不敢下评论)]的办法 这种情况对mouseover mouseout      mouseenter mouseleave  都有用[mouseenter mouseleave 这两个有时候也会存在冒泡]
+            <!DOCTYP>
+            <html>
+             <head>
+                  <title> New Document </title>
+                  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+                  <script>!window.jQuery && document.write('<script src="jquery-1.4.3.min.js"><\/script>');</script>
+             </head>
+             <body>
+                <div id='ffff' >fdfdsfds</div>
+                <style type="text/css">
+                    #ffff{
+                        border:1px solid red;
+                        width:100px;
+                        height:100px;
+                      }
+                </style>
+             </body>
+            </html>
+            <script type="text/javascript">
+		            $('#ffff').bind('mouseenter mouseleave',function(event){//换成mouseover mouseout 也行
+			            //alert("toElement:"+event.toElement.innerHTML)
+			            if(document.all){event.toElement.innerHTML;event.fromElement.innerHTML;}  //1 竖直方向 2 左右方向
+			
+			              //这就是解决重复的地方
+			            alert(4)
+		            })
+              </script>
+
+---------------------------------------------------jquery  自带event-------------------------------------------
+    $('#parentDiv').mouseout(function(){
+          if(fixedMouse(event, this)){  //这里的event 不过建议在 上面function()中写上e
+		    logs.innerHTML+="MouseOut<br />";
+          }
+    });
+
+------------------------------------------------------------注意"" " "区别---------------------------------------------------
+    ""&&true  ==>""==false
+    " "&&true ==>true
+
+--------------------------------------------------------------查看jquery版本-------------------------------------------------
+    jQuery.fn.jquery  查看jquery版本
+
+----------------------------------------------------setTimout setInterval---------------------------------------
+    必须养成习惯
+        setTimeout(function(){fn},time) //使用function
+        setTimeout(fn,time);    //坚决抵制 不能这样用
+        
+        ------  setTimeOut()  设置参数
+        one:
+	
+	        this.waitAndShout = function() {
+	        window.Obj = this;
+	        setTimeout('Obj.shout()', 5000);
+	        }
+	        这样就可以了。实际上
+	        setTimeout('Obj.shout()', 5000);
+	        等价于
+
+	        window.setTimeout('window.Obj.shout()', 5000);
+			        --http://blog.csdn.net/free_wind22/article/details/2224363
+
+        two:
+	        function st(arg){
+	               return function(){alert(arg);}
+	         }
+	        var st1 = st(true);
+	        setTimeout(st1, 2000);
+			        --http://hi.baidu.com/robinkang/item/4755ee0ad24943e2fe240d0c
+        three:  //  使用于 FF&&ie=>ie9不管用 建议看看知道这个回事就行
+     		window.setTimeout(foo,100,'fdfd',"baz");//setInterval  也可以
+	        function foo(){
+		        console.log(arguments.length);
+		        for (var arg = 0;arguments[arg];arg++){
+			        console.log(arg+": "+arguments[arg]);
+		        }
+	        }
+
+--------------------------------console----------isNaN--- 转换小问题 ------------------------------
+    isNaN("4") //false   isNaN("ddd") //true
+    "3">"24" //true    ==> "3">"2"
+    var t='gt';console.log(typeof ''+t+'')  ==>    stringgt
+
+---------------------------------------------------------判断中文------------------------------------------
+    //判断中文
+    function ischinese(s){ 
+	    var ret=true; 
+	    for(var i=0;i<s.length;i++){
+		    ret=ret && (s.charCodeAt(i)>=10000); 
+	    }
+	    return ret; 
+    }
+    //中文字符长度
+    String.prototype.len=function(){                 
+        return this.replace(/[^\x00-\xff]/g,"rr").length;          
+     };
+     
+---------------------------------------------------------获取href中某一项------------------------------------------
+function getQueryString(name,url){
+        var reg = new RegExp("(^|&|\\?)"+ name +"=([^&]*)(&|$)"), r;
+        url=url||location.href;
+        if (r=url.match(reg)) return unescape(r[2]); return null;
+}
+
+---------------------------------------------------------Url编码--------------------------------------------
+    URL编码 
+        结论1:网址路径的编码，用的是utf-8编码
+        结论2:查询字符串的编码，用的是操作系统的默认编码 linux:utf-8 windows:gb2312
+        结论3:就是，GET和POST方法的编码，用的是网页的编码<meta http-equiv="Content-Type" content="text/html;charset=xxxx">
+        结论4:在Ajax调用中，IE总是采用GB2312编码（操作系统的默认编码），而Firefox总是采用utf-8编码。
+        
+---------------------------------------------------------unbind onclick----------------------------------------
+unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert('eeee')">dfdfjksdfk</a>
+
+-------------------------------------------------------[]作为对象操作的情况--------------------------------------------
+    鲜为人知的是用中括号[]存取时，JS引擎内部隐式的将数字转成了字符串。 而作为[]存取时属性可以不遵循JS标识符规则（纯数字不能作为变量命名）。如
+    var obj = {};
+    obj.11 = 11; // 非法
+    obj['11'] = 11; // 合法
+    console.log(obj['11']===obj[11])
+    console.log(obj[11]===11)
+ 
+------------------------------------------------------谷歌浏览器 input file为隐藏的问题-----------------------------------
+    问题:
+        谷歌浏览器 input file为隐藏的时候,无法触发 file点击行为
+    解决办法:
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+        <meta charset=utf-8 />
+        <title>JS Bin</title>
+        </head>
+        <style type="text/css">
+            .input {
+            display: none;
+            }
+            .input1{
+            	filter:alpha(opacity=50);
+                -moz-opacity:0;
+                -khtml-opacity: 0;
+                opacity: 0;
+            }
+        </style>
+        <body>
+          <input type="file" class='input' id="fff"/>
+          <br>
+          <input type="button" id="fd" value="button"/>
+        </body>
+        </html>
+
+        <script type="text/javascript">
+            $('#fd').hover(function(){		
+	            $('#fff').removeClass('input').addClass('input1');  		
+            },function(){
+	            $('#fff').removeClass('input1').addClass('input');  	
+            })
+            $('#fd').click(function(){
+	            $('#fff')[0].click()
+            })
+        </script>
+
+---------------------------------------------------高级教程中教的那个loadjs问题---------------------------------------
+    一:
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
+        var body=document.getElementsByTagName('head')[0];
+        body.appendChild(script);
+        console.log($) //ReferenceError: $ is not defined   表明他是异步的 并不是加载完就调用其中的函数的
+    
+    二:
+        head.appendChild(script);
+        body.appendChild(script);  //很多时候会报body未找到 是因为他在body中执行 并且当页面中只有一个<script> eg:
+        
+        <meta charset="utf-8"/>
+        <script type="text/javascript">
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
+            var body=document.getElementsByTagName('head')[0];
+            body.appendChild(script);
+            console.log($)    //这种情况用head可以  也就是说会html默认创建head body就不行啦       
+        </script>
+
+---------------------------------------------------IE高级安全测略---------------------------------------------------
+    在ie中的input file中,必须是鼠标点击才管用,否则会报无权限
+   
+-------------------------------------------------------load js------------------------------------------------------
+    <script src="http://code.jquery.com/jquery-1.6.js"></script>
+    <meta charset="utf-8"/>
+    <script type="text/javascript">
+    var _$ = {}; /*simple 如果为true, 表示简单创建script标签(而不会带call=jsonp12344566), 这适用于需要缓存的情况*/
+    var getScript = function(url, fnback, charset,simple) {
+        var s, 
+             fn = 'jsonp' + (+new Date()),
+             d = document,
+             src = (url.indexOf("?") == "-1" ? url + "?" : url) + (simple ? '' : '&call=' + fn);
+        (s = d.createElement("script")).setAttribute("type", "text/javascript");//学习这里的()
+        s.setAttribute('charset',charset);
+        d.getElementsByTagName("head")[0].appendChild(s).src = src;
+        s.onload = s.onreadystatechange = function() {
+        		s.parentNode.removeChild(s);
+        		fnback && fnback();
+        		clearTimeout(timer);
+        };
+        //TODO 添加失败信息  以及async属性
+        var timer=setTimeout(function(){alert('载入'+url+'失败!请按esc取消');},2000);
+        //http://bbs.blueidea.com/thread-2980324-1-1.html
+    }
+
+    getScript('http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js',function(){
+     	console.log($.fn.jquery);
+     },'utf-8')
+    // $.getScript('http://ajax.gooleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js',function(){
+    // 	console.log($.fn.jquery);
+    // })
+
+    </script>
+    
+------------------------------------------------------------------------三元计算-------------------------------------------------------
+    src=basesrc[0]+'/Images/'+imgname===-1?'shut_index_hover.png':'samll_hover.png';  //错误 
+    //效果:  src=imgname===-1?'shut_index_hover.png':'samll_hover.png';
+    
+    imgname=basesrc[1].search('samll')===-1?'shut_index_hover.png':'samll_hover.png',
+    src=basesrc[0]+'/Images/'+imgname;      //正确
+    
+--------------------------------------------------------------------文档模式-------------------------------------------------------
+    文档模式:
+        告诉浏览器用什麽版本的引擎来渲染. [渲染包括style]
+        使用:<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" >
+    浏览器模式:
+        直接更改 navigator.userAgent 属性中版本 特性就是局部影响 只改变需要改变的地方 一般来说 主要是影响局部css  
+        使用:
+            <!–[if IE 7]>
+                <style type=”text/css”>
+                    .content{color:#F00;}
+                </style>
+            <![endif]–>
+    
+    特殊:
+        <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″ />
+        IE=edge  使用你系统中最高版本的ie
+        chrome   如果你ie中安装chrome内嵌框架,那么将会使用chrome引擎来渲染页面
+            网络:http://choizhang.com/wordpress/x-ua-compatible.html
+ 
+--------------------------------------------------------------resizeTo-------------------------------------------
+    该函数中 open尺寸的差别:http://www.okimg.com/0001!2313.html
+    
+    更多widnow对象的函数:  http://www.dreamdu.com/javascript/window.resizeTo/
+ 
+------------------------------------------------      A标签模拟点击   ------------------------------------------------------
+    if(navigator.userAgent.search('Chrome')>-1){    //谷歌中 没有给他click属性
+            var sub=$('#t1')[0];
+            var e = document.createEvent('MouseEvent');
+            e.initEvent('click', false, false);
+            sub.dispatchEvent(e);
+    }else{
+        $('#t1')[0].click();//火狐ie可以 
+    }
+
+------------------------------------------------  div 跟着屏幕的滑动 而改变  ----------------------------------------------------
+    <script language="JavaScript">
+        function scall(){
+            var layer1=document.getElementById("ShowBottom"),
+	            documentElement=document.documentElement,
+	            documentBody=document.body,
+	            scrollTop=documentElement.scrollTop+documentBody.scrollTop,	//主要兼容谷歌  documentBody.scrollTop
+	            scrollLeft=documentElement.scrollLeft+documentBody.scrollLeft;
+
+            layer1.style.top=(scrollTop+(documentElement.clientHeight-layer1.offsetHeight)/4)+"px";
+            layer1.style.left=(scrollLeft+(documentElement.clientWidth-layer1.offsetWidth)/2+59.5)+"px";
+         }
+
+        window.onscroll=window.onresize=window.onload=scall;
+    </script>
+    
+--------------------------------------------------  jquery jsonp跨域请求  -----------------------------------------------
+    jsonp  jsonpCallback的区别:
+        jsonp:传输地址上的参数名  默认  ?callback=jsonCallbacl
+        jsonpCallback:跨域后返回的成功函数名称  表现即为: ?callback=jsonCallbacl   默认:jsonpcallback
+        http://www.jb51.net/article/28502.htm   --摘自
+        
+     跨欲服务器上的设置:
+     
+        http://www.cnblogs.com/cfanseal/archive/2009/05/19/1460382.html          --简单讲解
+        
+------------------------------------------------------ 添加 focus  ----------------------------------------------------
+    给一个input添加一个focus 他的默认操作为:  移动滚动条 找到input 添加focus
+    
+----------------------------------- Javascript跨浏览器处理键盘事件keydown,keypress,keyup     --------------------------
+    http://www.cnblogs.com/leolai/archive/2012/08/01/2618386.html
+    http://daidaidaiksw-163-com.iteye.com/blog/1128834
+    
+------------------------------------------------------  jquery data()  ----------------------------------------------
+    $.data()  $(element).data()
+     1.8以后:
+        $._data(DOM,'events')  
+     1.8以前:
+        $.data(DOM,'events')   $(DOM).data('events')
+        
+------------------------------------------------------------- trim方法  ---------------------------------------------
+    网上说处理大数据使用此方法:
+        function trim(str){  
+            str = str.replace(/^(\s|\u00A0)+/,'');  
+            for(var i=str.length-1; i>=0; i--){  
+                if(/\S/.test(str.charAt(i))){  
+                    str = str.substring(0, i+1);  
+                    break;  
+                }  
+            }  
+            return str;  
+        }  
+    暂未测试  还使用正则trim
+    
+---------------------------------------------------------------  文本中的url转换为http -------------------------------------------------
+    http://cn.softuses.com/3098
+    http://www.zhihu.com/question/20339078
+ 
+---------------------------------------------  releaseCapture setCapture 的作用 优势  [未搞明白 回头再来] ------------------------------
+     if (self.setCapture) {
+     	self.setCapture();
+     } else if (window.captureEvents) {
+     	window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
+     }
+
+
+     if ($(Domid)[0].releaseCapture) {
+     	$(Domid)[0].releaseCapture();
+     } else if (window.captureEvents) {
+     	window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
+     }
+     
+     比较纳闷的是:
+        我完全可以用document.mouseover   document.unbind('mouseover')来代替 但是加上这个有什麽好处呢?
