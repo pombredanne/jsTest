@@ -126,6 +126,11 @@ String.prototype.StringToArray=function(substr) {
 	return arrTmp;
 }
 
+//去除字符串中的标签  直接替换 不影响光标
+String.prototype.stripHTML = function() {
+    var reTag = /<(?:.|\s)*?>/g;
+    return this.replace(reTag,"");
+}
 
 /*Array 扩展*/
 Array.prototype.remove = function(index, count){ //移除index 开始的指定个数，默认个数为1

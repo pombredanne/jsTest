@@ -53,10 +53,11 @@ $.fn.extend({
         var result = $parentArray.next();
         return result;
     },
-    _removeAttr:function(value){
-        var _value=this.attr(value);
-        this.removeAttr(value)
-        return _value        
+    removeAttrs:function(){
+        for(var i=0,length=argument.length;i<length;i++){
+            this.removeAttr(argument[i])
+        }
+        return this        
     }
     
 });

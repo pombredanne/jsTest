@@ -726,3 +726,4 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
      
      比较纳闷的是:
         我完全可以用document.mouseover   document.unbind('mouseover')来代替 但是加上这个有什麽好处呢?
+        
