@@ -89,11 +89,18 @@
 		}	
 	};
 	
-	$.html5Attr = function(ele, attr) {	//获取html5专属的一些属性 主要指type
-	    if(!ele || !attr){
-	    	return undefined
-	    } 
-        return ele.getAttribute(attr);
+	$.html5Attr = function(ele, attr) {
+		if (!ele || !attr) return undefined;
+		// 涓轰簡鍚戜笅鍏煎jQuery 1.4
+		if (document.querySelector) {
+			return $(ele).attr(attr);	
+		} else {
+			// IE6, 7
+			var ret;
+			ret = ele.getAttributeNode(attr);
+			// Return undefined if nodeValue is empty string
+			return ret && ret.nodeValue !== "" ? ret.nodeValue : undefined;	
+		}	
 	};
 
 	$.html5Validate = (function() {	

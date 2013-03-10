@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>基于web富应用客户端--学习</title>
+    <script type="text/javascript" src="test.js"></script>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+    var Animal=new _Class;
+    Animal.include({
+        breadth:function(){
+            console.log('l am breath')
+        }
+    })
+    Animal._name='fafdf';
+    var Cat=new _Class(Animal)
+    Cat.prototype.breadth=function(){
+        alert(333)
+    }
+    var tommy=new Cat();
+    tommy.breadth();
+</script>
+</html>
