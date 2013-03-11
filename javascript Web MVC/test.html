@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset='UTF-8'>
     <title>基于web富应用客户端--学习</title>
+   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script type="text/javascript" src="test.js"></script>
 </head>
 <body>
 
 </body>
 <script type="text/javascript">
+    //_Class
     var Animal=new _Class;
     Animal.include({
         breadth:function(){
@@ -17,9 +20,19 @@
     Animal._name='fafdf';
     var Cat=new _Class(Animal)
     Cat.prototype.breadth=function(){
-        alert(333)
+        console.log(333)
     }
     var tommy=new Cat();
     tommy.breadth();
+
+    //prototype 继承
+    var User=Model.create();
+    var user=User.init();
+
+
+    var Asset=Model.create();
+    var asset=Asset.init();
+    //set.save();
+
 </script>
 </html>
