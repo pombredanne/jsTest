@@ -246,7 +246,58 @@
         context.strokeText(txt,0,100);
         context.fillText("长" + length.width + "px", 0, 150);
     </script>
-    
+
+    <section>
+        <header><h1>canvas基本动画</h1></header>
+        <canvas id="canvasTestAnimal" width="400" height="300"></canvas>
+    </section>
+    <script type="text/javascript">
+        var x = 100,//矩形开始坐标
+            y = 100,//矩形结束坐标
+            w = 20,//矩形宽度
+            h = 20,//矩形高度
+            mx = 0,//0右1左
+            my = 0, //0下1上
+            ml = 1,//每次移动长度
+            cw = 400,//canvas宽度
+            ch = 300; //canvas高度
+
+        function move(context) {
+            context.clearRect(0, 0, 400, 300);
+            context.fillStyle = "#EEEEFF";
+            context.fillRect(0, 0, 400, 300);
+            context.fillStyle = "red";
+            context.fillRect(x, y, w, h);
+            if (mx == 0) {
+                x = x + ml;
+                if (x >= cw-w) {
+                    mx = 1;
+                }
+            }else {
+                x = x - ml;
+                if (x <= 0) {
+                    mx = 0;
+                }
+            }
+            if (my == 0) {
+                y = y + ml;
+                if (y >= ch-h) {
+                    my = 1;
+                }
+            }else {
+                y = y - ml;
+                if (y <= 0) {
+                    my = 0;
+                }
+            }
+        }
+        var canvas = document.getElementById('canvasTestAnimal');
+        var _context = canvas.getContext("2d");
+        var interal = setInterval(function () {
+            move(_context);
+        }, 1);
+    </script>
+
     <section>
         <header><h1>图像裁剪clip</h1></header>
         <canvas id='canvasTestClip' height="300" width="400"></canvas>
@@ -286,7 +337,7 @@
             drawImg(context,image);
         }
     </script>
-    
-    
+
+
 </body>
 </html>
