@@ -1,11 +1,4 @@
-/*---------------------------------------------------------------------------*\
- |  Subject:       小小菜刀编辑器 HtmlEditor                                   |
- |  Version:       2.0                                                         |
- |-----------------------------------------------------------------------------|
- |  QQ: 275171   http://www.1715.cn                                            |
- |  blueidea.com ID: blgl0528 im286.com ID: blgl1984                           |
- \*---------------------------------------------------------------------------*/
-
+"use strict";
 var CD = {};
 (function(window,document){
     CD.g = {};
@@ -65,14 +58,11 @@ var CD = {};
             ,["outdent","200","20","-3px 0 0 0","&nbsp;向左缩进"]
         ]
     };
-    CD.$ = function(i, win) {
-        try {
-            return ( win || window ).document.getElementById(i);
-        }catch( e ) {return null;}
+    CD.$ = function(i, win) {     //获取id
+      return ( win || window ).document.getElementById(i); 
     }
     CD.$$ = function(name, doc){
-        var doc = doc || document;
-        return doc.createElement(name);
+        return (doc||document).createElement(name);
     };
     CD.event = {
         add : function(el, event, listener) {
@@ -93,14 +83,15 @@ var CD = {};
     CD.IniEditor = function(d) {    //开始初始化编译器
         CD.func.loadStyle(d.root+'/images/editor.css');
         for(var i=0,length=d.id.length;i<length;i++){
-            var config       = {};
-                config.id         = d.id[i];
-                config.use        = d.use[i];
-                config.root       = d.root;
-                config.codeMode   = true;
-                config.filterMode = false;//开启过滤
-                CD.g[d.id[i]]    = config;//保存数据
-                CD.event.add(window, 'load', new Function('CD.create("'+d.id[i]+'")'));
+            var config={
+                id:d.id[i],
+                use:d.use[i],
+                codeMode:true,
+                root:d.root,
+                filterMode:false  //开启过滤
+            }
+            CD.g[config.id]    = config;//保存数据
+            CD.event.add(window, 'load', new Function('CD.create("'+config.id+'")'));  //TODO 学习这种 load多个函数 的方法
         }
     };
     CD.create = function(id, mode) {
