@@ -7,7 +7,7 @@
  \*---------------------------------------------------------------------------*/
 
 var CD = {};
-(function(window,document){
+(function(window){
     CD.g = {};
     CD.lang = {
         items : [
@@ -90,25 +90,23 @@ var CD = {};
             }
         }
     };
-    CD.IniEditor = function(d) {    //开始初始化编译器
+    CD.IniEditor = function(d) {
         CD.func.loadStyle(d.root+'/images/editor.css');
-        for(var i=0,length=d.id.length;i<length;i++){
+        for(var i=0;i<d.id.length;i++){
             var config       = {};
-                config.id         = d.id[i];
-                config.use        = d.use[i];
-                config.root       = d.root;
-                config.codeMode   = true;
-                config.filterMode = false;//开启过滤
-                CD.g[d.id[i]]    = config;//保存数据
-                CD.event.add(window, 'load', new Function('CD.create("'+d.id[i]+'")'));
+            config.id         = d.id[i];
+            config.use        = d.use[i];
+            config.root       = d.root;
+            config.codeMode   = true;
+            config.filterMode = false;//开启过滤
+            CD.g[d.id[i]]    = config;//保存数据
+            CD.event.add(window, 'load', new Function('CD.create("'+d.id[i]+'")'));
         }
     };
     CD.create = function(id, mode) {
-
-        //创建总外观DIV
-        var width = CD.$(id).style.width,
-             height = CD.$(id).style.height,
-             container = CD.$$('div');
+        var width = CD.$(id).style.width;
+        var height = CD.$(id).style.height;
+        var container = CD.$$('div');
         container.className = 'editor_container';
         container.style.width = width;
         container.style.height = height;
@@ -116,7 +114,6 @@ var CD = {};
         var toolbarDiv = CD.toolbar.create(id);
         container.appendChild(toolbarDiv);
 
-        //创建正式的iframe
         var iframe = CD.$$('iframe');
         iframe.className = 'editor_iframe';
         iframe.setAttribute("frameBorder", "0");
@@ -124,14 +121,12 @@ var CD = {};
         newTextarea.className = 'editor_textarea';
         newTextarea.style.display = 'none';
 
-        //创建包围iframe的div        
         var formDiv = CD.$$('div');
         formDiv.className = 'editor_form';
         formDiv.appendChild(iframe);
         formDiv.appendChild(newTextarea);
         container.appendChild(formDiv);
 
-        //创建隐藏div 
         var hideDiv = CD.$$('div');
         hideDiv.style.display = 'none';
         var maskDiv = CD.$$('div');
@@ -143,7 +138,7 @@ var CD = {};
 
         var iframeWin = iframe.contentWindow;
         var iframeDoc = CD.func.getIframeDoc(iframe);
-        iframeDoc.designMode = "On";    //想让iframe可以编辑 这个是必须打开 且必须在window完全加载的情况下 设置此属性
+        iframeDoc.designMode = "On";
         var html = CD.func.getFullHtml(id);
         iframeDoc.open();
         iframeDoc.write(html);
@@ -180,20 +175,9 @@ var CD = {};
     }
 
     CD.func = {
-        getIframeDoc : function(iframe) {       //获取frame的doc信息
-            /*
-                【contentDocument】
-
-                W3C的标准告诉我们，可以通过Dom对象的contentDocument属性来返回文档对象。
-                doc= document.getElementById('J_mainframe' ).contentDocument
-                IE6，IE7都不支持，IE8开始支持,需要如此访问 document.frames['J_mainframe'].document;
-
-                【contentWindow】
-                contentWindow属性，这是个只读属性，返回指定的iframe的窗口对象。
-                它虽然不是标准的一部分，但各个主流浏览器都支持。
-            */
-            var win = iframe.contentWindow,
-                 doc;
+        getIframeDoc : function(iframe) {
+            var win = iframe.contentWindow;
+            var doc = null;
             if (iframe.contentDocument) {
                 doc = iframe.contentDocument;
             } else {
@@ -201,7 +185,7 @@ var CD = {};
             }
             return doc;
         },
-        getFullHtml : function(id) {    //获取iframe内部的html结构
+        getFullHtml : function(id) {
             var html = '<html>';
             html += '<head>';
             html += '<title>editor</title>';
@@ -219,16 +203,10 @@ var CD = {};
             return html;
         },
         getBrowser : function() {
-            //var browser = false;
-            if(document.all){
-                return true;
-            }
-            return false;
-            // var ua = navigator.userAgent.toLowerCase();
-            // if (ua.indexOf("msie") > -1){
-            //     browser = true;//IE浏览器
-            // }
-            // return browser;
+            var browser = false;
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.indexOf("msie") > -1) browser = true;//IE浏览器
+            return browser;
         },
         setOpacity : function(el, opacity) {
             if (CD.browser) {
@@ -273,9 +251,7 @@ var CD = {};
         },
         CreateLink : function(id){
             var u = CD.$(id+"_url").value;
-            if(!u || u=="http://"){
-              return false;  
-            } 
+            if(!u || u=="http://") return false;
             u = !(( u.indexOf("://") > 1 ) || (u.indexOf(":\\") > 1)) ? "http://" + u : u;
             CD.func.LoadPos(id);
             CD.func.execCommand(id,"createlink",u);
@@ -513,7 +489,7 @@ var CD = {};
         create : function(id) {
             var toolbar = CD.$$('div');
             var tool = "<div id='"+id+"_toolbar' unselectable='on' class='editor_toolbar'>";
-            for (var i = 0,length=CD.lang["items"].length; i < length; i++) {
+            for (var i = 0; i < CD.lang["items"].length; i++) {
                 if(CD.lang["items"][i][0] == "picture" && CD.g[id].use != true) continue;
                 var p = CD.func.toolprompt(id,i,CD.lang["items"][i][0]);
                 tool += "<div id="+id+"_"+i+"_"+CD.lang["items"][i][0]+" style='";
@@ -531,4 +507,4 @@ var CD = {};
             return toolbar;
         }
     };
-})(window,document)
+})(window)
