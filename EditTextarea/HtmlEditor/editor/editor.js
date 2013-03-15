@@ -1,5 +1,7 @@
 "use strict";
+
 var CD = {};
+
 (function(window,document){
     CD.g = {};
     CD.lang = {
@@ -90,12 +92,88 @@ var CD = {};
                 root:d.root,
                 filterMode:false  //开启过滤
             }
-            CD.g[config.id]    = config;//保存数据
+            CD.g[config.id] =config;//保存数据
+
+            /*
+                常规执行方法 CD.event.add(window, 'load',function(){CD.create(config.id)} );
+                这样会无意间形成一个类似闭包的循环,致使执行都是最后的结果 即:config.id=最后的那个
+
+                通过一个匿名函数  或者 new Function可以解决这个问题
+
+                eval  new Function new function区别:
+                eval:
+                    1:eval无法执行 eval('function(){CD.create("'+config.id+'")}')
+
+                    2:即可执行 比如此案例:  CD.event.add(window, 'load', eval('CD.create("'+config.id+'")'));  他不会转换 会立刻执行 因此无法准确执行函数
+
+                new Function:
+                    1: 可以内部将 new Function('CD.create("'+config.id+'")') 转化为:  function(){CD.create(config.id)} 传入到CD.event.add事件处理机制中当成一个普通函数运行
+                    2: 可以生成普通函数对待
+
+                new functon:
+                    var yx01 = new function() {return "圆心"};
+                    alert(yx01);
+                    等价于:
+                    function 匿名类(){
+                            return "圆心";
+                    }
+                    var yx01 = new 匿名类();
+                    alert(yx01);
+
+                    解决:
+                    说明:
+                    只要 new 表达式之后的 constructor 返回（return）一个引用对象（数组，对象，函数等），都将覆盖new创建的匿名对象，如果返回（return）一个原始类型（无 return 时其实为 return 原始类型 undefined），那么就返回 new 创建的匿名对象。（谢谢 Lunatic_Sun ，描述更精准点）
+由于 new String 会构造一个对象，而不是一个 string 直接量，且new String(x) 如果带参数，那么alert它的时候就会返回 x。所以 yx01 将返回 new String(“圆心”) 这个对象，而 alert yx01 则显示 “圆心”。
+                    1:  通过Object转换为String的字面解释
+                    var yx01 = new function() {return new String("圆心")};
+                    alert(yx01);
+
+                    2:  直接通过调用该函数的实例函数
+                    alert(yx01.constructor())
+
+                eval&&new Function 关系:
+                    eval('alert(3)') == new Function('alert(3)')() 
+
+
+                关于让window.onload 执行多次 :
+                1:
+                    <script language="javascript">   
+                        window.onload = function() {  
+                            alert('1');  
+                        };  
+                    </script> 
+                    <script type="text/javascript">  
+                        var saved;  
+                        if (typeof window.onload == 'function') {  
+                            saved = window.onload;  
+                        }  
+                        window.onload = function() {  
+                            if (saved) saved();  
+                            alert('2');  
+                        };  
+                    </script>
+                2:原理同我们使用的一样 使用事件机制
+                function addEvent(obj,evt,fn) {    
+                    evt=evt||'load';                                       
+                    var saved;  
+                    if (typeof obj["on"+evt] == "function") {  
+                        saved = obj["on"+evt];  
+                    }  
+                    obj["on"+evt] = function () {  
+                        if (saved) saved();       
+                        fn();                 
+                    }                     
+                }  
+            */
+
+            // (function(k){
+            //     CD.event.add(window, 'load',function(){CD.create(k)} );  //TODO 学习这种 load多个函数 的方法    
+            // })(config.id)
+
             CD.event.add(window, 'load', new Function('CD.create("'+config.id+'")'));  //TODO 学习这种 load多个函数 的方法
         }
     };
     CD.create = function(id, mode) {
-
         //创建总外观DIV
         var width = CD.$(id).style.width,
              height = CD.$(id).style.height,
