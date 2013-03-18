@@ -1,4 +1,4 @@
-/*
+ /*
  * JQuery URL Parser plugin, v2.2.1
  * Developed and maintanined by Mark Perkins, mark@allmarkedup.com
  * Source repository: https://github.com/allmarkedup/jQuery-URL-Parser  https://github.com/allmarkedup/jQuery-URL-Parser.git

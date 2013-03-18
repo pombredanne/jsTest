@@ -13,14 +13,12 @@ function update_page(total_page/*总页数*/,current_page/*当前页*/,href/*链
         alert('总页数不能小于当前页数');
         return false;
     }
-    //判断总页数是不是小于 分页的长度，若小于则直接显示
-    if( total_page < pager_length ){
-        for(i = 0; i <     total_page; i++){
+
+    if( total_page < pager_length ){         //判断总页数是不是小于 分页的长度，若小于则直接显示
+        for(i = 0; i < total_page; i++){
             code += (i+1 != current_page) ? '<a href="'+ href+(i+1) +'">'+(i+1)+'</a>' : '<span class="current">'+(i+1)+'</span>';
         }
-    }
-    //如果总页数大于分页长度，则为一下函数
-    else{
+    }else{       //如果总页数大于分页长度，则为一下函数
         //先计算中心偏移量
         var offset = ( pager_length - 1) / 2;
         //分三种情况，第一种左边没有...
@@ -35,9 +33,7 @@ function update_page(total_page/*总页数*/,current_page/*当前页*/,href/*链
                 tailer = '<a href="'+ href+(i+1) +'">'+(i+1)+'</a>' + tailer;
             }
             code += tailer;
-        }
-        //第二种情况是右边没有...
-        else if( current_page >= total_page - offset ){
+        }else if( current_page >= total_page - offset ){     //第二种情况是右边没有...
             var header = '';
             //后tailer_length + main_length 个直接输出之前加一个...然后拼接 最前面的 header_length 个
             for( i = total_page; i >= total_page-main_length - 1; i --){
@@ -48,10 +44,7 @@ function update_page(total_page/*总页数*/,current_page/*当前页*/,href/*链
                 header +=  '<a href="'+ href+(i+1) +'">'+(i+1)+'</a>';
             }
             code = header + code;
-        }
-        //最后一种情况，两边都有...
-        else
-        {
+        }else{       //最后一种情况，两边都有...
             var header = '',
                 tailer = '';
             //首先处理头部
