@@ -70,8 +70,14 @@ var CD = {};
         add : function(el, event, listener) {
             if (el.addEventListener){
                 el.addEventListener(event, listener, false);
+                CD.event.add=function(el,event,listener,bool){
+                    el.addEventListener(event,listener,bool||false);
+                }
             } else if (el.attachEvent){
                 el.attachEvent('on' + event, listener);
+                CD.event.add=function(el,event,listener){
+                    el.attachEvent('on'+event,listener);
+                }
             }
         },
         remove : function(el, event, listener) {
@@ -245,7 +251,9 @@ var CD = {};
         CD.g[id].width = width + 'px';
         CD.g[id].height = height + 'px';
         CD.func.resize(id,width,height);
-        if(CD.$(id).value) iframeDoc.body.innerHTML = CD.$(id).value;
+        if(CD.$(id).value){
+             iframeDoc.body.innerHTML = CD.$(id).value;
+        }
     }
 
     CD.func = {
@@ -287,7 +295,7 @@ var CD = {};
             html += '</html>';
             return html;
         },
-        getBrowser : function() {
+        getBrowser : function() {       //检测是否ie
             //var browser = false;
             if(document.all){
                 return true;
@@ -299,24 +307,35 @@ var CD = {};
             // }
             // return browser;
         },
-        setOpacity : function(el, opacity) {
+        setOpacity : function(el, opacity) {        //设置透明度
             if (CD.browser) {
                 el.style.filter = (opacity == 100) ? "" : "gray() alpha(opacity=" + opacity + ")";
             } else {
                 el.style.opacity = (opacity == 100) ? "" : "0." + opacity.toString();
             }
         },
-        ClickHandle : function(e){
+        ClickHandle : function(e){    //绑定点击事件  eg 加粗 等操作
             var o = e.srcElement || e.target;
-            if(o.id.indexOf('_editor_source')!=-1 || o.id.indexOf('_toolbar')!=-1 || !o.id) return false;
-            var v  = o.id.split('_');if(v[2]=="-" ||!v[2]) return false;
-            var k  =0;
-            for (var i=0;i<CD.lang["items"].length;i++){
-                k = i;if(CD.lang["items"][i][0]==v[2]) break;
+            if(o.id.indexOf('_editor_source')!=-1 || o.id.indexOf('_toolbar')!=-1 || !o.id){
+              return false;  
+            } 
+            var v  = o.id.split('_');
+            if(v[2]==="-" ||!v[2]){
+                return false;
+            }
+            var length=CD.lang['items'].length,
+                k;
+            for (var i=0;i<length;i++){
+                k=i;
+                if(CD.lang["items"][i][0]==v[2]){
+                    break;
+                }
             }
             var t = o.getAttribute("para") ? o.getAttribute("para") : o.parentNode.getAttribute("para");
             CD.func.fHide(v[0],k);//关闭所有下拉菜单
-            if(o.type !="button") CD.func.SavePos(v[0]);//保存光标
+            if(o.type !="button"){
+              CD.func.SavePos(v[0]);//保存光标  
+            } 
             if("bold,italic,underline,-".indexOf(v[2])!=-1){
                 CD.func.execCommand(v[0],v[2],t);
             }else{
@@ -356,10 +375,10 @@ var CD = {};
             CD.func.execCommand(id,"InsertImage",p);
         },
         SavePos : function(id) {
-            var win = CD.g[id].iframeWin;
-            var doc = CD.g[id].iframeDoc;
-            var sel = win.getSelection ? win.getSelection() : doc.selection;
-            var range;
+            var win = CD.g[id].iframeWin,
+                doc = CD.g[id].iframeDoc,
+                sel = win.getSelection ? win.getSelection() : doc.selection,
+                range;
             try {
                 if (sel.rangeCount > 0) {
                     range = sel.getRangeAt(0);
@@ -382,7 +401,9 @@ var CD = {};
         fHide : function(id,k){
             for(var i=0;i<CD.lang["items"].length;i++){
                 if(CD.lang["items"][i][0] == "picture" && CD.g[id].use != true) continue;
-                if("bold,italic,underline,-".indexOf(CD.lang["items"][i][0])==-1 && i!=k) CD.$(id+"_"+i+"_prompt").style.display = 'none';
+                if("bold,italic,underline,-".indexOf(CD.lang["items"][i][0])==-1 && i!=k){
+                    CD.$(id+"_"+i+"_prompt").style.display = 'none';
+                }    
             }
         },
         fDisp : function(id){
