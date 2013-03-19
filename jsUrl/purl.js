@@ -3,9 +3,10 @@
  * Developed and maintanined by Mark Perkins, mark@allmarkedup.com
  * Source repository: https://github.com/allmarkedup/jQuery-URL-Parser  https://github.com/allmarkedup/jQuery-URL-Parser.git
  * Licensed under an MIT-style license. See https://github.com/allmarkedup/jQuery-URL-Parser/blob/master/LICENSE for details.
- */ 
+ */
 
-;(function(factory) {
+
+ ;(function(factory) {
 	if (typeof define === 'function' && define.amd) {		//require库的支持
 		// AMD available; use anonymous module
 		if ( typeof jQuery !== 'undefined' ) {
@@ -33,38 +34,38 @@
 			link    : 'href'
 		},
 		
-		key = ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'fragment'], // keys available to query
+		key = ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'fragment'],
 		
-		aliases = { 'anchor' : 'fragment' }, // aliases for backwards compatability
+		aliases = { 'anchor' : 'fragment' },
 		
 		parser = {
 			strict : /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,  //less intuitive, more accurate to the specs
 			loose :  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/ // more intuitive, fails on relative paths and deviates from specs
 		},
 		
-		toString = Object.prototype.toString,
+		//toString = Object.prototype.toString,
 		
 		isint = /^[0-9]+$/;
 	
 	function parseUri( url, strictMode ) {
 		var str = decodeURI( url ),
-		res   = parser[ strictMode || false ? 'strict' : 'loose' ].exec( str ),
+		res = parser[ strictMode || false ? 'strict' : 'loose' ].exec( str ),
 		uri = { attr : {}, param : {}, seg : {} },
 		i   = 14;
 		
-		while ( i-- ) {
+		while ( i-- ) {    //绑定url的attr属性
 			uri.attr[ key[i] ] = res[i] || '';
 		}
 		
-		// build query and fragment parameters		
+		// 绑定param查询参数数据	
 		uri.param['query'] = parseString(uri.attr['query']);
 		uri.param['fragment'] = parseString(uri.attr['fragment']);
 		
-		// split path and fragement into segments		
+		// 处理路径参数数据	
 		uri.seg['path'] = uri.attr.path.replace(/^\/+|\/+$/g,'').split('/');     
-		uri.seg['fragment'] = uri.attr.fragment.replace(/^\/+|\/+$/g,'').split('/');
+		uri.seg['fragment'] = uri.attr.fragment.replace(/^\/+|\/+$/g,'').split('/');	//锚点链接
 		
-		// compile a 'base' domain attribute        
+		//添加自定义base属性  即 通常用的host 
 		uri.attr['base'] = uri.attr.host ? (uri.attr.protocol ?  uri.attr.protocol+'://'+uri.attr.host : uri.attr.host) + (uri.attr.port ? ':'+uri.attr.port : '') : '';      
 		  
 		return uri;
@@ -72,7 +73,9 @@
 	
 	function getAttrName( elm ) {
 		var tn = elm.tagName;
-		if ( typeof tn !== 'undefined' ) return tag2attr[tn.toLowerCase()];
+		if ( typeof tn !== 'undefined' ){
+            return tag2attr[tn.toLowerCase()];
+        }
 		return tn;
 	}
 	
@@ -206,8 +209,9 @@
 			strictMode = true;
 			url = undefined;
 		}
-		strictMode = strictMode || false;
-		url = url || window.location.toString();
+		strictMode = strictMode || false;	//判断是否严格查找
+		//url = url || window.location.toString();
+		url=url||window.location.href;   //TODO 与上面的url有什麽区别?
 	
 		return {
 			
@@ -253,12 +257,12 @@
 	
 	};
 	
-	if ( typeof $ !== 'undefined' ) {
+	if ( typeof jQuery !== 'undefined' ) {
 		
 		$.fn.url = function( strictMode ) {
 			var url = '';
 			if ( this.length ) {
-				url = $(this).attr( getAttrName(this[0]) ) || '';
+				url = $(this).attr( getAttrName(this[0]) ) || '';   //检测出Dom元素
 			}    
 			return purl( url, strictMode );
 		};
