@@ -727,3 +727,22 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
      比较纳闷的是:
         我完全可以用document.mouseover   document.unbind('mouseover')来代替 但是加上这个有什麽好处呢?
         
+------------------------------------------------  不会被刷新干掉的 window对象  -----------------------------------------------------------------
+    //TODO  此方法仅使用于window自有属性
+    if(!window.name){
+          alert("第一次开这个窗口！name值"+ window.name);
+          window.name = 'lijia';
+    }else{
+            alert('刷新操作 name值：'+ window.name);
+    }
+
+-----------------------------------------------------------  iframe沙箱应用      -----------------------------------------------------------------
+  //http://www.cnblogs.com/rubylouvre/archive/2012/02/03/2335946.html
+  window.alert = function(){};
+  window.alert=function(obj){
+      var iframe=document.createElement("iframe");
+      iframe.src="javascript:void(0);"
+      document.body.appendChild(iframe)
+      iframe.contentWindow.alert(obj);
+  }
+  alert(1)

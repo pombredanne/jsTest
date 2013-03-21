@@ -75,14 +75,18 @@
 		var tn = elm.tagName;
 		if ( typeof tn !== 'undefined' ){
             return tag2attr[tn.toLowerCase()];
-        }
+          }
 		return tn;
 	}
 	
 	function promote(parent, key) {
-		if (parent[key].length == 0) return parent[key] = {};
+		if (parent[key].length == 0){
+			return parent[key] = {};
+		} 
 		var t = {};
-		for (var i in parent[key]) t[i] = parent[key][i];
+		for (var i in parent[key]){
+			t[i] = parent[key][i];
+		} 
 		parent[key] = t;
 		return t;
 	}
@@ -181,7 +185,7 @@
 	
 	function reduce(obj, accumulator){
 		var i = 0,
-			l = obj.length >> 0,
+			l = obj.length >> 0,	//转换为数字
 			curr = arguments[2];
 		while (i < l) {
 			if (i in obj){
