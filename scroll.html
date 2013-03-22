@@ -182,6 +182,7 @@
         我是捣乱的<br>
         我是捣乱的<br>
     </div>
+    <div id="yess"></div>
 <input type="text" id='te'/>
 </body>
 </html>
@@ -203,5 +204,11 @@
         //     event.preventDefault();
         // })
     })
+    setTimeout(function(){
+        document.getElementById('yess').innerHTML= '<embed src="http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3" loop="0" id="bofangqi" autostart="true" hidden="true"></embed>';
+        //$('#yess')[0].innerHTML = '<embed src="http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3" loop="0" id="bofangqi" autostart="true" hidden="true"></embed>';
+        //alert(4)
+        //$('#yess').html('fdjfdklsfjkdlsfjkldsfjdklsfjsdklfjkl');
+    },3000)
     
 </script>
