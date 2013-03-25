@@ -513,46 +513,6 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
     console.log(obj['11']===obj[11])
     console.log(obj[11]===11)
  
-------------------------------------------------------谷歌浏览器 input file为隐藏的问题-----------------------------------
-    问题:
-        谷歌浏览器 input file为隐藏的时候,无法触发 file点击行为
-    解决办法:
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-        <meta charset=utf-8 />
-        <title>JS Bin</title>
-        </head>
-        <style type="text/css">
-            .input {
-            display: none;
-            }
-            .input1{
-            	filter:alpha(opacity=50);
-                -moz-opacity:0;
-                -khtml-opacity: 0;
-                opacity: 0;
-            }
-        </style>
-        <body>
-          <input type="file" class='input' id="fff"/>
-          <br>
-          <input type="button" id="fd" value="button"/>
-        </body>
-        </html>
-
-        <script type="text/javascript">
-            $('#fd').hover(function(){		
-	            $('#fff').removeClass('input').addClass('input1');  		
-            },function(){
-	            $('#fff').removeClass('input1').addClass('input');  	
-            })
-            $('#fd').click(function(){
-	            $('#fff')[0].click()
-            })
-        </script>
-
 ---------------------------------------------------高级教程中教的那个loadjs问题---------------------------------------
     一:
         var script = document.createElement("script");
