@@ -85,7 +85,7 @@ $.fn.extend({
     }
    });
 
-   function clearCon(){
+   function clearConObj(){
      //(function(){
             if(!window.console){
                 window.console = {};
@@ -97,3 +97,55 @@ $.fn.extend({
              }
        // })();
    }
+
+   //查看鼠标从那个方向进入
+   (function($,window,undefined){
+        $.fn.getDir=function(opt){
+            var _default={
+                inFn:$.noop,
+                outFn:$.noop,
+                useCapture:true
+            },
+            w = $(this).width(),
+            h = $(this).height(),
+            _getDir=function(x,y){
+                /*
+                    (Math.atan2(y, x):  计算出弧度值;
+                    1rad=(180 / Math.PI)度=57.29578度;
+                    /90: 是为了获取一个比值关系 纯粹是为了给后面 取%方便 同后面的 +3 就限制啦 只能为 360/90+3--0/90+3 即 3-0之间 这样取%
+                    将结果限制在 0-3 之间  (锐角,平角,炖角,周角);
+                */
+                var direction = Math.round((((Math.atan2(y, x) * (180 / Math.PI))) / 90) + 3) % 4;
+                return ['bottom','right','top','left'][direction];
+            },
+            self=this[0];
+
+            opt=$.extend({},_default,opt);
+
+            this.mouseenter(function(event){
+                if(opt.useCapture){
+                    event.stopPropagation();
+                }
+                var x = (event.pageX - self.offsetLeft - (w / 2)) * (w > h ? (h / w) : 1),
+                    y = (event.pageY - self.offsetTop - (h / 2)) * (h > w ? (w / h) : 1),
+                    dir=_getDir(x,y);
+
+                if($.isFunction(opt.inFn)){
+                    opt.inFn.call(this,event,dir);
+                }
+
+            }).mouseleave(function(event){
+                if(opt.useCapture){
+                    event.stopPropagation();
+                }
+
+                var x = (event.pageX - self.offsetLeft - (w / 2)) * (w > h ? (h / w) : 1),
+                    y = (event.pageY - self.offsetTop - (h / 2)) * (h > w ? (w / h) : 1),
+                    dir=_getDir(x,y);
+
+                if($.isFunction(opt.outFn)){
+                    opt.inFn.call(this,event,dir);
+                }
+            });
+        }
+    })(jQuery,window,undefined)
