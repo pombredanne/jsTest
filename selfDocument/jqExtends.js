@@ -126,6 +126,9 @@ $.fn.extend({
                 if(opt.useCapture){
                     event.stopPropagation();
                 }
+                /*
+                    x,y的设置 为了确保其在target中  TODO 这里好好再检查以下
+                */
                 var x = (event.pageX - self.offsetLeft - (w / 2)) * (w > h ? (h / w) : 1),
                     y = (event.pageY - self.offsetTop - (h / 2)) * (h > w ? (w / h) : 1),
                     dir=_getDir(x,y);
