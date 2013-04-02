@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery和CSS3实现Android Dock效果</title>
+<style>
+  body {
+  text-align: center;
+  background: -moz-radial-gradient(center, ellipse cover,  #fbf5f3 49%, #d6c8bd 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(49%,#fbf5f3), color-stop(100%,#d6c8bd));
+  background: -webkit-radial-gradient(center, ellipse cover,  #fbf5f3 49%,#d6c8bd 100%);
+  background: -o-radial-gradient(center, ellipse cover,  #fbf5f3 49%,#d6c8bd 100%);
+  background: -ms-radial-gradient(center, ellipse cover,  #fbf5f3 49%,#d6c8bd 100%);
+  background: radial-gradient(center, ellipse cover,  #fbf5f3 49%,#d6c8bd 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbf5f3', endColorstr='#d6c8bd',GradientType=1 );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+a {
+  color: #715241;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#container {
+  display: block;
+  margin: 0 auto;
+}
+
+#information {
+  color: red;
+  font-size: 34px;
+}
+
+#arrow {
+  position: absolute;
+  left: 50%;
+  margin-left: -66px;
+  bottom: 10em;
+}
+
+#dock-wrapper {
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  -webkit-perspective: 3000px;
+  -moz-perspective: 3000px;
+  -ms-perspective: 3000px;
+  -o-perspective: 3000px;
+  perspective: 3000px;
+}
+
+.dock {
+  height: 70px;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 1s;
+  -moz-transition: -moz-transform 1s;
+  -ms-transition: -ms-transform 1s;
+  -o-transition: -o-transform 1s;
+  transition: transform 1s;
+}
+
+.dock-show {
+  -webkit-transform: translateZ(-25px) rotateX(-95deg);
+  -moz-transform: translateZ(-25px) rotateX(-95deg);
+  -ms-transform: translateZ(-25px) rotateX(-95deg);
+  -o-transform: translateZ(-25px) rotateX(-95deg);
+  transform: translateZ(-25px) rotateX(-95deg);
+}
+
+.dock-front, .dock-top {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 10px 0;
+  box-shadow: 0px -3px 6px rgba(0,0,0,0.3);
+}
+
+.dock-front {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#434345), to(#161616));
+  background-image: -webkit-linear-gradient(top, #434345, #161616);
+  background-image:    -moz-linear-gradient(top, #434345, #161616); 
+  background-image:     -ms-linear-gradient(top, #434345, #161616); 
+  background-image:      -o-linear-gradient(top, #434345, #161616); 
+  background-image:         linear-gradient(to bottom, #434345, #161616);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#434345', endColorstr='#161616',GradientType=0 );
+  -webkit-transform: translateZ(30px);
+  -moz-transform: translateZ(30px);
+  -ms-transform: translateZ(30px);
+  -o-transform: translateZ(30px);
+  transform: translateZ(30px);
+}
+
+.dock-top {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#505052), to(#161616));
+  background-image: -webkit-linear-gradient(top, #505052, #161616);
+  background-image: -moz-linear-gradient(top, #505052, #161616); 
+  background-image: -ms-linear-gradient(top, #505052, #161616); 
+  background-image: -o-linear-gradient(top, #505052, #161616); 
+  background-image: linear-gradient(to bottom, #505052, #161616);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#505052', endColorstr='#161616',GradientType=0 );
+  -webkit-transform: rotateX(90deg) translateZ(29px);
+  -moz-transform: rotateX(90deg) translateZ(29px);
+  -ms-transform: rotateX(90deg) translateZ(29px);
+  -o-transform: rotateX(90deg) translateZ(29px);
+  transform: rotateX(90deg) translateZ(29px);
+}
+
+#arrow-up, #arrow-down {
+  cursor: pointer;
+  -webkit-transition: all .2s;
+  -moz-transition: all .2s;
+  -ms-transition: all .2s;
+  -o-transition: all .2s;
+  transition: all .2s;
+}
+
+#arrow-up:hover {
+  margin-top: -.2em;
+}
+
+#arrow-down:hover {
+  margin-top: .2em;
+}
+
+.item {
+  position: absolute;
+  width: 526px;
+  left: 50%;
+  margin-left: -263px;
+} 
+
+.item img {
+  position: absolute;
+  z-index: -1;
+  cursor: pointer;
+}
+
+.item img:first-child {
+  left: 0;
+}
+
+.item img:nth-child(2) {
+  left: 90px;
+}
+
+.item img:nth-child(3) {
+  left: 180px;
+}
+
+.item img:nth-child(4) {
+  left: 270px;
+}
+
+.item img:nth-child(5) {
+  left: 360px;
+}
+
+.item img:nth-child(6) {
+  left: 450px;
+}
+</style>
+</head>
+<body></div>
+
+<div id="dock-wrapper">
+<div class="dock">
+  <div class="dock-front">
+    <img src="http://demo.itivy.com/AndroidDock/images/arrow-up.png" alt="Arrow Up" id="arrow-up" />
+  </div>
+  <div class="dock-top">
+    <img src="http://demo.itivy.com/AndroidDock/images/arrow-down.png" alt="Arrow Down" id="arrow-down" />
+  </div>
+</div>
+<div class="item">
+  <img src="http://demo.itivy.com/AndroidDock/images/launcher-pro.png" width="60" />
+  <img src="http://demo.itivy.com/AndroidDock/images/2do.png" width="60" />
+  <img src="http://demo.itivy.com/AndroidDock/images/antivirus.png" width="60" />
+  <img src="http://demo.itivy.com/AndroidDock/images/drive.png" width="60" />
+  <img src="http://demo.itivy.com/AndroidDock/images/plex.png" width="60" />
+  <img src="http://demo.itivy.com/AndroidDock/images/maps.png" width="60" />
+</div>
+</div>
+
+<img src="http://demo.itivy.com/AndroidDock/images/arrow.png" alt="arrow" id="arrow" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script>
+ "use strict";
+  $(document).ready(function() {
+  
+      //Initialize variable
+      var item= $('.item img'),
+           itemReverse = item.get().reverse();
+      
+      //Arrow up clicked
+      $('#arrow-up').on('click', function() {
+        
+        $('.dock').addClass('dock-show');
+        $('#arrow').hide();
+        
+        $.each(item, function(index) {
+          var $self = $(this),
+               delay = index * 100;
+
+          window.setTimeout(function () {
+            return function () {
+              $self.stop().animate({ 'top' : '-7.8em' });
+            };
+          } (), delay);
+        });
+      });
+      
+      //Arrow down clicked
+      $('#arrow-down').on('click', function() {
+        
+        $('.dock').removeClass('dock-show');
+        $('#arrow').show();
+
+        $.each(itemReverse, function(index,file) {
+          var $self = $(this),
+               delay = index * 100;
+          window.setTimeout(function () {
+            return function () {
+              $self.stop().animate({ 'top' : '0' });
+            };
+          } (), delay);
+        });
+      });
+      
+      //Item hovered
+      $('.item img').hover(function() {
+        $(this).stop().animate({ 'top' : '-8.4em' }, 'fast');
+      }, function() {
+        $(this).stop().animate({ 'top' : '-7.8em' }, 'fast');
+      });
+  
+});
+</script>
+</body>
+</html>
