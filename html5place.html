@@ -1,0 +1,113 @@
+<html>
+	<head>
+		<script src="jquery-1.9.1.min.js"></script>
+	</head>
+	<body>
+		<form action="\action" method="post">
+			<input id="test" type="text" place="me"/>
+			<!-- 1:按键的时候，值为空
+			2：当值为空，placeholder显示 -->
+			<script>
+				(function ($) {
+	
+	$.event.special.textchange = {
+	     //初始化事件处理器	
+		setup: function (data, namespaces) {
+		  	$(this).data('lastValue', this.contentEditable === 'true' ? $(this).html() : $(this).val());
+			$(this).bind('keyup.textchange', $.event.special.textchange.handler);
+			$(this).bind('cut.textchange paste.textchange input.textchange', $.event.special.textchange.delayedHandler);
+		},
+		//卸载事件处理器
+		teardown: function (namespaces) {
+			$(this).unbind('.textchange');
+		},
+		
+		handler: function (event) {
+			$.event.special.textchange.triggerIfChanged($(this));
+		},
+		
+		delayedHandler: function (event) {
+			var element = $(this);
+			setTimeout(function () {
+				$.event.special.textchange.triggerIfChanged(element);
+			}, 25);
+		},
+		
+		triggerIfChanged: function (element) {
+		  var current = element[0].contentEditable === 'true' ? element.html() : element.val();
+			if (current !== element.data('lastValue')) {
+				element.trigger('textchange',  [element.data('lastValue')]);
+				element.data('lastValue', current);
+			}
+		}
+	};
+	
+	$.event.special.hastext = {
+		
+		setup: function (data, namespaces) {
+			$(this).bind('textchange', $.event.special.hastext.handler);  //undefined==null
+		},
+		
+		teardown: function (namespaces) {
+			$(this).unbind('textchange', $.event.special.hastext.handler);
+		},
+		
+		handler: function (event, lastValue) {
+			if ((lastValue === '') && lastValue !== $(this).val()) {
+				$(this).trigger('hastext');
+			}
+		}
+	};
+	
+	$.event.special.notext = {
+		
+		setup: function (data, namespaces) {
+			$(this).bind('textchange', $.event.special.notext.handler);
+		},
+		
+		teardown: function (namespaces) {
+			$(this).unbind('textchange', $.event.special.notext.handler);
+		},
+		
+		handler: function (event, lastValue) {
+			if ($(this).val() === '' && $(this).val() !== lastValue) {
+				$(this).trigger('notext');
+			}
+		}
+	};	
+
+})(jQuery);
+
+			</script>
+			<script>
+				$('#test').val($('#test').attr('place'));
+
+				$('#test').bind('textchange',function(e){
+					console.log($(this))
+					console.log($(this).val())
+					if(this.value==$(this).attr('place')){ //TODO 
+						console.log('------------')
+						this.value='';
+						//return;
+					}
+					if(this.value==''){
+						this.value=$(this).attr('place');
+					}
+					if(this.value.slice(0,-1)==$(this).attr('place')){
+						this.value=this.value.slice(2);
+					}
+				});
+				// $('#test').keyup(function(e){
+				// 	if(this.value==$(this).attr('place')){
+				// 		this.value='';
+				// 		return;
+				// 	}
+				// 	if(this.value==''){
+				// 		this.value=$(this).attr('place');
+				// 	}
+				// });
+			</script>
+			<input type="submit">
+		</form>
+	</body>
+</html>

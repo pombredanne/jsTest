@@ -134,20 +134,32 @@ $.fn.extend({
                     dir=_getDir(x,y);
 
                 if($.isFunction(opt.inFn)){
-                    opt.inFn.call(this,event,dir);
+                    opt.inFn.call(this,dir);
                 }
 
             }).mouseleave(function(event){
                 if(opt.useCapture){
                     event.stopPropagation();
                 }
-
+                // event.pageX - self.offsetLeft  局限在这个div中 这样 根据上面的公式来计算 角度 根据角度来判断 总体规律是
+                /*
+                      --------------------------
+                      -  -                   -  -    
+                      -     -     大       -     -    
+                      -  大       -     -       -    
+                      -          - -      小   -    
+                      -         -       -      -    Y
+                      -      -     小     -   -
+                      -   -                    --    
+                      ----------------------  ---                              
+                            X
+                */           
                 var x = (event.pageX - self.offsetLeft - (w / 2)) * (w > h ? (h / w) : 1),
                     y = (event.pageY - self.offsetTop - (h / 2)) * (h > w ? (w / h) : 1),
                     dir=_getDir(x,y);
 
                 if($.isFunction(opt.outFn)){
-                    opt.inFn.call(this,event,dir);
+                    opt.inFn.call(this,dir);
                 }
             });
         }
