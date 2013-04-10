@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>JS Bin</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script type="text/javascript">!window.jQuery && document.write('<script src="jquery-1.7.1.min.js"><\/script >');</script>
+</head>
+<body>
+    <div id="div1">this is a div1</div>
+</body>
+</html>
+<script type="text/javascript">
+;(function($) {
+    $.fn.skygqOneDblClick = function(options) {
+        return this.each(function() {
+            var s = $.extend({}, $.fn.skygqOneDblClick.Default, options || {});
+            var self_obj = this;
+            do_click = function(e) {
+                clearTimeout(s.timer);
+                s.timer = setTimeout(function() {
+                    s.oneclick.call(self_obj, e);
+                }, 400);
+            }, do_dblclick = function(e) {
+                clearTimeout(s.timer);
+                s.dblclick.call(self_obj, e);
+            };
+            $(this).click(do_click).dblclick(do_dblclick);
+        });
+    };
+    $.fn.skygqOneDblClick.Default = {
+        timer: null,
+        oneclick: $.noop,
+        dblclick: $.noop
+    };
+})(jQuery);
+
+
+$(function(){
+    var click_event = function(e){
+       // $("#result").append("您单击了我");
+        alert("单击:"+e.target.tagName);
+    };
+    var dblclick_event = function(e){
+       // $("#result").append("您双击了我");
+        alert("双击:"+e.target.tagName);
+    }
+    $("#div1").skygqOneDblClick({oneclick:click_event,dblclick:dblclick_event});
+});
+</script>
+

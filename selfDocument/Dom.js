@@ -33,15 +33,19 @@ var _Dom={
             element["on" + type] = null;
         }
     },
-    dispatchEventAll:function(elementId,sEvent){    //事件触发  http://stylechen.com/trigger.html  只能触发自定义事件 无法定义内部事件 比如a链接
-        try{
-            var	element=document.getElementById(elementId);
-            if(element.fireEvent){
-                element.fireEvent("on"+sEvent);
-            }else if(element.dispatchEvent){
-                element.dispatchEvent(sEvent);
-            }
-        }catch(e){}
+    trigger:function(){         //事件触发  http://stylechen.com/trigger.html
+        if (document.createEventObject){
+          // IE浏览器支持fireEvent方法
+          var evt = document.createEventObject();
+          return element.fireEvent('on'+event,evt)
+       }else{
+          // 其他标准浏览器使用dispatchEvent方法
+          var evt = document.createEvent( 'HTMLEvents' );
+          // initEvent接受3个参数：
+          // 事件类型，是否冒泡，是否阻止浏览器的默认行为
+          evt.initEvent(event, true, true);
+          return !element.dispatchEvent(evt);
+       }
     },
     innerText:function(){
 

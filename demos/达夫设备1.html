@@ -1,0 +1,76 @@
+<!-- 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script type="text/javascript">!window.jQuery&&document.write('<script src="jquery-1.7.1.min.js"><\/script >')</script>
+ -->
+<script>
+  function dafu(items,process){
+     var iterations=Math.floor(items.length/8),
+          startAt=items.length%8,
+          i=0;
+          do{
+              switch(startAt){
+                  case 0:process(items[i++])
+                  case 7:process(items[i++])
+                  case 6:process(items[i++])
+                  case 5:process(items[i++])
+                  case 4:process(items[i++])
+                  case 3:process(items[i++])
+                  case 2:process(items[i++])
+                  case 1:process(items[i++])
+              }
+              startAt=0;
+          }while(--iterations)
+  }
+
+  function dafu1(items,process){
+      var i=items.length%8;
+
+      while(i>0){
+          var t=i--;
+          process(items[t]);
+          items[t]=null;
+      }
+
+      i=Math.floor(items.length/8);
+      while(i>0){
+          process(items.shift())
+          process(items.shift())
+          process(items.shift())
+          process(items.shift())
+          process(items.shift())
+          process(items.shift())
+          process(items.shift())
+          process(items.shift())
+          i--;
+      }
+  }
+
+  function con(str){
+    console.log(str)
+  }
+
+  var items=[];
+  for(var i=0;i<100000;i++){
+    items.push(i)
+  }
+  
+  // console.time('for')
+  // for(var i=0;i<items.length;i++){
+  //   con(items[i]) 
+  // }
+  // console.timeEnd('for')
+  //for:5057.786ms   4484.177ms  6395.204ms  5989.244ms  4486.986ms 
+
+
+  // console.time('dafu')
+  // dafu(items,con)
+  // console.timeEnd('dafu')
+   //dafu: 5009.649ms  4344.191ms 6297.200ms  6086.737ms 4166.927ms 
+
+
+
+  console.time('dafu1')
+  dafu1(items,con)
+  console.timeEnd('dafu1')
+  //dafu1: 4550.175ms  4347.499ms  6186.613ms 5892.052ms 3425.689ms 
+</script>
