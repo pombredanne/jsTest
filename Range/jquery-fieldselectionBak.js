@@ -1,4 +1,4 @@
-/*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        /*
     主要用于:
         input textarea 的光标位置 以及选取内容
 */
@@ -8,42 +8,43 @@
 
 		getSelection: function() {
 			var e = this.jquery ? this[0] : this,
-            isDiv= e.tagName.toUpperCase()==='DIV'&& e.contentEditable === "true";
-			return (
+                isDiv= e.tagName.toUpperCase()==='DIV'&& e.contentEditable === "true";
 
+			return (
 				/* mozilla / dom 3.0 */
 				('selectionStart' in e && function() {
 					var l = e.selectionEnd - e.selectionStart;
 					return { start: e.selectionStart, end: e.selectionEnd, length: l, text: e.value.substr(e.selectionStart, l) };
-				}) ||
-
-                /*获取div的信息*/
+				}) ||  /*获取div的信息*/
                (isDiv&&function(){
-                   var getPositionresult = 0,tagName=e.tagName,eleText=e.innerText?e.innerText:e.textContent;
+                   var first=0;
+                   if(e.firstChild.textContent.search(/\n/)>-1||e.firstChild.textContent.search(' ')>-1){   //搞定 原html中自己存在字符的时候 会出现前面存在空白
+                       //e.firstChild.textContent=e.firstChild.textContent.trimLeft();
+                       first=e.firstChild.textContent.search(e.firstChild.textContent.trim().slice(0,1));  //TODO 让得出结果减去它即可
+                       //<TextNode textContent="\n            this is a test\n        ">]  nodeType=3   <div>  nodeType=1  注释：8
+                   }
+                   var getPositionresult = 0,
+                       eleText=e.innerText?e.innerText:e.textContent;
                    if(window.getSelection) { //非IE浏览器
                            var getSel=window.getSelection(),
-                                thisTagName=getSel.anchorNode.parentElement.tagName,
-                                start;
-
-                           var result={
-                               value:function(){
-                                   try{
-                                       var t=getSel.toString()?getSel.toString():document.selection.createRange().text;
-                                       return t;
-                                   }catch(e){
-                                       return ''
+                                thisTagName=getSel.anchorNode.parentElement,
+                                start,
+                                result={
+                                   value:function(){
+                                       try{
+                                           var t=getSel.toString()?getSel.toString():document.selection.createRange().text;
+                                           return t;
+                                       }catch(e){
+                                           return ''
+                                       }
+                                   },
+                                   length:function(){
+                                       var t=this.value();
+                                       return t?t:1;
                                    }
-                               },
-                               length:function(){
-                                   var t=this.value();
-                                   return t?t:1;
-                               }
-                           }
-                           // if(thisTagName === "TEXTAREA" || thisTagName === "INPUT" || (thisTagName === "BODY" && OsObject === "Chrome")) {
-                           //   result = element.selectionStart
-                           // }
+                                }
                            if(thisTagName) {
-                               if(thisTagName === tagName) {
+                               if(thisTagName === e) {
                                    if(getSel.anchorNode.textContent === eleText) {
                                        var start=getSel.anchorOffset;
                                        return {start:start,value:result.value(),length:result.value().length,end:start+result.value().length-1};
