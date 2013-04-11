@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>JavaScript 获取/设置光标位置,兼容Input&&TextArea。</title>
+        <script src="jquery-1.8.3.min.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style>
+            body {
+                margin: 32px;
+                font-family: Verdana, sans-serif;
+                font-size: 13px;
+            }
+            
+            .title {
+                font-size: 18px;
+                font-weight: bolder;
+                margin: 40px 0;
+            }
+            
+            .input {
+                width: 50%;
+                font-family: Verdana, sans-serif;
+                font-size: 13px;
+                text-indent: 2px;
+            }
+        </style>
+        <script>
+            //获取光标位置 
+            //单行文本框 
+            function getPositionForInput(ctrl){
+                var CaretPos = 0;
+                if (document.selection) { // IE Support 
+                    ctrl.focus();
+                    var Sel = document.selection.createRange();
+                    Sel.moveStart('character', -ctrl.value.length);
+                    CaretPos = Sel.text.length;
+                }
+                else 
+                    if (ctrl.selectionStart || ctrl.selectionStart == '0') {// Firefox support 
+                        CaretPos = ctrl.selectionStart;
+                    }
+                return (CaretPos);
+            }
+            
+            //多行文本框 
+            function getPositionForTextArea(ctrl){
+                var CaretPos = 0;
+                if (document.selection) {// IE Support 
+                    ctrl.focus();
+                    var Sel = document.selection.createRange();
+                    var Sel2 = Sel.duplicate();
+                    Sel2.moveToElementText(ctrl);
+                    var CaretPos = -1;
+                    while (Sel2.inRange(Sel)) {
+                        Sel2.moveStart('character');
+                        CaretPos++;
+                    }
+                }
+                else 
+                    if (ctrl.selectionStart || ctrl.selectionStart == '0') {// Firefox support 
+                        CaretPos = ctrl.selectionStart;
+                    }
+                return (CaretPos);
+            }
+            
+            //设置光标位置函数 
+            function setCursorPosition(ctrl, pos){
+                if (ctrl.setSelectionRange) {
+                    ctrl.focus();
+                    ctrl.setSelectionRange(pos, pos);
+                }else if (ctrl.createTextRange) {
+                        var range = ctrl.createTextRange();
+                        range.collapse(true);
+                        range.moveEnd('character', pos);
+                        range.moveStart('character', pos);
+                        range.select();
+                  }
+            }
+            
+            //test 
+            function process(id, targetId){
+                var no = document.getElementById(id).value;//设置
+                setCursorPosition(document.getElementById(targetId), no);//目标
+            }
+
+             function d(){
+                 var t
+             }
+        </script>
+    </head>
+    <body>
+
+        <div class="title">
+            JavaScript 获取/设置光标位置,兼容Input&&TextArea：
+        </div>
+        <div class="title">
+            单行文本框
+        </div>
+        <p>
+            <input class="input" id="textbox" name="textbox" value="Hi,www.jb51.net!!!" />
+        </p><input type="button" onclick="alert( getPositionForInput( document.getElementById('textbox') ) )" value="Get
+ Position"> 
+ 输入位置:<input type="text" id="no1" size="1" /><input type="button" onclick="process('no1','textbox');" value="Set
+ Position">
+        <div class="title">
+            多行文本框
+        </div>
+         <div class="title" id="zwhangdanNum" contenteditable=true>
+            多行文本框dddddddddddddd
+        </div>
+        <textarea id="zhangdanNum" name="zhangdanNum" style="height:66px;width:246px;overflow:hidden">
+            Hi,CssRain!!!
+        </textarea>
+        <input type="button" onclick="alert( getPositionForTextArea( document.getElementById('zhangdanNum') ) )" value="Get
+ Position"> 
+ 输入位置:<input type="text" id="no2" size="1" /><input type="button" onclick="process('no2','zhangdanNum');" value="Set Position">
+    </body>
+</html>
+

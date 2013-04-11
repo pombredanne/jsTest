@@ -705,3 +705,12 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
       iframe.contentWindow.alert(obj);
   }
   alert(1)
+  
+----------------------------------------------------------  alert  ----------------------------------------------------------
+   火狐中:
+   1:
+     alert(); //空的alert  火狐中会报错
+   2:
+     window.onunload=function(){
+		alert(23);   //TODO  ff chrome 不能弹出alert    在卸载期间封锁。
+	 }   

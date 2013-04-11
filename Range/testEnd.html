@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+        <script type="text/javascript" src="jquery-fieldselectionBak.js"></script>
+    </head>
+    <body>
+        <div contenteditable="true" id="test">
+            this is a test
+        </div>
+        <input id="text" type="text" value="replace测试"/>
+        <input id="te" type="button" value="这是测试fd"/>
+    </body>
+</html>
+<script type="text/javascript">
+    $(function(){
+        $('#te').click(function(){
+            var t=$('#test').getSelection();
+            console.log(t)
+            var k=$('#text').replaceSelection('ddddddddd');
+            console.log(k);
+        })
+    })
+</script>
