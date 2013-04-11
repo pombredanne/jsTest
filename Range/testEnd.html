@@ -17,8 +17,18 @@
         $('#te').click(function(){
             var t=$('#test').getSelection();
             console.log(t)
-            var k=$('#text').replaceSelection('ddddddddd');
-            console.log(k);
+            // var k=$('#text').replaceSelection('ddddddddd');
+            // console.log(k);
         })
     })
 </script>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+function SelText(){
+var k=document.selection.createRange();   
+document.all.TestText.value = unescape(k.text);
+}
+</script>
+<input type="text" id="TestText" name="TestText" value="" accesskey="A">
+<input type="button" name="btnTest" value="Test" onclick="SelText()">

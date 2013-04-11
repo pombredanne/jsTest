@@ -17,17 +17,16 @@
 					return { start: e.selectionStart, end: e.selectionEnd, length: l, text: e.value.substr(e.selectionStart, l) };
 				}) ||  /*获取div的信息*/
                (isDiv&&function(){
-                   var first=0;
-                   if(e.firstChild.textContent.search(/\n/)>-1||e.firstChild.textContent.search(' ')>-1){   //搞定 原html中自己存在字符的时候 会出现前面存在空白
-                       //e.firstChild.textContent=e.firstChild.textContent.trimLeft();
-                       first=e.firstChild.textContent.search(e.firstChild.textContent.trim().slice(0,1));  //TODO 让得出结果减去它即可
-                       //<TextNode textContent="\n            this is a test\n        ">]  nodeType=3   <div>  nodeType=1  注释：8
-                   }
                    var getPositionresult = 0,
                        eleText=e.innerText?e.innerText:e.textContent;
-                   if(window.getSelection) { //非IE浏览器
+                   if(window.getSelection) { //非IE浏览器 <ie9
+                           var first=0;
+                           if(e.firstChild.data.search(/\n/)>-1||e.firstChild.data.search(' ')>-1){   //搞定 原html中自己存在字符的时候 会出现前面存在空白
+                               //e.firstChild.textContent=e.firstChild.textContent.trimLeft();
+                               first=e.firstChild.textContent.search(e.firstChild.textContent.trim().slice(0,1));  //TODO 让得出结果减去它即可
+                               //<TextNode textContent="\n            this is a test\n        ">]  nodeType=3   <div>  nodeType=1  注释：8
+                           }
                            var getSel=window.getSelection(),
-                                thisTagName=getSel.anchorNode.parentElement,
                                 start,
                                 result={
                                    value:function(){
@@ -42,25 +41,15 @@
                                        var t=this.value();
                                        return t?t:1;
                                    }
-                                }
-                           if(thisTagName) {
-                               if(thisTagName === e) {
-                                   if(getSel.anchorNode.textContent === eleText) {
-                                       var start=getSel.anchorOffset;
-                                       return {start:start,value:result.value(),length:result.value().length,end:start+result.value().length-1};
-                                   } else {
-                                       var currentIndex = getSel.anchorOffset,
-                                            txt = "",
-                                            txtoo = getSel.anchorNode.previousSibling;
-                                       while(txtoo != null) {
-                                           txt += txtoo.textContent;
-                                           txtoo = txtoo.previousSibling;
-                                       }
-                                       start = txt.trim().length + currentIndex;
-                                       return {start:start,value:result.value(),length:result.value().length,end:start+result.value().length-1};
-                                   }
+                                };
+
+                               if(getSel.anchorNode.textContent === eleText) {
+                                   var start=getSel.anchorOffset;
+                                   return {start:start-(first-0),value:result.value(),length:result.value().length-(first-0),end:start+result.value().length-(first-0)-1};
                                } else {
-                                   var currentIndex = getSel.anchorOffset,txt = "",txtoo = getSel.anchorNode.parentElement.previousSibling;
+                                   var currentIndex = getSel.anchorOffset,
+                                        txt = "",
+                                        txtoo = getSel.anchorNode.previousSibling;
                                    while(txtoo != null) {
                                        txt += txtoo.textContent;
                                        txtoo = txtoo.previousSibling;
@@ -68,27 +57,20 @@
                                    start = txt.trim().length + currentIndex;
                                    return {start:start,value:result.value(),length:result.value().length,end:start+result.value().length-1};
                                }
-                           }
                        }else{
-                           var rng;
-                           // window.event.cancelBubble = true; //阻止冒泡事件
-                           e.focus();
-                           rng = document.selection.createRange();
-                           rng.moveStart('character', -eleText.length*2);
-                           var text = rng.text;
-                           //仅针对8 9 10做转换
-                           text=text.replace(/\s/g,'');
-                           eleText=eleText.replace(/\s/g,'');
-                           for(var i = 0; i < eleText.length; i++) {
-                               var t=eleText.substring(0, i + 1);
-                               var k1=text.substring(text.length - i - 1, text.length);
-                               if(eleText.substring(0, i + 1) === text.substring(text.length - i - 1, text.length)) {
-                                   start = i+1;
-                                   break;
-                               }
-                           }
-                           return {start:start,value:result.value(),length:result.value().length,end:start+result.value().length-1};
+                       e.focus();
+                       var Sel = document.selection.createRange();
+                       var Sel2 = Sel.duplicate();
+                       Sel2.moveToElementText(e);
+                       var CaretPos = -1;
+                       while (Sel2.inRange(Sel)) {
+                           Sel2.moveStart('character');
+                           CaretPos++;
                        }
+                       console.log(Sel.text)
+                       console.log(CaretPos)
+                       //return {start:start,value:result.value(),length:result.value().length,end:start+result.value().length-1};
+                   }
                })||
 
                 /* exploder */
