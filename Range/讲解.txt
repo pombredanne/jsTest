@@ -1,0 +1,45 @@
+获取选中文本:
+	if(document.selection) {
+		txt = document.selection.createRange().text;	// IE
+	} else {
+		txt = document.getSelection();
+	}
+	return txt.toString();
+
+定义范围:
+	var userSelection;
+	if (window.getSelection) { //现代浏览器
+	    userSelection = window.getSelection();
+	} else if (document.selection) { //IE浏览器 考虑到Opera，应该放在后面  Opera 两者都TMD支持 但支持火狐的比较好
+	    userSelection = document.selection.createRange();
+	}
+
+由范围对象定义Range对象:
+var getRangeObject = function(selectionObject) {
+    if (selectionObject.getRangeAt){
+    		return selectionObject.getRangeAt(0);
+    }else { // TODO 较老版本Safari! 将调查 safar 这一选项可忽视   
+        var range = document.createRange();
+        range.setStart(selectionObject.anchorNode,selectionObject.anchorOffset);
+        range.setEnd(selectionObject.focusNode,selectionObject.focusOffset);
+        return range;
+    }
+}
+var rangeObject = getRangeObject(userSelection);
+
+定义document rang对象
+	ff:document.createRange()
+	<IE9:document.body.createTextRange();
+
+选择 范围中的文本:
+	function selectText() {
+	    if (document.selection) {
+	        var range = document.body.createTextRange();
+	        range.moveToElementText(document.getElementById('selectable'));
+	        range.select();	// 这里
+	    } else if (window.getSelection) {
+	        var range = document.createRange();
+	        range.selectNode(document.getElementById('selectable'));
+	        window.getSelection().addRange(range);  // 这里
+	    }
+	}
