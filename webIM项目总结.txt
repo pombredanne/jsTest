@@ -713,3 +713,8 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
      window.onunload=function(){
 		alert(23);   //TODO  ff chrome 不能弹出alert    在卸载期间封锁。
 	 }   
+	
+------------------------------------------------   火狐中 _moz resizing ----------------------------------------------------
+    img.setAttribute('contenteditable','false');
+    document.designMode = "on";
+    document.execCommand('enableObjectResizing', false, 'false');
