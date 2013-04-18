@@ -188,6 +188,11 @@ Array.prototype.clone = function () {
     //arr.concat();  也是一种简单的深度克隆方法
     return this.slice(0);
 }
+Array.prototype.killDitto=function(){
+   return this.filter(function(it,i,that){
+      return that.indexOf(it)>=i;  //TODO  需要html5的支持  详细见html5.js
+   })
+}
 
 /*Number 扩展*/
 Number.prototype.pad = function(length){ //前补0直到符合指定长度，用于数字补0

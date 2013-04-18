@@ -1,0 +1,25 @@
+<html>
+	<head>
+		
+	</head>
+	<body>
+		<p id="p1" contentEditable=true></p>
+	</body>
+	<script>
+	var sel = window.getSelection();
+		var p1=document.getElementById('p1'),
+			range=document.createRange(),
+			rang1=document.createRange(),
+			span=document.createElement('span');
+			span.appendChild(document.createTextNode('yes l am appendChild'));
+
+			range.setStart(p1,0);
+			range.setEnd(p1,0);
+			range.insertNode(span);
+			p1.focus();
+			rang1.setStart(p1.lastChild,1);
+			// rang1.setEnd(p1.lastChild,p1.lastChild.length);
+			sel.removeAllRanges();
+            sel.addRange(rang1);  		
+	</script>
+</html>

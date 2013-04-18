@@ -13,9 +13,8 @@
         }else if(window.getSelection){
             var sel = window.getSelection();            
             var tempRange = document.createRange();
-            //tempRange.setStart(obj.firstChild, obj.firstChild.length);  //TODO更改  
-            //document.getElementById('txt1').childNodes[document.getElementById('txt1').childNodes.length-2]
-            tempRange.setStart(obj.lastChild, obj.lastChild.length);   //如果你的页面上有第二个 sel 并且作用是插入节点 那么这里一定要注意 因为找不到obj.lastChild.length 所以会发生 插入后跟这个其冲突
+            tempRange.setStart(obj.lastChild, obj.lastChild.length);  
+            //rang1.setStart(p1.lastChild,1);  如果obj.lasChild是一个标准节点即<span>fdfkd</span> 这种的 那么0 代表开头 1代表结尾 并且火狐中代码上面的obj.focus绝对不能省去
             sel.removeAllRanges();
             sel.addRange(tempRange);  
             //obj.focus();

@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>css3翻转学习</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+    
     <style type="text/css">
         body{
 
@@ -23,6 +26,8 @@
                     http://www.iefans.net/ie10-wuqianzhui-css3-jianbian/
                 正常：
                     http://www.w3cplus.com/content/css3-gradient
+
+                TODO 目前检测 火狐可以直接使用标准
             */
             background:-moz-linear-gradient(right,#ace,#f96);/*Mozilla*/
             background:-webkit-gradient(linear,0 50%,100% 50%,from(#ace),to(#f96));/*Old gradient for webkit*/
@@ -62,7 +67,14 @@
             -webkit-box-shadow: inset 0 0 5px rgba(102, 153, 0,0.5);
             margin-bottom: 10px;
         }
-       /* //ease效果：   */
+
+        /* 
+            transition: 
+            TODO 目前检测 火狐可以直接使用标准
+            http://www.cnblogs.com/yjf512/archive/2012/07/14/2591817.html
+            
+         */
+       /* ease效果： */
         #ease {
               -moz-transition: all 5s ease 0.3s;
               -webkit-transition: all 5s ease 0.3s;
@@ -70,7 +82,7 @@
               transition: all 5s ease 0.3s;
               background: #f36;
           }
-        /*//ease-in效果：*/
+        /*ease-in效果：*/
         #ease-in {
               -moz-transition: all 3s ease-in 0.5s;
               -webkit-transition: all 3s ease-in 0.5s;
@@ -78,7 +90,7 @@
               transition: all 3s ease-in 0.5s;
               background: #369;
           }
-        /*//ease-out效果：*/
+        /*ease-out效果：*/
          #ease-out {
               -moz-transition: all 5s ease-out 0s;
               -webkit-transition: all 5s ease-out 0s;
@@ -86,7 +98,7 @@
               transition: all 5s ease-out 0s;
               background: #636;
           }
-        /*//ease-in-out效果：*/
+        /*ease-in-out效果：*/
         #ease-in-out {
               -moz-transition: all 1s ease-in-out 2s;
               -webkit-transition: all 1s ease-in-out 2s;
@@ -94,7 +106,7 @@
               transition: all 1s ease-in-out 2s;
               background: #3e6;
           }
-       /* //linear效果：*/
+       /* linear效果：*/
         #linear {
               -moz-transition: all 6s linear 0s;
               -webkit-transition: all 6s linear 0s;
@@ -132,8 +144,8 @@
             运用的是 css3的animation综合效果
                  http://www.w3cplus.com/content/css3-animation
         */
-        @-webkit-keyframes 'buttonLight' {
-            from {
+        @-webkit-keyframes 'buttonLight1' {
+            0% {
                 background: rgba(96, 203, 27,0.5);
                 -webkit-box-shadow: 0 0 5px rgba(255, 255, 255, 0.3) inset, 0 0 3px rgba(220, 120, 200, 0.5);
                 color: red;
@@ -153,12 +165,13 @@
                 -webkit-box-shadow: 0 0 10px rgba(255, 155, 255, 0.5) inset, 0 0 8px rgba(120, 120, 200, 0.8);
                 color: black;
             }
-            to {
+            100% {
                 background: rgba(96, 203, 27,0.5);
                 -webkit-box-shadow: 0 0 5px rgba(255, 255, 255, 0.3) inset, 0 0 3px rgba(220, 120, 200, 0.5);
                 color: green;
             }
         }
+
         a.btn {
             /*按钮的基本属性*/
             background: #60cb1b;
@@ -176,10 +189,10 @@
             -webkit-box-shadow: 0 0 5px rgba(255, 255, 255, 0.6) inset, 0 0 3px rgba(220, 120, 200, 0.8);
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.6) inset, 0 0 3px rgba(220, 120, 200, 0.8);
             /*调用animation属性，从而让按钮在载入页面时就具有动画效果*/
-            -webkit-animation-name: "buttonLight"; /*动画名称，需要跟@keyframes定义的名称一致*/
+            -webkit-animation-name: "buttonLight1"; /*动画名称，需要跟@keyframes定义的名称一致*/
             -webkit-animation-duration: 5s;/*动画持续的时间长*/
             -webkit-animation-iteration-count: infinite;/*动画循环播放的次数*/
-        }
+        } 
     </style>
 </head>
 <body>

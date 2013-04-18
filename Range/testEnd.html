@@ -22,13 +22,3 @@
         })
     })
 </script>
-
-
-<SCRIPT LANGUAGE="JavaScript">
-function SelText(){
-var k=document.selection.createRange();   
-document.all.TestText.value = unescape(k.text);
-}
-</script>
-<input type="text" id="TestText" name="TestText" value="" accesskey="A">
-<input type="button" name="btnTest" value="Test" onclick="SelText()">

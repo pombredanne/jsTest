@@ -33,11 +33,11 @@ var _Dom={
             element["on" + type] = null;
         }
     },
-    trigger:function(){         //事件触发  http://stylechen.com/trigger.html
+    trigger:function(){         //事件触发  http://stylechen.com/trigger.html   http://www.zhangxinxu.com/wordpress/?p=2330
         if (document.createEventObject){
           // IE浏览器支持fireEvent方法
           var evt = document.createEventObject();
-          return element.fireEvent('on'+event,evt)
+          return element.fireEvent('on'+event,evt);
        }else{
           // 其他标准浏览器使用dispatchEvent方法
           var evt = document.createEvent( 'HTMLEvents' );

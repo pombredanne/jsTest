@@ -27,7 +27,13 @@
 
 
 
+        var call = Function.prototype.call,
+                    prototypeOfArray = Array.prototype,
+                    prototypeOfObject = Object.prototype,
+                    slice = prototypeOfArray.slice;
 
+        var _toString = call.bind(prototypeOfObject.toString),
+            owns = call.bind(prototypeOfObject.hasOwnProperty);
 
         var defineGetter,defineSetter,lookupGetter,lookupSetter,supportsAccessors;
 

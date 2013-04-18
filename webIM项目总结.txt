@@ -84,19 +84,6 @@
 -------------------------------------------<img>---------------------------------------------
     <img alt="fdfsd" src="faceimg/2.gif">   在火狐上如果这张图片不存在 那么就是空白 并不出现其他浏览器的那种默认找不到图片   
 
-----------------------------------------------------数组彻底去重复-----------------------------------------
-function uniquerArr(arr){
-    var temp=[];
-    for(var i=0;i<arr.length;i++){
-        if(!contains(temp,arr[i]))temp.push(a[i]);
-    }
-    return temp;
-}
-/*辅助工具*/
-function contains(arr,val){
-    for (var i = 0,length=arr.length; i < length; i++)if(arr[i]===val)return true;
-}
-
 -----------------------------------------------------小知识点-------------------------------------------------
     //关闭浏览器的时候 区分是刷新还是关闭     http://www.cnblogs.com/zgqys1980/archive/2008/09/02/1281843.html
     window.onbeforeunload=function(e){
