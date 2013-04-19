@@ -50,12 +50,16 @@
 .cr-container label.cr-label-img-4:after{
 	width: 0px;
 }
+
+
+/*点击后 序号的处理*/
 .cr-container input.cr-selector-img-1:checked ~ label.cr-label-img-1,
 .cr-container input.cr-selector-img-2:checked ~ label.cr-label-img-2,
 .cr-container input.cr-selector-img-3:checked ~ label.cr-label-img-3,
 .cr-container input.cr-selector-img-4:checked ~ label.cr-label-img-4{
 	color: #68abc2;
 }
+
 .cr-container input.cr-selector-img-1:checked ~ label.cr-label-img-1:before,
 .cr-container input.cr-selector-img-2:checked ~ label.cr-label-img-2:before,
 .cr-container input.cr-selector-img-3:checked ~ label.cr-label-img-3:before,
@@ -101,6 +105,9 @@
 	z-index: 2;
 	text-indent: -9000px;
 }
+
+
+/*动画*/
 .cr-container input.cr-selector-img-1:checked ~ .cr-bgimg,
 .cr-bgimg div span:nth-child(1){
 	background-image: url(../images/1.jpg);
@@ -179,6 +186,9 @@
 	transform: scale(1);
 	z-index:10000;
 }
+
+
+
 .cr-titles h3{
 	color: #fff;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
