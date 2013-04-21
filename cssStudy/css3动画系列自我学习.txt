@@ -1,4 +1,3 @@
-TODO   检查 新版谷歌浏览器 是否还兼容 -webkit前缀
 
 关于transform  这个相对来说比较容易理解参见  https://developer.mozilla.org/zh-CN/docs/CSS/transform
 	关于rotate旋转一点:
