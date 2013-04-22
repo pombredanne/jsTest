@@ -705,3 +705,10 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
     img.setAttribute('contenteditable','false');
     document.designMode = "on";
     document.execCommand('enableObjectResizing', false, 'false');
+    
+-----------------------------------------------  字符传唤  ---------------------------------------------
+    function report(){
+        var str=document.getElementById("hidden").innerHTML;
+        str=str.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
+        document.getElementById("content_re").innerHTML=str
+    }
