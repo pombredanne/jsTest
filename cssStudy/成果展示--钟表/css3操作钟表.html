@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
-
-<link type="text/css" rel="stylesheet" href="html.css" />
+<meta charset="utf-8">
 
 <title>纯css打造立体时钟</title>
 
@@ -183,104 +181,53 @@ background:-o-linear-gradient(top, rgba(200,200,200,1), rgba(113,113,113,0.9) 49
 }
 
 </style>
-
 </head>
-
 <body>
-
-<div id="container">
-
-<ul id="wq">
-
-  <li>12</li>
-
-  <li>1</li>
-
-  <li>2</li>
-
-  <li>3</li>
-
-  <li>4</li>
-
-  <li>5</li>
-
-  <li>6</li>
-
-  <li>7</li>
-
-  <li>8</li>
-
-  <li>9</li>
-
-  <li>10</li>
-
-  <li>11</li>
-
-</ul>
-
-<div id="c"><div id="author">Smallyoko</div></div>
-
-<div id="h"></div>
-
-<div id="m"></div>
-
-<div id="s"></div>
-
-<div id="point"></div>
-
-</div>
+    <div id="container">
+          <ul id="wq">
+            <li>12</li> <li>1</li> <li>2</li> <li>3</li> <li>4</li> <li>5</li> <li>6</li> <li>7</li> <li>8</li>
+            <li>9</li> <li>10</li> <li>11</li>
+          </ul>
+          <div id="c"><div id="author">Smallyoko</div></div>
+          <div id="h"></div>
+          <div id="m"></div>
+          <div id="s"></div>
+          <div id="point"></div>
+    </div>
 
 <script type="text/javascript">
+    var date=new Date(),
+        hours=(date.getHours()-12)*360/12+90+'deg',
+        mins=date.getMinutes()*6+90+'deg',
+        seconds=date.getSeconds()*6+90+'deg',
+        hh=document.getElementById('h'),
+        mm=document.getElementById('m'),
+        ss=document.getElementById('s'),
+        t,
+        getTrans=function(prop){
+           return "-moz-transform:rotate("+prop+");-webkit-transform:rotate("+prop+");-o-transform:rotate("+prop+");";
+        };
 
-var hours;
+        hh.style.cssText = getTrans(hours);
+        mm.style.cssText = getTrans(mins);
+        ss.style.cssText = getTrans(seconds);
 
-var mins;
+        t = setInterval(function(){
+          date=new Date();
+          seconds = date.getSeconds()*6 + 90 +'deg';
+          mins = date.getMinutes()*6 + 90 +'deg';
+          ss.style.cssText = getTrans(seconds);
 
-var seconds;
+          if ( seconds === '90deg' ){
+               mm.style.cssText = getTrans(mins);
+          }
 
-hours = (new Date().getHours()-12)*360/12 + 90 + "deg";
+          if ( mins == '90deg' ){
+               hours = date.getHours()*30 + 90 + "deg";
+               hh.style.cssText = getTrans(hours);
+          }
 
-mins = new Date().getMinutes()*360/60 + 90 + "deg";
-
-seconds = new Date().getSeconds()*360/60 + 90 + "deg";
-
-var hh = document.getElementById('h');
-
-var mm = document.getElementById('m');
-
-var ss = document.getElementById('s');
-
-var t;
-
-hh.style.cssText = "-moz-transform:rotate("+hours+");-webkit-transform:rotate("+hours+");-o-transform:rotate("+hours+");";
-
-mm.style.cssText = "-moz-transform:rotate("+mins+");-webkit-transform:rotate("+mins+");-o-transform:rotate("+mins+");";
-
-ss.style.cssText = "-moz-transform:rotate("+seconds+");-webkit-transform:rotate("+seconds+");-o-transform:rotate("+seconds+");";
-
-t = setInterval(function(){
-
-  seconds = new Date().getSeconds()*360/60 + 90;
-
-  mins = new Date().getMinutes()*360/60 + 90;
-
-  ss.style.cssText = "-moz-transform:rotate("+seconds+"deg);-webkit-transform:rotate("+seconds+"deg);-o-transform:rotate("+seconds+"deg);";
-
-  if ( seconds == 90 ){
-
-   mm.style.cssText = "-moz-transform:rotate("+mins+"deg);-webkit-transform:rotate("+mins+"deg);-o-transform:rotate("+mins+"deg);";
-
-  }
-
-  if ( mins == 90 ){
-
-   hours = new Date().getHours()*360/12 + 90 + "deg";
-
-   hh.style.cssText = "-moz-transform:rotate("+hours+");-webkit-transform:rotate("+hours+");-o-transform:rotate("+hours+");";
-
-  }
-
-}, 1000);
+        }, 1000);
 
 </script>
 

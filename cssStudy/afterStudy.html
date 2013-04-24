@@ -1,0 +1,149 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>after before学习</title>
+<style>
+/* 
+	after:在元素内部后边插入  相当与jquery的append;
+	before:在元素内部前边插入  相当与jquery的prepend;;
+ */
+*{
+	margin:0;
+	padding:0;
+}
+/*top*/
+.demo,.normal{
+	width:200px;
+	height:50px;
+	position:relative;
+	margin:40px;
+	border:solid 4px #ccc;
+}
+
+.demo:after,.demo:before{
+	bottom:100%;
+	border:10px solid transparent;
+	content:" ";
+	width:0; height:0;
+	position: absolute;
+	pointer-events: none;
+}
+.demo:after{
+	border-bottom-color:#09F;
+	border-width:10px;
+	left:50%;
+	margin-left:-10px;
+}
+.demo:before {
+	border-bottom-color:#ccc;
+	border-width: 16px;
+	left: 50%;
+	margin-left: -16px;
+}
+
+/*right*/
+.demo_right{
+	width:200px;
+	height:50px;
+	position:relative;
+	background:#09F;
+	margin:40px;
+	border-radius:3px;
+	border:solid 4px #ccc;
+}
+.demo_right:after, .demo_right:before{
+	left:100%;
+	border:10px solid transparent;
+	content:" ";
+	width:0; height:0;
+	position: absolute;
+	pointer-events: none;
+}
+.demo_right:after {
+	border-left-color:#09F;
+	border-width:10px;
+	top:50%;
+	margin-top:-10px;
+}
+.demo_right:before{
+	border-left-color:#ccc;
+	border-width: 16px;
+	top: 50%;
+	margin-top:-16px;
+}
+
+/*bottom*/
+.demo_bottom{
+	width:200px;
+	height:50px;
+	position:relative;
+	background:#09F;
+	margin:40px;
+	border-radius:3px;
+	border:solid 4px #ccc;
+}
+.demo_bottom:after, 
+.demo_bottom:before{
+	top:100%;
+	border:10px solid transparent;
+	content:" ";
+	width:0; height:0;
+	position: absolute;
+	pointer-events: none;
+}
+.demo_bottom:after{
+	border-top-color:#09F;
+	border-width:10px;
+	left:50%;
+	margin-left:-10px;
+}
+.demo_bottom:before{
+	border-top-color:#ccc;
+	border-width:16px;
+	left:50%;
+	margin-left:-16px;
+}
+
+/*left*/
+.demo_left{
+	width:200px;
+	height:50px;
+	position:relative;
+	background:#09F;
+	margin:40px;
+	border-radius:3px;
+	border:solid 4px #ccc;
+}
+.demo_left:after,
+.demo_left:before{
+	right:100%;
+	border:10px solid transparent;
+	content:" ";
+	width:0; height:0;
+	position: absolute;
+	pointer-events: none;
+}
+.demo_left:after{
+	border-right-color:#09F;
+	border-width:10px;
+	top:50%;
+	margin-top:-10px;
+}
+.demo_left:before{
+	border-right-color:#ccc;
+	border-width:16px;
+	top:50%;
+	margin-top:-16px;
+}
+</style>
+</head>
+<body>
+	<div class="normal">我是正常的</div>
+	<div class="demo"></div>
+	<div class="demo_right"></div>
+	<div class="demo_bottom"></div>
+	<div class="demo_left"></div>
+</body>
+</html>
