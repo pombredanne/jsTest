@@ -294,15 +294,28 @@ var _Dom={
 									/*********************DOM*************************/
 
 var load = {
-  load: function(type, src, code) {
+  load: function(type, src, code,callback) {
     type==="js"?this.loadscript(src,code):this.loadstyle(src,code);
   },
-  loadscript: function(src, code) {
+  loadscript: function(src, code,callback) {
     if(src || code) {
       var script = document.createElement("script");
       script.type = "text/javascript";
       if(src) {
         script.src = src;
+        if (script.readyState){ //IE
+          script.onreadystatechange = function(){
+             if (script.readyState == "loaded" ||
+                script.readyState == "complete"){
+                script.onreadystatechange = null;
+                callback();
+             }
+          };
+       } else { //Others: Firefox, Safari, Chrome, and Opera
+          script.onload = function(){
+              callback();
+          };
+       }
       } else if(code) {
         try {
           script.appendChild(document.createTextNode(code));
@@ -313,8 +326,7 @@ var load = {
     }else{
       alert("please check script")
     }
-    var body = document.getElementsByTagName("body")[0];
-    body.appendChild(script);
+     document.body.appendChild(script);
   },
   loadstyle: function(href, code) {
     if(href || code) {
@@ -338,6 +350,7 @@ var load = {
     }
   }
 }
+
 
 //判断object是否相等
 Object.prototype.equals = function(obj) {

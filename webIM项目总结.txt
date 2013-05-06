@@ -565,11 +565,26 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
     src=basesrc[0]+'/Images/'+imgname;      //正确
     
 --------------------------------------------------------------------文档模式-------------------------------------------------------
+    网页必须包含恰当的<!DOCTYPE>指令。
     文档模式:
-        告诉浏览器用什麽版本的引擎来渲染. [渲染包括style]
-        使用:<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" >
+        1:它代表的是浏览器以何种模式呈现页面。
+        2:不同的文本模式对应不同的排版引擎，不同的JS引擎。
+        3:影响ie的 document.documentMode
+        使用:        
+            <meta http-equiv="X-UA-Compatible" content="IE=7" >            <!-- (1) 使用ie7兼容模式渲染-->
+            <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />  <!--(2)  模仿ie7  >ie8 才会有 对于>ie8的浏览器 (1) (2) 都可以使用效果一样 -->
+             <!--
+                两者区别:
+                    1: (1)不管页面是否使用<!DOCTYPE>指令，都像是使用了 Windows Internet Explorer 7的标准模式。
+                    (2)content="IE=EmulateIE7"模式遵循<!DOCTYPE>指令。对于多数网站来说，它是首选的兼容性模式。
+                    -- 总结自:http://nicyea.iteye.com/blog/719007
+                  -- http://yiminghe.iteye.com/blog/802021
+             -->
     浏览器模式:
-        直接更改 navigator.userAgent 属性中版本 特性就是局部影响 只改变需要改变的地方 一般来说 主要是影响局部css  
+        1:它代表的是用户以何种浏览器访问网站。
+        2:用于切换IE针对该网页的默认文本模式、对不同版本浏览器的条件注释解析、决定请求头里userAgent的值
+        3:它在浏览器发出请求之前就已经确定，网站没有办法修改这个值.
+        
         使用:
             <!–[if IE 7]>
                 <style type=”text/css”>
@@ -582,7 +597,8 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
         IE=edge  使用你系统中最高版本的ie
         chrome   如果你ie中安装chrome内嵌框架,那么将会使用chrome引擎来渲染页面
             网络:http://choizhang.com/wordpress/x-ua-compatible.html
- 
+    额外:
+        document.compatMode:ie特有的检测ie对盒子模型的支持   --http://www.cnblogs.com/Optimal/archive/2013/04/28/3049500.html
 --------------------------------------------------------------resizeTo-------------------------------------------
     该函数中 open尺寸的差别:http://www.okimg.com/0001!2313.html
     
@@ -712,3 +728,4 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
         str=str.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
         document.getElementById("content_re").innerHTML=str
     }
+    
