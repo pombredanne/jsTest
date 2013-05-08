@@ -1,0 +1,49 @@
+// //初始化页面时验证是否记住了密码 
+/*
+	#rmbUser：记住用户按钮
+	#user：用户input
+	#pass：密码input
+*/
+$(document).ready(function() {
+	if ($.cookie("rmbUser") == "true") {
+		$("#rmbUser").attr("checked", true);
+		$("#user").val($.cookie("userName"));
+		$("#pass").val($.cookie("passWord"));
+	}
+});
+//保存用户信息 
+
+
+function saveUserInfo() {
+	if ($("#rmbUser").attr("checked") == true) {
+		var userName = $("#user").val();
+		var passWord = $("#pass").val();
+		$.cookie("rmbUser", "true", {
+			expires: 7
+		}); // 存储一个带7天期限的 cookie 
+		$.cookie("userName", userName, {
+			expires: 7
+		}); // 存储一个带7天期限的 cookie 
+		$.cookie("passWord", passWord, {
+			expires: 7
+		}); // 存储一个带7天期限的 cookie 
+	} else {
+		$.cookie("rmbUser", "false", {
+			expires: -1
+		});
+		$.cookie("userName", '', {
+			expires: -1
+		});
+		$.cookie("passWord", '', {
+			expires: -1
+		});
+	}
+}
+
+
+
+常用操作：
+$.cookie('the_cookie'); // 读取 cookie 
+$.cookie('the_cookie', 'the_value'); // 存储 cookie 
+$.cookie('the_cookie', 'the_value', { expires: 7 }); // 存储一个带7天期限的 cookie 
+$.cookie('the_cookie', '', { expires: -1 }); // 删除 cookie 
