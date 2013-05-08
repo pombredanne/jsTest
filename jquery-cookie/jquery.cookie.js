@@ -1,9 +1,4 @@
-/**
-$.cookie('the_cookie'); // 读取 cookie 
-$.cookie('the_cookie', 'the_value'); // 存储 cookie 
-$.cookie('the_cookie', 'the_value', { expires: 7 }); // 存储一个带7天期限的 cookie 
-$.cookie('the_cookie', '', { expires: -1 }); // 删除 cookie 
- */
+
 jQuery.cookie = function(name, value, options) {
     if (typeof value != 'undefined') { // name and value given, set cookie
         options = options || {};
