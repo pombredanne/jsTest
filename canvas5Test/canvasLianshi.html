@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+</body>
+</html>
+<script>
+~(function() {
+  "use strict";
+  var pro = ['setTransform', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'setLineDash', 'setShadow', 'setStrokeColor', 'setFillColor', "fillStyle", "strokeStyle", "shadowColor", "shadowBlur", "shadowOffsetX", "shadowOffsetY", "createLinearGradient", "createPattern", "createRadialGradient", "addColorStop", "lineCap", "lineJoin", "lineWidth", "miterLimit", "rect", "fillRect", "strokeRect", "clearRect", "fill", "stroke", "beginPath", "moveTo", "closePath", "lineTo", "clip", "quadraticCurveTo", "bezierCurveTo", "arc", "arcTo", "isPointInPath", "scale", "rotate", "translate", "transform", "setTransform", "transform", "font", "textAlign", "textBaseline", "fillText", "strokeText", "measureText", "drawImage", "width", "height", "data", "createImageData", "getImageData", "putImageData", "globalAlpha", "globalCompositeOperation"];
+
+  function XtendCanvas(canvas) {
+    var ctx = canvas.getContext('2d'),
+      fn = function() {},
+      fnP = fn.prototype;
+    for (var j = 0, p = pro[0]; p; p = pro[j++]) {
+      if (ctx[p]) {
+        fn.prototype[p] = function(p) {
+          return function() {
+            var args = Array.prototype.slice.call(arguments);
+            // console.log(args);
+            if (typeof ctx[p] == 'function') {
+              ctx[p].apply(ctx, args);
+            } else {
+              ctx[p] = args+'';
+            }
+            return fnP;
+          };
+        }(p);
+      }
+    }
+    return new fn;
+  };
+  window.XtendCanvas = XtendCanvas;
+})();
+
+var canvas=document.getElementById('canvas'),
+    content=XtendCanvas(canvas);
+
+    content.fillStyle('#00f').strokeStyle('#f00').lineWidth(4).beginPath().moveTo(10, 10).lineTo(100, 10).lineTo(10, 100).lineTo(10, 10).fill().stroke().closePath();
+</script>
