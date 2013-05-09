@@ -29,7 +29,11 @@
     window.ctvChain = XtendCanvas;
 })();
 
+/*
+*   TODO 1：增加_canvas链式调用 
+*/
 (function($){
+
     function _canvas(canvas){
         this.ctx=new ctvChain(canvas);
     }
