@@ -30,7 +30,7 @@
 })();
 
 /*
-*   TODO 1：增加_canvas链式调用 
+*   TODO 1：增加_canvas链式调用
 */
 (function($){
 
