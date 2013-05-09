@@ -6,31 +6,44 @@
             $last=$(elements).last(),
             $container,
             settings = {
-            threshold: 0,
-            event: "scroll",
-            effect: "show",
-            container: window,
-            dataAttribute: "original",
-            skipInvisible: true,
-            effectspeed:'normal',
-            //failure_limit:'',  TODO 没有搞明白用处 暂时去除
-            appear: null,
-            load: null
-        };
+                threshold: 0,
+                event: "scroll",
+                effect: "show",
+                container: window,
+                dataAttribute: "original",
+                skipInvisible: true,
+                effectspeed:'normal',
+                failureLimit:0, // TODO 参数:failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.  主要应付 html DOM元素顺序错乱问题 还未发现该问题
+                appear: null,
+                load: null,
+                cacheEffect:true
+            };
 
         options&&($.extend(settings, options));
 
-        if($.cookie('imgCache')==='true'){  //TODO 考虑是否增加缓存措施
-            elements.each(function(i,v){
-                var self=this;
-                $(self).hide().attr("src", $(self).data(settings.dataAttribute))[settings.effect](settings.effectspeed);
-            });
-            return
+        if(settings.cacheEffect){
+            var isCache=function(url){
+                var img=new Image();
+                img.src=url;
+                if(img.complete||img.width||img.naturalWidth) { // http://www.jacklmoore.com/notes/naturalwidth-and-naturalheight-in-ie/
+                    return true;
+                }
+                return false;
+            }
+
+            if(isCache($last.data(settings.dataAttribute))){
+                    elements.each(function(i,v){
+                        var self=this;
+                        $(self).attr("src", $(self).data(settings.dataAttribute));
+                    });
+                    return false;
+            }
         }
 
         function update(){
             var container=settings.container,
-                threshold=settings.threshold;
+                threshold=settings.threshold,
+                sortCount=0;
 
             elements.each(function(){
                 var $this = $(this);
@@ -43,12 +56,9 @@
                     /* Nothing. */
                 }else{
                     if (!$.belowthefold(this, container,threshold) && !$.rightoffold(this, container,threshold)) {
-                        if($last[0]===$(this)[0]){
-                            $.cookie('imgCache', 'true');
-                        }
                         $this.trigger("appear");
-                    }else {
-                        return false;
+                    }else if(++sortCount>settings.failureLimit){
+                        return false;   
                     }
                 }
             });
@@ -59,7 +69,7 @@
         $container = (settings.container === undefined ||settings.container === window) ? $window : $(settings.container);
 
         if ('scroll' === settings.event) {
-            $container.bind(settings.event, function(event){
+            $container.bind('scroll', function(event){
                 return update();
             });
         }
@@ -69,24 +79,28 @@
                 $self = $(self);
 
             self.loaded = false;
-            /* When appear is triggered load original image. */
-            $self.one("appear", function(){
+
+            $self.one("appear", function(event){
                 if (!this.loaded) {
+                     var image=new Image();  //TODO  new Image().src=""  这样生成的Image不是一个对象
+                     image.src=$self.data(settings.dataAttribute);
+
                     if (settings.appear) {
                         settings.appear.call(self, elements.length, settings);
                     }
-                    $("<img />").bind("load", function(event){
-                        $self.hide().attr("src", $self.data(settings.dataAttribute))[settings.effect](settings.effectspeed);
-                        self.loaded = true;
-                        /* 从阵列中删除图像，所以它不是下一次循环。 */
-                        var temp = $.grep(elements, function(element){
-                            return !element.loaded;
-                        });
-                        elements = $(temp);
-                        if (settings.load) {
-                            settings.load.call(self, elements.length, settings);
-                        }
-                    }).attr("src", $self.data(settings.dataAttribute));
+
+                    $(image).bind('load',function(event){
+                          $self.hide().attr("src", $self.data(settings.dataAttribute))[settings.effect](settings.effectspeed);
+                            self.loaded = true;
+                            /* 从阵列中删除图像，所以它不是下一次循环。 */
+                            var temp = $.grep(elements, function(element){
+                                return !element.loaded;
+                            });
+                            elements = $(temp);
+                            if (settings.load) {
+                                settings.load.call(self, elements.length, settings);
+                            }
+                    });
                 }
             });
 
@@ -98,7 +112,7 @@
                 });
             }
         });
-        /* Check if something appears when window is resized. */
+
         $window.bind("resize", function(event){
             update();
         });
