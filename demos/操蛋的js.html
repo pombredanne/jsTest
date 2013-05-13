@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>JS Bin</title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+		//考察js对象
+		var obj = obj1 = {};
+		obj1['y'] = 3;		//obj{y:3} 
+		obj['x'] = obj1;  //obj{x:{y:3},y=3}
+		obj1['y'] = 4;		//obj{x:{y:4},y=4};
+		console.log(obj['x']['y']); //obj.x.y
+	</script>
+
+	<script type="text/javascript">
+		var tmp = 'a';
+
+		if([] == false) tmp += 'b';
+
+		if([] === false) tmp += 'rambo';
+
+		if(![]) tmp += 'c';
+
+		alert(tmp); //tmp 值为 ？
+
+		// a();
+		// function a(){alert('hello');}
+		// b();
+		// var b = function(){alert('world');}
+
+
+		// for(var i = 0;i < 5;i++) {
+		//     setTimeout(function(){
+		//         alert(i);
+		//     },500);
+		// }
+	</script>
+	<script>
+
+		//http://james.padolsey.com/javascript/A3another-javascript-quiz    原题
+		//http://www.zhangxinxu.com/wordpress/2013/05/%E7%90%86%E8%A7%A3another-javascript-quiz-%E9%A2%98%E7%9B%AE/    答案
+
+		// 优先级  ！ > 算术运算符 > 关系运算符 > && > || > 赋值运算符  -- http://www.slyar.com/blog/c-operator-priority.html 
+		1 || "foo" && 0 ;
+		
+		(1,2,3);   // 好比 var i=1,ii=2,iii=3;  因此 return 3    同理还有  a:b;  //假设 a b 都已经定义  将会返回 最后一个b  2:3  不行
+		{ foo : 123 ,ff:33232} // error   {a:2}  yes   {a:2,b:2} no
+
+
+		[+true, +false];  // 隐式转换为 [+1,+0]
+		++'52';  // ++ -- 操作符只能使用于变量 eg:var t=3; t++ or ++t
+
+		/*
+			false.toString.length  0
+			单独写的时候:
+			0.toString()    --error
+			0..toString()   --yes
+			(0).toString()  --yes    
+			当调用function下length时，他返回的是arguments.length，
+		*/
+		[1,2,3,4,5][0..toString.length];
+
+		/*
+			{} + 'b'   ==>  NaN
+			({}+'b')	 ==>  "[Object Object]b"
+			({})    	 ==>   Object {}
+			{}		 ==>   undefined
+		*/
+		({} + 'b' > {} + 'a'); 
+
+		0.1+0.2;   // 0.30000000000000004    -- http://mzhou.me/article/45001/
+
+		Number.prototype.x = function(){ 
+			console.log(typeof this);  //object
+			console.log(this);		  //Number {x: function}
+			return this === 123;		  //但是在计算中/应用中 会将this转换为string的 number  别的原型也是如此
+		};
+
+		[undefined,undefined].join();   //  ","
+
+		'foo' == new function(){ return String('foo'); }; 
+		/*
+			return Object{}   	
+			new function 立刻执行
+			new Function 只是构造出一个函数
+			new function(){ return String('foo'); }()   //yes  单独使用加不加() 都会执行
+			var y=new function(){}  
+			y()  //no 不能用()  其实y 已经没有意义了   始终返回 Object{}
+		*/
+
+	</script>
+</body>
+</html>
