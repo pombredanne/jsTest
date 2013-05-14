@@ -1,3 +1,7 @@
+/*
+    canvas:无法给隐藏的选项 进行绘制  可以考虑加上该选项  是否允许给hidden元素 添加
+*/
+
 "use strict";
 (function() {
 
