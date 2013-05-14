@@ -16,25 +16,22 @@
             fn = function() {},
             fnP = fn.prototype;
         for (var j = 0, p = pro[0]; p; p = pro[j++]) {
-            if (cxt[p]!==undefined){
-                fn.prototype[p] = function(p) {
-                    return function() {
+            fn.prototype[p] = function(p) {
+                return function() {
+                    if(cxt[p]!==undefined){
                         var args = Array.prototype.slice.call(arguments);
-                        // console.log(args);
                         if (typeof cxt[p] == 'function') {
                             cxt[p].apply(cxt, args);
                         } else {
                             cxt[p] = args+'';
                         }
-                        return fnP;
-                    };
-                }(p);
-            }else{
-                fn.prototype[p]=function(){
-                    console.log('sorry 不支持此函数');
-                    throw "sorry 不支持此函数";
-                }
-            }
+                    }else{
+                        console.log("不支持此属性"+cxt[p]);
+                    }
+
+                    return fnP;
+                };
+            }(p);
         }
         return new fn;
     }
