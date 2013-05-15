@@ -5,38 +5,40 @@
 "use strict";
 (function() {
 
-    var pro = ['setTransform', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'setLineDash', 'setShadow', 'setStrokeColor', 'setFillColor', "fillStyle", "strokeStyle", "shadowColor", "shadowBlur", "shadowOffsetX", "shadowOffsetY", "createLinearGradient", "createPattern", "createRadialGradient", "addColorStop", "lineCap", "lineJoin", "lineWidth", "miterLimit", "rect", "fillRect", "strokeRect", "clearRect", "fill", "stroke", "beginPath", "moveTo", "closePath", "lineTo", "clip", "quadraticCurveTo", "bezierCurveTo", "arc", "arcTo", "isPointInPath", "scale", "rotate", "translate", "transform", "setTransform", "transform", "font", "textAlign", "textBaseline", "fillText", "strokeText", "measureText", "drawImage", "width", "height", "data", "createImageData", "getImageData", "putImageData", "globalAlpha", "globalCompositeOperation"];
+  var pro = ['setTransform', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'setLineDash', 'setShadow', 'setStrokeColor', 'setFillColor', "fillStyle", "strokeStyle", "shadowColor", "shadowBlur", "shadowOffsetX", "shadowOffsetY", "createLinearGradient", "createPattern", "createRadialGradient", "addColorStop", "lineCap", "lineJoin", "lineWidth", "miterLimit", "rect", "fillRect", "strokeRect", "clearRect", "fill", "stroke", "beginPath", "moveTo", "closePath", "lineTo", "clip", "quadraticCurveTo", "bezierCurveTo", "arc", "arcTo", "isPointInPath", "scale", "rotate", "translate", "transform", "setTransform", "transform", "font", "textAlign", "textBaseline", "fillText", "strokeText", "measureText", "drawImage", "width", "height", "data", "createImageData", "getImageData", "putImageData", "globalAlpha", "globalCompositeOperation"];
 
-    function XtendCanvas(canvas) {
-        if(!canvas){
-           throw 'please choose canvas';
-        }
-
-        var cxt = canvas.getContext('2d'),
-            fn = function() {},
-            fnP = fn.prototype;
-        for (var j = 0, p = pro[0]; p; p = pro[j++]) {
-            fn.prototype[p] = function(p) {
-                return function() {
-                    if(cxt[p]!==undefined){
-                        var args = Array.prototype.slice.call(arguments);
-                        if (typeof cxt[p] == 'function') {
-                            cxt[p].apply(cxt, args);
-                        } else {
-                            cxt[p] = args+'';
-                        }
-                    }else{
-                        console.log("不支持此属性"+cxt[p]);
-                    }
-
-                    return fnP;
-                };
-            }(p);
-        }
-        return new fn;
+  function XtendCanvas(canvas) {
+    if (!canvas) {
+      throw 'please choose canvas';
     }
 
-    window.ctvChain = XtendCanvas;
+    var cxt = canvas.getContext('2d'),
+      fn = function() {},
+      fnP = fn.prototype,
+      protoCache = function(p) {
+        return function() {
+          if (cxt[p] !== undefined) {
+            var args = Array.prototype.slice.call(arguments);
+            if (typeof cxt[p] == 'function') {
+              cxt[p].apply(cxt, args);
+            } else {
+              cxt[p] = args + '';
+            }
+          } else {
+            console.log("不支持此属性" + cxt[p]);
+          }
+
+          return fnP;
+        };
+      };
+
+    for (var j = 0, p = pro[0]; p; p = pro[j++]) {
+      fn.prototype[p] = protoCache(p);
+    }
+    return new fn();
+  }
+
+  window.ctvChain = XtendCanvas;
 })();
 
 /*
