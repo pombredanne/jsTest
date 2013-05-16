@@ -14,7 +14,11 @@ var Class = {
 			corl._super = function(params) { //调用父类方法
 				params = params || [];
 				if (params) {
-					this._father[params.shift()].apply(this, params);
+				    var type=params.shift();
+                    this._father[type].apply(this, params);
+                    if(type==='init'){
+                        delete this._father.init;
+                    }
 				} else {
 					console.log('fuck no params ');
 				}
