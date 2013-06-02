@@ -729,3 +729,13 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
         document.getElementById("content_re").innerHTML=str
     }
     
+ ------ ------ ------ ------ ------ ------ ------   javascript: 防止在新页面打开 ---------------------------------------------
+<a href="javascript:$('div.register_content').hide();void(0)">  
+ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  认为是一段注释的没有结束
+
+-------------------------------------------------- resize: none;-------------------------------------------
+        在使用resize的时候, style="height:50px;resize: none;"   height:必须放到resize前面
+        style="height:50px;" style="resize: none;"    两个style的时候  只认  第一个
+        
+----------------------------------------------------- document.write --------------------------------------------        
+ document.write('<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"><'+'\/script>')  //在//处自动添加添加前缀
