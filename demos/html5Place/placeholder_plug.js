@@ -110,6 +110,7 @@
                 };
             }
             if(options.normal){
+                options.isFF=false;
                 if(isPlaceHolder()){
                     $(self).attr('placeholder',self.getAttributeNode('placejQ').value);
                 }
