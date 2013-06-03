@@ -5,16 +5,11 @@
             var options = {
                 isFF: true,
                 className: 'placeholder',
-                placeholder: false
+                normal:true
             }
 
             var isPlaceHolder = function() {
-                if (options.placeholder) {
                     return 'placeholder' in document.createElement('input');
-                } else {
-                    return false;
-                }
-
             };
 
             if (!jQuery.isFunction(window.placeHolder)) {
@@ -114,7 +109,14 @@
                     }
                 };
             }
-            new _placeHolder(self);
+            if(options.normal){
+                if(isPlaceHolder()){
+                    $(self).attr('placeholder',self.getAttributeNode('placejQ').value);
+                }
+            }else{
+                new _placeHolder(self);
+            }
+            
         });
     };
 })(jQuery);
