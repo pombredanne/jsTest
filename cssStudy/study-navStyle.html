@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<base href="http://www.jsfoot.com/jquery/demo/2012-07-23/707.html">
+	<title>jquery导航条动画二级菜单特效|jsfoot 网页特效</title>
+	<meta charset="utf-8"/>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<style type="text/css">
+		* {
+		    margin:0;
+		    padding:0;
+		    list-style-type:none;
+		}
+		a, img {
+		    border:0;
+		}
+		a, a:visited {
+		    color:#5e5e5e;
+		    text-decoration:none;
+		}
+		a:hover {
+		    color:#333;
+		    text-decoration:underline;
+		}
+		body {
+		    font:12px/180% Arial, Lucida, Verdana, "宋体", Helvetica, sans-serif;
+		    color:#333;
+		    background:#fff;
+		}
+		/* navbox */
+		 .navbox, .nav li, .nav li.current a, .nav li.selected a span, .nav li a.selected, .nav li a.selected span {
+		    background:url(images/headerbg.png) no-repeat;
+		}
+		.navbox {
+		    height:39px;
+		    background-position:0 -138px;
+		    background-repeat:repeat-x;
+		    position:relative;
+		    z-index:9;
+		}
+		.nav {
+		    width:960px;
+		    margin:0 auto;
+		}
+		.nav li {
+		    float:left;
+		    height:39px;
+		    background-position:100% -99px;
+		    padding:0 3px 0 2px;
+		    position:relative;
+		}
+		.nav li.last {
+		    background:none;
+		}
+		.nav li a {
+		    float:left;
+		    display:block;
+		    padding:0 0 0 4px;
+		    height:39px;
+		    overflow:hidden;
+		}
+		.nav li a span {
+		    float:left;
+		    display:block;
+		    padding:0 4px 0 0;
+		    line-height:39px;
+		    font-size:14px;
+		    color:#fff;
+		    font-weight:800;
+		    cursor:pointer;
+		    width:142px;
+		    text-align:center;
+		}
+		.nav li.selected a, .nav li a.selected {
+		    background-position:0 -60px;
+		    text-decoration:none;
+		}
+		.nav li.selected a span, .nav li a.selected span {
+		    background-position:100% -60px;
+		    color:#ff7e00;
+		}
+
+		.nav li.selected .submenu {     /*制定当被选中的时候 的状态*/
+		    display:block;
+		}
+		.nav li .submenu {
+		    display:none; 
+		    position:absolute;
+		    top:39px;
+		    left:6px;
+		    border-style:solid;
+		    border-width:0px 1px 1px 1px;
+		    border-color:#ddd;
+		    padding:0 5px 5px 5px;
+		    width:132px;
+		    background:#fff;
+		    -moz-border-radius:0 0 3px 3px;
+		    -webkit-border-radius:0 0 3px 3px;
+		    border-radius:0 0 3px 3px;
+		    -moz-box-shadow:0 5px 5px #D3D3D3;
+		    -webkit-box-shadow:0 5px 5px #D3D3D3;
+		    box-shadow:0 5px 5px #D3D3D3;
+		}
+
+		.nav li .submenu li {
+		    float:none;
+		    padding:0;
+		    background:none;
+		    height:auto;
+		    border-bottom:dotted 1px #BEBEBE;
+		}
+		.nav li .submenu li.last {
+		    border:none;
+		}
+		.nav li .submenu li a {
+		    float:none;
+		    padding:0;
+		    text-align:center;
+		    height:28px;
+		    line-height:28px;
+		    background:none;
+		}
+		.nav li .submenu li a:hover {
+		    background:#ddd;
+		    font-weight:800;
+		}	
+	</style>
+</head>
+<body>
+	<div class="navbox">
+		<div class="nav">
+			<ul class="clearfix">
+				<li>
+					<a class="selected" target="_blank" href="http://www.jsfoot.com/">
+						<span>网站首页</span>
+					</a>
+				</li>
+				<li class="drop-menu-effect">
+					<a target="_blank" href="http://www.jsfoot.com/jquery/">
+						<span>jquery代码</span>
+					</a>
+					<ul class="submenu">    <!--抽屉部分-->
+						<li>
+							<a href="http://www.jsfoot.com/jquery/images/">jquery图片特效</a>
+						</li>
+						<li>
+							<a href="http://www.jsfoot.com/jquery/menu/">jquery导航菜单</a>
+						</li>
+						<li>
+							<a href="http://www.jsfoot.com/jquery/xxk/">jquery选项卡特效</a>
+						</li>
+						<li>
+							<a href="http://www.jsfoot.com/jquery/xxk/">jquery文字特效</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function dropMenu(obj) {
+			$(obj).each(function() {
+				var theSpan = $(this),
+					theMenu = theSpan.find(".submenu");
+
+				theSpan.hover(function() {
+					$(this).addClass("selected");
+				}, function() {
+					$(this).removeClass("selected");
+				});
+			});
+		}
+		dropMenu(".drop-menu-effect");
+	</script>
+</body>
+</html>
