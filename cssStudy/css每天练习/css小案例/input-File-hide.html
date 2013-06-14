@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+		<title>兼容式达到覆盖file选框</title>
+	</head>
+
+	<style type="text/css">
+
+		.uimg1 {position:relative; overflow:hidden;}
+		.uimg2 {width:80px; border:1px solid; position:absolute; top:0;left:-10px;
+			overflow:hidden;
+			float:right;
+			padding:0;
+			margin:0;
+			filter:alpha(opacity=0);
+			-moz-opacity:0;
+			-khtml-opacity: 0;
+			opacity: 0;
+			}
+		.sc {color:blue;text-decoration:underline;}
+		#yulan img {width:100px; height:80px;}
+	</style>
+
+	<body>
+		<form id="upimgform" method="post" enctype="multipart/form-data" action="upaimg.php">
+		上传图片：
+		<span class="uimg1"><span id="maolian" class="sc">本地上传</span>
+			<span class="uimg2"><input name="uimg" id="uimg" type="file" size="1" style="width:100%" /></span>
+		</span>
+		</form>
+		<div id="yulan"></div>
+	</body>
+</html>

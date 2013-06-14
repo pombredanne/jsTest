@@ -1,0 +1,53 @@
+<html>
+<meta charset='utf-8'/>
+<style>
+    body,table{
+        font-size: 12px;
+    }
+    table{
+        table-layout: fixed;/*表格的布局算法吧 是根据我们制定的宽度还是自动由内容控制*/
+        empty-cells: show;/*属性设置是否显示表格中的空单元格*/
+        border-collapse: collapse;/*是否不要自带的那种难看的表格边框*/
+        margin:0 auto;
+        border:1px solid #cad9ea;
+        color:#666;
+    }
+    td{
+        height:20px;
+    }
+    table td,table th{
+        border:1px solid #cad9ea;
+        padding:0 1em 0;/*top left&&bottom right*/
+    }
+    tr.even{
+        background-color: #f5fafe;
+    }
+
+</style>
+<body>
+
+<table width="90%" border="1" class="table">
+    <thead>
+    <th width="10%">序号</th>
+    <th width="30%">姓名</th>
+    <th width="20%">性别</th>
+    <th width="30%">所在单位</th>
+    <th width="10%">操作</th>
+    </thead>
+    <tr class="even">
+        <td>1</td>
+        <td>张三</td>
+        <td>男</td>
+        <td>xx</td>
+        <td>删除</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>村在</td>
+        <td>女</td>
+        <td>XX</td>
+        <td>删除</td>
+    </tr>
+</table>
+</body>
+</html>

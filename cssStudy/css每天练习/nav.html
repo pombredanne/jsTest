@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <style>
+        #user_nav_block{
+            width:200px;
+            font:12px/1.5 Helvetica,arial;
+            color:#404040;
+            text-align:left;
+            display: inline-block;
+            float: left;
+        }
+        ul{
+            margin:0;
+            padding:0;
+            list-style:none;
+        }
+        li{
+            display:list-item;
+            text-align:left;
+        }
+        #user_nav_block ul {
+            background-color: #F3F3F3;
+            border: 1px solid #D2D2D2;
+            font-size: 14px;
+            padding: 10px 0;
+        }
+        .nav-block a{
+            background-position:9px -46px;
+        }
+        .user-shezhi a, .user-youji a, .user-wenda a, .user-tiezi a, .user-zuji a, .user-yuanwang a, .user-jihua a, .user-ziliao a, .user-zhuye a, .user-tuichu a, .user-remarked a, .user-renling a, .user-dingdan a {
+            background: url("http://www.w3cplus.com/framework/navblock/images/user-icon.png") no-repeat scroll 0 0 transparent;
+            color: #333333;
+            height: 28px;
+            line-height: 28px;
+            padding-left: 42px;
+        }
+        .nav-block a {
+            display: block;
+            height: 30px;
+            line-height: 30px;
+        }
+        a {
+            color: #2965B1;
+            text-decoration: none;
+        }
+        #user_nav_block .divider{
+            border-bottom:1px solid #e4e3e3;
+            padding-bottom:5px;
+        }
+        .pt5{
+            padding-top:5px;
+        }
+        .user-youji a{
+            background-position:9px -46px;
+        }
+        .user-tiezi a{
+            background-position:10px -103px;
+        }
+        .user-zuji a{
+            background-position:9px -141px;
+        }
+        #user_nav_block .active a,#user_nav_block a:hover{
+            background-color:#A0c12c;
+            background-image:url("http://www.w3cplus.com/framework/navblock/images/user-icon-hover.gif");
+            color:#ffffff;
+        }
+        .user-yuanwang a{
+            background-position:10px -172px;
+        }
+        .user-jihua a{
+            background-position:10px -199px;
+        }
+        .user-remarked a{
+            background-position:10px -308px;
+        }
+        .user-renling a{
+            background-position:10px -369px;
+        }
+        .user-dingdan a{
+            background-position:10px -340px;
+        }
+        .user-ziliao a{
+            background-position:10px -225px;
+        }
+        .user-shezhi a{
+            background-position:8px -8px;
+        }
+    </style>
+    <style>
+        #aside_nav_block{
+            background-color:#FFFFFF;
+            border:1px solid #e7e7e7;
+            border-radius:5px 5px 5px 5px;
+            width:180px;
+            float: left;
+            margin-left: 10px;
+        }
+            /*
+              背景属性：背景颜色 背景图片 背景是否重复 背景时候随浏览器滚动 背景平位置 背景垂直位置
+              background : background-color || background-image || background-repeat || background-attachment || background-position
+
+              ransparent表示透明无颜色  一般为系统默认
+              none 表示没有设置背景图片
+              repeat 表示图片重复
+              scroll 表示背景图片随浏览器下拉而滚动
+              0%水平位置在x0
+              0%垂直位置在y0
+            */
+        #aside_nav_block li a {
+            background: url("http://www.w3cplus.com/framework/navblock/images/nav-icon.png") no-repeat scroll 10px 7px transparent;
+        }
+        #aside_nav_block li.active{
+            background:url("http://www.w3cplus.com/framework/navblock/images/nav-repeat.gif") repeat-x scroll 0 0 transparent;
+        }
+        #aside_nav_block li.home-link{
+            border-radius:5px 5px 0 0;
+        }
+        #aside_nav_block li.active a, #aside_nav_block li:hover a {
+            background: url("http://www.w3cplus.com/framework/navblock/images/nav-icon-hover.png") no-repeat scroll 10px 7px transparent;
+            color: #FFFFFF;
+        }
+        #aside_nav_block a {
+            color: #333333;
+            display: block;
+            font-family: '微软雅黑';
+            font-size: 16px;
+            height: 40px;
+            line-height: 40px;
+            padding-left: 50px;
+            text-decoration: none;
+        }
+        .nav-block a {
+            display: block;
+            height: 30px;
+            line-height: 30px;
+        }
+        #aside_nav_block li.live-link, #aside_nav_block li.video-link, #aside_nav_block li.game-link, #aside_nav_block li.tool-link {
+            height: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+        #aside_nav_block li.live-link a {
+            background-position: 10px -33px;
+        }
+        #aside_nav_block li a.live-rec, #aside_nav_block li a.game-rec, #aside_nav_block li a.video-rec, #aside_nav_block li a.tool-rec {
+            background: url("http://www.w3cplus.com/framework/navblock/images/nav-arrow-icon.gif") no-repeat scroll 0 0 transparent;
+            color: #FFFFFF;
+            font-size: 12px;
+            height: 20px;
+            line-height: 18px;
+            overflow: hidden;
+            padding-left: 5px;
+            position: absolute;
+            right: 5px;
+            text-align: center;
+            top: 10px;
+            white-space: nowrap;
+            width: 52px;
+        }
+        #aside_nav_block li.joy-link a {
+            background-position: 10px -73px;
+        }
+        #aside_nav_block li.game-link a {
+            background-position: 10px -113px;
+        }
+        #aside_nav_block li a.game-rec {
+            background-position: -88px 0;
+        }
+        #aside_nav_block li.video-link a {
+            background-position: 10px -152px;
+            position: relative;
+        }
+        #aside_nav_block li:hover{
+            background-color: #9ad2f6;
+        }
+    </style>
+</head>
+<body>
+    <div id="user_nav_block">
+        <ul class="nav-block">
+            <li class="user-youji first"><a href="#">我的微游记</a></li>
+            <li class="user-tiezi divider"><a href="#">我的旅游攻略</a></li>
+            <li class="user-zuji active pt5"><a href="#">我去过</a></li>
+            <li class="user-yuanwang"><a href="#">我想去</a></li>
+            <li class="user-jihua"><a href="#">我的旅行计划</a></li>
+            <li class="user-remarked divider"><a href="#">我添加的目的地</a></li>
+            <li class="user-renling pt5"><a href="#">我认领的目的地</a></li>
+            <li class="user-dingdan divider"><a href="#">我的订单</a></li>
+            <li class="user-ziliao pt5"><a href="#">个人资料</a></li>
+            <li class="user-shezhi last"><a href="#">账户设置</a></li>
+        </ul>
+    </div>
+    <div id="aside_nav_block">
+        <ul class="nav-block">
+            <li class="home-link active"><a href="/">首页</a></li>
+            <li class="live-link"><a href="#">生活</a><a title="天涯赞" href="#" class="live-rec">天涯赞</a></li>
+            <li class="joy-link"><a href="#">娱乐</a></li>
+            <li class="game-link"><a href="#">小游戏</a><a title="葫芦娃打炮" href="#" class="game-rec">葫芦娃打</a></li>
+            <li class="video-link"><a href="#">视频</a><a title="木灵宝贝" href="#" class="video-rec">木灵宝贝</a></li>
+            <li class="music-link"><a href="#">音乐</a></li>
+            <li class="tool-link"><a href="#">工具</a><a title="天涯用户体验提升计划" href="#" class="tool-rec">天涯用户</a></li>
+
+        </ul>
+    </div>
+
+</body>
+</html>

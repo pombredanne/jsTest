@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>服务范围_深圳伟光科技-企业建站|网站建设|网页设计|电子商务网站开发</title>
+        <link href="global.css" rel="stylesheet" type="text/css" />
+        <script src="jquery-1.8.2.min.js"></script>
+        <script src="common.js"></script>
+    </head>
+<body>
+    <div class="header_wrap">
+        <div class="header">
+            <div class="logo"><a href="http://www.wgfly.com">深圳伟光科技-企业建站|网站建设|网页设计|电子商务网站开发</a></div>
+            <div class="main-menu" id="mainMenu">
+                <ul>
+                  <li class='current'><a href='/'>首页</a></li>
+                  <li><a href='/service/'  rel='dropmenu2'><span>服务范围</span></a></li>
+                  <li><a href='/cases/'  rel='dropmenu4'><span>成功案例</span></a></li>
+                  <li><a href='/about_us/'  rel='dropmenu6'><span>关于我们</span></a></li>
+                  <li><a href='/guestbook/' ><span>在线留言</span></a></li>
+                </ul>
+                <div class="main-menu-on" id="mainMenuOn"></div>
+            </div>
+        </div>
+        <div class="c_banner">
+            <img src="images/2.jpg" width="1000" height="245" alt="服务范围"/>
+        </div>
+    </div>
+    <div class="c_body">
+        <div class="cattit_list">
+            <ul>
+                <li><span data-url="html.html" typeid="18">网站建设</span></li>
+                <li><span data-url="/service/software/" typeid="19">软件开发</span></li>
+                <li><span data-url="/service/design/" typeid="20">平面设计</span></li>
+                <li><span data-url="/service/domain/" typeid="21">空间域名</span></li>
+            </ul>
+        </div>
+        <div class="content_area">
+            <ul class="wrap_ul">
+            <!--ajax load area beg-->
+             <li class="wrap_li">
+                 <!-- <div class="about_area">
+                     <div class="company_img">
+                         <img width="292" height="182" src="http://www.wgfly.com/templets/wgfly/images/company_1.png" alt=""> <img width="292" height="182" src="http://www.wgfly.com/templets/wgfly/images/company_2.png" alt=""> <img width="292" height="182" src="http://www.wgfly.com/templets/wgfly/images/company_3.png" alt=""></div>
+                     <div class="main-area">
+                         <div class="fl wwa">
+                             <h3>
+                                 Who are we? 我们是谁？</h3>
+                             <p>
+                                 伟光科技是一支实战经验丰富、独具创意的设计人才、IT人才以及营销策划专家为主所构成的钢铁团队，团队力量来自广州、深圳、上海，北京等一线城市，其中包括曾供职于国际4A广告公司的创意设计师与资深策划师以及被授予MVP称号的网络工程师。专业从事网站设计、平面视觉设计、网站建设、网站推广和网络营销等服务，是企业品牌形象塑造、升级、管理的设计专家，是国内业界极具影响力的品牌网站设计公司！</p>
+                             <p>
+                                 集品牌策划，设计实现，互动媒体，市场营销为一体，致力于服务中国最高端企业与品牌的360度整合策划专家。专注于企业品牌与IT运营相结合的整体战略服务，竭力为客户提供具备真正价值的"品牌营销体系"和"企业信息化管理体系"。</p>
+                             <p>
+                                 我们以团队存在的意义为立足点，只承接最富有潜力的客户，最具有挑战的项目，以最出色的团队保证公司与客户的双赢，实现团队每个成员的个人价值与公司赋予社会的价值。我们深知时间对于我们人生的意义，所以，我们不断地挑战设计与策划专业的极限。以高水准国际化的设计与策划来赢取市场。</p>
+                         </div>
+                         <div class="fr philosophy">
+                             <h3>
+                                 company philosophy 公司理念？</h3>
+                             <p>
+                                 拒绝平庸，没有最好，只有更好</p>
+                             <p>
+                                 您的品牌成功是我们的责任</p>
+                             <p>
+                                 拒绝一部分客户，是为了更好地服务于另外一部分客户</p>
+                             <p>
+                                 如果您企图在策划机构或设计公司之间拼价格，请您不要来找我们…</p>
+                             <p>
+                                 价格是可以谈，但不是用拼这种方式，每个公司的价值理念不同，策划能力不同，设计水平不同，推广技术不同，执行效果不同，价格自然会不同，这个道理您应该比我们更清楚。</p>
+                             <p>
+                                 如果您想找几个设计或者策划公司来竞稿，希望您不要来找我们…</p>
+                             <p>
+                                 因为我们没有时间也没有必要在这个环节里浪费太多的时间，不想通过这样的方式来说服您，因为我们要把更多时间和心思用在那些已经签约的客户身上 ，他们的成功是我们的责任。</p>
+                             <p>
+                                 如果您不重视策划、不重视设计、不重视质量，我希望您不要来找我们…</p>
+                             <p>
+                                 一个对策划和设计不在乎的客户，因为您的出发点不在这里，不在乎策划、设计和质量，却还要找专业策划机构和设计公司做什么？如果您不看重策划、设计和质量，我希望您不要来找我们（为保证有足够的时间和经费做出优秀的作品 ，我们只有这样要求我们的客户）因为还是有很多需要优秀策划和设计的企业。那些需要优秀策划和设计的企业便是我们一直追求的目标。</p>
+                         </div>
+                     </div>
+                 </div> -->
+             </li><li class="wrap_li"><!--ajax load area--></li><li class="wrap_li"><!--ajax load area--></li><li class="wrap_li"><!--ajax load area--></li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        subNav();
+    </script>
+
+    <div class="footer_wrap">
+        <div class="footer">
+            <div class="copyright">
+                <p class="foot_link"><a href="#">网站首页</a>　|　<a href="#">成功案例</a>　|　<a href="#">服务项目</a>　|　<a href="#">客户评价</a>　|　<a href="#">新闻中心</a>　|　<a href="#">关于我们</a>　|　<a href="#">联系我们</a>　|　<a href="#">站长统计</a></p>
+                <p>Copyright &copy; 2012 wgfly.com 伟光科技 版权所有
+      备案号：粤ICP备10218436号</p>
+                <p>地址：深圳市福田区天安数码城天济大厦CD座7楼 E-mail：wgao@wgfly.com  <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=370257172&site=qq&menu=yes">QQ：370257172 </a></p>
+            </div>
+            <div class="foot_ser"></div>
+        </div>
+    </div>
+    <div class="foot_keword_wrap">
+        <div class="foot_keword">深圳企业建站 | 深圳软件开发 | 深圳平面设计 | 空间域名 | 网站SEO | 网站建设 | 软件开发 | 平面设计 | 网站制作 | 定制软件 | </div>
+    </div>
+</body>
+</html>

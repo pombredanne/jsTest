@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        @charset "utf-8";
+        body{
+            background-color:#fefefe;
+        }
+        h1,h2,h3{
+            font-family:'微软雅黑';
+        }
+        a:hover{
+            text-decoration:none;
+        }
+        h2.title{
+            font-size:16px;
+            line-height:36px;
+            color:#29B4F0;
+        }
+
+        #demo_zone
+        {
+            text-align:left;
+            margin-left:auto;
+            margin-right:auto;
+            margin-bottom:30px;
+            width:758px;
+        }
+
+        h1,h2,h3,h4,h5,h6,p,figure,form{
+            margin:0;
+        }
+
+
+        h2{
+            font-size:14px;
+            line-height:30px;
+        }
+
+            /* ul ol dl */
+        ul,li,ol{
+            margin: 0;
+            padding:0;
+            list-style: none outside none;
+        }
+
+        #right_rate_block{
+            width:168px;
+        }
+        .m10{
+            margin:10px;
+        }
+        .aside-block,.border-box{
+            border-radius:5px;
+            border:1px solid #e5e5e5;
+            background-color:#fff;
+        }
+        .block-content{
+            margin:10px;
+        }
+            /*.tabs-color  */
+        .tabs-color a{
+            width:50%;
+            display:inline-block;*display:inline;*zoom:1;
+            text-align:center;
+            line-height:36px;
+            height:36px;
+            font-size:14px;
+            background-color:#e5e5e5;
+        }
+        .tabs-color a.active{
+            background:#fff;
+        }
+        #right_rate_block .tabs-color a:first-child{
+            border-radius:5px 0 0 0;
+        }
+        #right_rate_block .tabs-color a:last-child{
+            border-radius:0 5px 0 0;
+        }
+            /*  */
+        #online_game_tabs{
+            border:1px solid #e5e5e5;
+            border-top:none;
+        }
+        .tabs-border-full a{
+            width: 125px;/*1*/
+            display:inline-block;*display:inline;*zoom:1;
+            text-align:center;
+            line-height:36px;/*1*/
+            height:36px;/*1*/
+            border:1px solid #e5e5e5;
+            border-left:none;
+        }
+        .tabs-border-full a.last{
+            width:126px;
+            border-right:none;
+        }
+        .tabs-border-full a:hover{
+            border-top-color:#007AC0;
+        }
+        .tabs-border-full a.active{
+            border-top-color:#007AC0;
+            border-bottom-color:#fff;
+        }
+        .tabs-border-full a:first-child{
+            border-top-left-radius:5px;
+        }
+        .tabs-border-full a:last-child{
+            border-top-right-radius:5px;
+        }
+
+            /* .tabs-border */
+        .tabs-border{
+            height:31px;
+            border-bottom:1px solid #e5e5e5;
+            font-weight:normal;
+        }
+        .tabs-border a{
+            margin-bottom:-1px;
+            position:relative;
+            margin-right:10px;
+            line-height:30px;
+            height:30px;
+            border:1px solid #e5e5e5;
+            padding:0 15px;
+            float:left;
+            display:inline;
+            background-color:#e5e5e5;
+            color:#333;
+        }
+        .tabs-border a.active{
+            border-bottom:1px solid #fff;
+            background-color:#fff;
+        }
+
+    </style>
+</head>
+<body>
+<div id="demo_zone">
+    <h2>颜色块类型</h2>
+    <div class="aside-block" id="right_rate_block">
+        <h2 class="tabs-nav tabs-color"><a href="#" class="active">月排行榜</a><a href="#">总排行榜</a></h2>
+        <div class="tabs-content-wrap block-content">
+            <div class="tabs-content">
+                我是tabs内容一
+            </div>
+        </div>
+    </div>
+    <h2>线条边框类型一：占满边框型</h2>
+    <div id="online_game_tabs" class="border-box">
+        <h2 class="tabs-nav tabs-border-full"><a class="active" href="#">热门应用</a><a href="#">最新应用</a><a href="#">娱乐应用</a><a href="#">视频应用</a><a href="#">音乐应用</a><a href="#" class="last">生活应用</a></h2>
+        <div class="tabs-content-wrap m10">
+            <div class="tabs-content">我是热门应用的内容</div>
+        </div>
+    </div>
+    <h2>线条边框类型二：非满边框型</h2>
+    <div id="tvp_latest">
+        <h2 class="tabs-nav tabs-border"><a class="active" href="#">最新电视剧</a><a href="#">大陆剧</a><a href="#">港剧</a><a href="#">台剧</a></h2>
+        <div class="tabs-content-wrap border-box">
+            <div class="tabs-content">我是最新电视剧</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

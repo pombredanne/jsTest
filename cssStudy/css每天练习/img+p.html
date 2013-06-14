@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+
+        body {
+            background-color: #FFFFFF;
+            color: #404040;
+            font: 12px/1.5 Helvetica,arial;
+            height: auto !important;
+            margin: 0;
+            min-height: 100%;
+            padding: 0;
+            text-align: center;
+        }
+        h1, h2, h3, h4, h5, h6, p, figure, form {
+            margin: 0;
+        }
+        ul, li, ol {
+            list-style: none outside none;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2, h3 {
+            font-family: '微软雅黑';
+        }
+        h2 {
+            font-size: 14px;
+            line-height: 30px;
+        }
+        img {
+            border: 0 none;
+            vertical-align: middle;/*图片文本 对齐方式*/
+        }
+        a {
+            color: #2965B1;
+            text-decoration: none;
+        }
+        #demo_zone {
+            width: 714px;
+            margin-bottom: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        .imgtext-h {
+             border-bottom: 1px dashed #D3D3D3;
+             padding-bottom: 19px;
+             padding-left: 210px;
+             padding-top: 10px;
+         }
+
+        .imgtext-h .img-left {
+            display: inline;
+            float: left;
+            margin-left: -210px;
+        }
+
+        .imgtext-h .img-left img {
+            height: 140px;
+            width: 200px;
+        }
+
+        .imgtext-h h3 {
+            font-size: 14px;
+        }
+        .topic-list .imgtext-h p {
+            line-height: 1.8;
+        }
+
+        .imgtext-h-block li, .imgtext-h-block .img-left, .imgtext-h-block .text-right {
+            display: inline;
+            float: left;
+        }
+        #demo_zone .imgtext-h-block {
+            width: 155px;
+        }
+        .imgtext-h-block li {
+            border-bottom: 1px dashed #D3D3D3;
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+        .imgtext-h-block .img-left {
+            margin-right: 5px;
+            width: 50px;
+        }
+        .imgtext-h-block li, .imgtext-h-block .img-left, .imgtext-h-block .text-right {
+            display: inline;
+            float: left;
+        }
+        .imgtext-h-block .text-right, .imgtext-h-block h3 {
+            width: 100px;
+        }
+        .imgtext-h-block li, .imgtext-h-block .img-left, .imgtext-h-block .text-right {
+            display: inline;
+            float: left;
+        }.imgtext-h-block h3 {
+             font-size: 12px;
+             font-weight: normal;
+             line-height: 15px;
+         }
+        .imgtext-h-block .text-right, .imgtext-h-block h3 {
+            width: 100px;
+        }
+        .short-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<div id="demo_zone">
+    <h2>内容型图文混排</h2>
+    <div class="topic-list">
+        <div class="imgtext-h clearfix">
+            <a class="img-left" href="javascript:;"><img src="http://www.w3cplus.com/framework/imgtext-horizontal/images/img200-140.jpg" alt="图片介绍"></a>
+            <div class="text-right">
+                <h3><a href="javascript:;" target="_blank">好莱坞风格ACT动作游戏《正当防卫2》</a></h3>
+                <p class="date">2012-09-18</p>
+                <p class="intro">正当防卫2是一款以特技作战为卖点的游戏，故事发生在前作的几年后，Rico正在南美洲享受正当防卫2是一款以特技作战为卖点的游戏，故事发生在前作的几年后，Rico正在南美洲享受TomSheldon，并将其杀死，此人已经成为强盗，并且躲在Panau岛，该岛就位于马来群岛一带并将其杀死，此人已经成为强盗，并且躲在Panau岛，该岛就位于马来群岛一带。</p>
+            </div>
+        </div>
+
+        <div class="imgtext-h clearfix">
+            <a class="img-left" href="javascript:;"><img src="http://www.w3cplus.com/framework/imgtext-horizontal/images/img200-140.jpg" alt="图片介绍"></a>
+            <div class="text-right">
+                <h3><a href="javascript:;" target="_blank">好莱坞风格ACT动作游戏《正当防卫2》</a></h3>
+                <p class="date">2012-09-18</p>
+                <p class="intro">正当防卫2是一款以特技作战为卖点的游戏，故事发生在前作的几年后，Rico正在南美洲享受正当防卫2是一款以特技作战为卖点的游戏，故事发生在前作的几年后，Rico正在南美洲享受TomSheldon，并将其杀死，此人已经成为强盗，并且躲在Panau岛，该岛就位于马来群岛一带并将其杀死，此人已经成为强盗，并且躲在Panau岛，该岛就位于马来群岛一带。</p>
+            </div>
+        </div>
+    </div>
+    <h2>区块型图文混排</h2>
+    <ul class="imgtext-h-block clearfix">
+        <li class="first">
+            <a href="javascript:;" class="img-left" target="_blank"><img width="50" height="50" alt="应用名称" src="http://www.w3cplus.com/framework/imgtext-horizontal/images/img50.jpg"></a>
+            <div class="text-right">
+                <h3 class="short-title"><a title="会飞的夏天" href="#">会飞的夏天会飞的夏天</a></h3>
+                <p class="birth-day">（07-22）</p>
+                <p><a class="send-btn" href="#">赠送礼物</a></p>
+            </div>
+        </li>
+        <li>
+            <a href="javascript:;" class="img-left" target="_blank"><img width="50" height="50" alt="应用名称" src="http://www.w3cplus.com/framework/imgtext-horizontal/images/img50.jpg"></a>
+            <div class="text-right">
+                <h3 class="short-title"><a title="会飞的夏天" href="#">会飞的夏天会飞的夏天</a></h3>
+                <p class="birth-day">（07-22）</p>
+                <p><a class="send-btn" href="#">赠送礼物</a></p>
+            </div>
+        </li>
+        <li class="last">
+            <a href="javascript:;" class="img-left" target="_blank"><img width="50" height="50" alt="应用名称" src="http://www.w3cplus.com/framework/imgtext-horizontal/images/img50.jpg"></a>
+            <div class="text-right">
+                <h3 class="short-title"><a title="会飞的夏天" href="#">会飞的夏天会飞的夏天</a></h3>
+                <p class="birth-day">（07-22）</p>
+                <p><a class="send-btn" href="#">赠送礼物</a></p>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

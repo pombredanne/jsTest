@@ -1,0 +1,151 @@
+Date.dayNames = ["日", "一", "二", "三", "四", "五", "六"];
+Date.abbrDayNames = ["日", "一", "二", "三", "四", "五", "六"];
+Date.monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+Date.abbrMonthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+Date.firstDayOfWeek = 0;
+Date.format = "yyyy-mm-dd";
+Date.fullYearStart = "20"; 
+(function($) {
+
+    $.extend(Date.prototype,{
+        isLeapYear:function() {
+            var c = this.getFullYear();
+            return (c % 4 == 0 && c % 100 != 0) || c % 400 == 0
+        },
+        isWeekend:function() {
+            return this.getDay() == 0 || this.getDay() == 6
+        },
+        isWeekDay:function(){
+            return ! this.isWeekend()
+        },
+        getDaysInMonth:function(){
+            return [31, (this.isLeapYear() ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][this.getMonth()]
+        },
+        getDayName:function(c){
+            return c ? Date.abbrDayNames[this.getDay()] : Date.dayNames[this.getDay()]
+        },
+        getMonthName:function(c){
+            return c ? Date.abbrMonthNames[this.getMonth()] : Date.monthNames[this.getMonth()]
+        },
+        getDayOfYear:function(){
+            var c = new Date("1/1/" + this.getFullYear());
+            return Math.floor((this.getTime() - c.getTime()) / 86400000)
+        },
+        getWeekOfYear:function(){
+            return Math.ceil(this.getDayOfYear() / 7)
+        },
+        setDayOfYear:function(c){
+            this.setMonth(0);
+            this.setDate(c);
+            return this
+        },
+        addYears:function(c){
+            this.setFullYear(this.getFullYear() + c);
+            return this
+        },
+        addMonths:function(d){
+            var c = this.getDate();
+            this.setMonth(this.getMonth() + d);
+            if (c > this.getDate()) {
+                this.addDays( - this.getDate())
+            }
+            return this
+        },
+        addDays:function(c){
+            this.setTime(this.getTime() + (c * 86400000));
+            return this
+        },
+        addHours:function(c) {
+            this.setHours(this.getHours() + c);
+            return this
+        },
+        addMinutes:function(c) {
+            this.setMinutes(this.getMinutes() + c);
+            return this
+        },
+        addSeconds:function(c) {
+            this.setSeconds(this.getSeconds() + c);
+            return this
+        },
+        zeroTime:function() {
+            this.setMilliseconds(0);
+            this.setSeconds(0);
+            this.setMinutes(0);
+            this.setHours(0);
+            return this
+        },
+        asString:function(d) {
+            var c = d || Date.format;
+            if (c.split("mm").length > 1) {
+                c = c.split("mmmm").join(this.getMonthName(false)).split("mmm").join(this.getMonthName(true)).split("mm").join(a(this.getMonth() + 1))
+            } else {
+                c = c.split("m").join(this.getMonth() + 1)
+            }
+            c = c.split("yyyy").join(this.getFullYear()).split("yy").join((this.getFullYear() + "").substring(2)).split("dd").join(a(this.getDate())).split("d").join(this.getDate());
+            return c
+        }
+    });
+
+    Date.fromString = function(t) {
+        var n = Date.format;
+        var p = new Date("01/01/1970");
+        if (t == "") {
+            return p
+        }
+        t = t.toLowerCase();
+        var m = "";
+        var e = [];
+        var c = /(dd?d?|mm?m?|yy?yy?)+([^(m|d|y)])?/g;
+        var k;
+        while ((k = c.exec(n)) != null) {
+            switch (k[1]) {
+            case "d":
+            case "dd":
+            case "m":
+            case "mm":
+            case "yy":
+            case "yyyy":
+                m += "(\\d+\\d?\\d?\\d?)+";
+                e.push(k[1].substr(0, 1));
+                break;
+            case "mmm":
+                m += "([a-z]{3})";
+                e.push("M");
+                break
+            }
+            if (k[2]) {
+                m += k[2]
+            }
+        }
+        var l = new RegExp(m);
+        var q = t.match(l);
+        for (var h = 0; h < e.length; h++) {
+            var o = q[h + 1];
+            switch (e[h]) {
+            case "d":
+                p.setDate(o);
+                break;
+            case "m":
+                p.setMonth(Number(o) - 1);
+                break;
+            case "M":
+                for (var g = 0; g < Date.abbrMonthNames.length; g++) {
+                    if (Date.abbrMonthNames[g].toLowerCase() == o) {
+                        break
+                    }
+                }
+                p.setMonth(g);
+                break;
+            case "y":
+                p.setYear(o);
+                break
+            }
+        }
+        return p
+    };
+    var a = function(c) {
+        var d = "0" + c;
+        return d.substring(d.length - 2)
+    }
+})(jQuery);
+

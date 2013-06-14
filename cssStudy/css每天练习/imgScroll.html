@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #404040;
+            font: 12px/1.5 Helvetica,arial;
+            height: auto !important;
+            margin: 0;
+            min-height: 100%;
+            padding: 0;
+            text-align: center;
+        }
+        #demo_zone{
+            text-align:left;
+            margin:0 auto;
+            width:550px;
+        }
+        .imgslide{
+            position:relative;
+        }
+        .imgslide .slide-view{
+            width:550px;
+            overflow:hidden;
+            height:300px;
+        }
+        .imgslide .slide-control {
+            background-color: rgba(0, 0, 0, 0.5);
+            bottom: 0;
+            height: 36px;
+            left: 0;
+            line-height: 36px;
+            position: absolute;
+            width: 550px;
+        }
+        ul{
+            width:2200px;
+            list-style:none outside none;
+            margin:0;
+            padding:0;
+        }
+        li{
+            display:inline;
+            float:left;
+        }
+        a{
+            color:#2965B1;
+            text-decoration:none;
+        }
+        li a img{
+            border:0 none;
+            vertical-align:middle;
+        }
+        p{
+            margin:0;
+        }
+        .slide-title a{
+            color:#ffffff;
+            display:inline-block;
+            overflow:hidden;
+            padding-left:10px;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+            width:420px;
+        }
+        .slide-bullet{
+            bottom:10px;
+            position:absolute;
+            right:10px;
+        }
+        .imgslide .slide-bullet a.active, .imgslide .slide-bullet a:hover {
+            background-position: 0 -15px;
+        }
+        .imgslide .slide-bullet a {
+            background: url("http://www.w3cplus.com/framework/imgslide/images/bullet.gif") no-repeat scroll 0 0 transparent;
+            cursor: pointer;
+            display: inline;
+            float: left;
+            height: 15px;
+            margin-right: 5px;
+            overflow: hidden;
+            text-indent: -9999px;
+            width: 13px;
+        }
+
+            /*顺序啊*/
+        .imgslide .prev-btn, .imgslide .next-btn {
+            background: url("http://www.w3cplus.com/framework/imgslide/images/arrow.png") no-repeat scroll 0 0 transparent;
+            cursor: pointer;
+            height: 36px;
+            position: absolute;
+            top: 132px;
+            width: 32px;
+        }
+        .imgslide .next-btn {
+            background-position: 0 -36px;
+            right: 0;
+        }
+        .imgslide .prev-btn {
+            left: 0;
+        }
+    </style>
+
+
+</head>
+<body>
+<div id="demo_zone">
+    <div class="imgslide" id="imgslide">
+        <div class="slide-view">
+            <ul class="inline-style clearfix">
+                <li><a href="#" title="我是标题1"><img alt="1" src="http://www.w3cplus.com/framework/imgslide/images/1.jpg"></a></li>
+                <li><a href="#" title="我是标题2"><img alt="2" src="ihttp://www.w3cplus.com/framework/imgslide/images/1.jpg"></a></li>
+                <li><a href="#" title="我是标题3"><img alt="3" src="http://www.w3cplus.com/framework/imgslide/images/1.jpg"></a></li>
+                <li><a href="#" title="我是标题4"><img alt="4" src="http://www.w3cplus.com/framework/imgslide/images/1.jpg"></a></li>
+            </ul>
+        </div>
+        <div class="slide-control">
+            <p class="slide-title"><a href="#">我是标题1</a></p>
+            <div class="slide-bullet">
+                <a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a>
+            </div>
+        </div>
+        <div class="slide-prev-next"><span class="prev-btn"></span><span class="next-btn"></span></div>
+    </div>
+</div>
+
+</body>
+</html>

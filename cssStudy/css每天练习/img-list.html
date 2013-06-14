@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>图片排列</title>
+    <style type="text/css">
+        body{
+            font: 12px/1.5 Helvetica,arial;
+        }
+
+        .imgbox{
+            width: 208px;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 5px 5px 5px 5px;
+            margin-bottom: 20px;
+        }
+
+        h2{
+            background-color: #f0f0f0;
+            border-radius: 5px 5px 0 0;
+            padding-left: 10px;
+            margin: 0 ;
+            font-size: 14px;
+            line-height: 30px;
+            font-family: '微软雅黑';
+        }
+
+        .img{
+            margin: 0 10px 10px 10px;
+        }
+        ul{
+            clear: both;/*清楚浮动造成的文档错乱  在这里的页面表现为 图片会越过外div的限制 表现出脱离文档流的表现*/
+            overflow: hidden;
+            list-style: none outside none;
+            margin-top: 10px;
+            padding: 0;/*这一点我肯定会忽视的 记住这一点*/
+       }
+
+        ul.imgul li,.imgul strong{
+            text-align: center;
+            width: 56px;
+            padding: 2px;
+        }
+
+        .imgul li, .imgul li a {
+            display: inline;
+            float: left;
+        }
+        a {
+            color: #2965B1;
+            text-decoration: none;
+        }
+        .imgul img{
+            background-color: #FFFFFF;
+            border: 1px solid #CCCCCC;
+            border-radius: 3px 3px 3px 3px;
+            height: 50px;
+            padding: 2px;
+            vertical-align: middle;
+            width: 50px;
+        }
+
+        .imgul a strong {
+            display: block;
+            font-weight: normal;
+            height: 20px;
+            line-height: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .imgul li, .imgul a strong {
+            width: 56px;
+        }
+    </style>
+</head>
+<body>
+<div class="imgbox">
+    <h2>在线用户</h2>
+    <div class="img">
+        <ul class="imgul">
+            <li>
+                <a href="javascript:;">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>那些事那些人</strong>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>那些事那些人</strong>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>那些事那些人</strong>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>那些事那些人</strong>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>那些事那些人</strong>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>那些事那些人</strong>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--第二个-->
+<style type="text/css">
+   .aside-block{
+       width: 180px;
+       background-color: #FFFFFF;
+       border: 1px solid #E5E5E5;
+       border-radius: 5px 5px 5px 5px;
+       margin-bottom: 20px;
+   }
+
+   .block-content {
+       margin: -10px 5px ;
+   }
+
+   .clearfix li, .clearfix a strong {
+       width: 60px;
+   }
+   .clearfix li {
+       margin: 10px ;
+       text-align: center;
+   }
+   .clearfix li, .clearfix li a {
+       display: inline;
+       float: left;
+       width: 56px;
+   }
+
+   .clearfix a {
+       margin-bottom: 6px;
+       color: #2965B1;
+       text-decoration: none;
+   }
+
+   .clearfix img {
+       background-color: #FFFFFF;
+       border: 1px solid #CCCCCC;
+       border-radius: 3px 3px 3px 3px;
+       height: 50px;
+       padding: 2px;
+       vertical-align: middle;
+       width: 50px;
+   }
+
+   .clearfix li, .clearfix a strong {
+       width: 60px;;
+   }
+   .clearfix a strong {
+       display: block;
+       font-weight: normal;
+       height: 20px;
+       line-height: 20px;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       white-space: nowrap;
+   }
+
+   .focus-btn {
+       background: url("http://static.tianyaui.com/global/lite/images/t_bg.gif") no-repeat scroll 0 0 transparent;
+       color: transparent;
+       cursor: pointer;
+       display: inline-block;
+       font-size: 0;
+       height: 20px;
+       line-height: 0;
+       vertical-align: middle;
+       width: 56px;
+   }
+
+   .focused-btn {
+       background-position: left -25px;/*css split顺序很重要*/
+   }
+</style>
+<div class="aside-block">
+    <h2>嘉宾微博</h2>
+    <div class="block-content">
+        <ul class="clearfix">
+            <li>
+                <a href="#">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>微博主持人</strong>
+                </a>
+                <span class="focus-btn focused-btn">关注</span>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="http://www.w3cplus.com/framework/avatar/images/img50.jpg">
+                    <strong>微博主持人</strong>
+                </a>
+                <span class="focus-btn">关注</span>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

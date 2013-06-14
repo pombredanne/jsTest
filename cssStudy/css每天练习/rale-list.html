@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <style type="text/css">
+            /*老规矩 常用的*/
+        ul, li, ol {
+            list-style: none outside none;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            color: #404040;
+            font: 12px/1.5 Helvetica,arial;
+            text-align: center;
+        }
+        h1, h2, h3 {
+            font-family: '微软雅黑';
+        }
+        h2 {
+            font-size: 14px;
+            line-height: 30px;
+        }
+        h1, h2, h3, h4, h5, h6, p, figure, form {
+            margin: 0;
+        }
+        a {
+            color: #2965B1;
+            text-decoration: none;
+        }
+
+            /*开始*/
+        .top-block{
+            width: 170px;
+            background-color: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .top-block h2 {
+            padding-left: 10px;
+            line-height: 36px;
+            text-align: left;
+            height: 36px;
+            /*以下是渐变样式的设计  暂时选学  检查ie的 background url*/
+            background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UwZTBlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmMmY4ZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+            background: -moz-linear-gradient(top, #E0E0E0 0%, #F2F8EE 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E0E0E0), color-stop(100%,#F2F8EE));
+            background: -webkit-linear-gradient(top, #E0E0E0 0%,#F2F8EE 100%);
+            background: -o-linear-gradient(top, #E0E0E0 0%,#F2F8EE 100%);
+            background: -ms-linear-gradient(top, #E0E0E0 0%,#F2F8EE 100%);
+            background: linear-gradient(to bottom, #E0E0E0 0%,#F2F8EE 100%);
+        }
+        .block-content{
+            margin: auto 10px;
+        }
+        .rate-list li{
+            text-align: right;
+            padding: 10px 0;
+            border-bottom: 1px dashed #D3D3D3;
+        }
+        .rate-list i {
+            background-color: #E5E5E5;
+            border-radius: 3px 3px 3px 3px;
+            display: inline;
+            float: left;
+            font-size: 12px;
+            height: 18px;
+            margin-right: 6px;
+            overflow: hidden;
+            text-align: center;
+            width: 16px;
+        }
+        .rate-1st i{
+            background-color: #FA4D11;
+        }
+        .rate-list .title-link {
+            display: inline;
+            float: left;        /*float是控制容器的，而text-align是控制内部文字部分的。 这就是float喝text-align的区别 使用float会脱离文档流的*/
+            overflow: hidden;
+            text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 70px;
+        }
+        .grey {
+            color: #999999;
+        }
+        .rate-list li.last, .rate-list li:last-child {
+            border-bottom: medium none;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-block aside-block">
+        <h2>小游戏前十榜</h2>
+        <div class="block-content">
+            <ul class="rate-list">
+                <li class="rate-1st">
+                    <i>1</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">6325</span>
+                </li>
+                <li class="rate-2nd">
+                    <i>2</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">251632</span>
+                </li>
+                <li class="rate-3rd">
+                    <i>3</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515632</span>
+                </li>
+                <li>
+                    <i>4</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515</span>
+                </li>
+                <li>
+                    <i>5</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515632</span>
+                </li>
+                <li>
+                    <i>6</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515632</span>
+                </li>
+                <li>
+                    <i>7</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515632</span>
+                </li>
+                <li>
+                    <i>8</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515632</span>
+                </li>
+                <li>
+                    <i>9</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515632</span>
+                </li>
+                <li class="last">
+                    <i>10</i>
+                    <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
+                    <span class="grey">2515632</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

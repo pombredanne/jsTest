@@ -1,0 +1,41 @@
+
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script>!window.jQuery && document.write('<script src="jquery-1.4.3.min.js"><\/script>');</script>
+</head>
+
+<body>
+
+<div class="headeline"></div>
+
+<!--演示内容开始-->
+<script type="text/javascript" src="date.js"></script>
+<p>
+<link rel="stylesheet" href="date.css" type="text/css" /> 
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$(".datepicker").datePicker({
+		inline:true,
+		selectMultiple:true,
+		rememberViewedMonth:false
+	});
+
+	$("#datepicker").datePicker({
+		clickInput:true
+	});
+
+});
+</script></p>
+<h2>jquery.datePicker日历控件应用文本框</h2>
+<p><input type="text" id="datepicker" value="" name="" /></p>
+<div style="height:240px;">&nbsp;</div>
+<h2>jquery.datePicker日历控件应用日历表</h2>
+<div class="datepicker">&nbsp;</div>
+<!--演示内容结束-->
+
+</body>
+</html>

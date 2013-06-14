@@ -1,0 +1,700 @@
+<html><head>
+	<meta charset="utf-8">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<style type="text/css">
+		::election{background: #A8141B; color: white; /* Safari */}
+		::-moz-selection{background: #A8141B; color: white; /* Firefox */ }
+	    html, body, div, p, ul, ol, li, h1, h2, h3, h4, pre, form, p, button, img {
+	        margin: 0;
+	        padding: 0;
+	    }
+	    body {
+	        background-color: #FFFFFF;
+	        color: #494949;
+	        font: 12px Tahoma,Microsoft YaHei,Verdana,Arial,Helvetica,sans-serif;
+	    }
+	    ul, li {
+	        list-style-type: none;
+	    }
+	    a {
+	        color: #5895BE;
+	        text-decoration: none;
+	    }
+	    a:hover {
+	        color: #6BA82F;
+	        cursor: pointer;
+	        text-decoration: underline;
+	    }
+	    a img {
+	        border: 0 none;
+	    }
+	    .pagenavi {
+	        border-radius: 5px 5px 5px 5px;
+	    }
+	    .clear {
+	        clear: both;
+	    }
+	    .prev-next {
+	        border-bottom: 1px solid #EEEEEE;
+	        display: block;
+	        margin: 0;
+	        padding: 15px 0;
+	        position: relative;
+	        text-align: center;
+	    }
+	    .prev-next a {
+	        background: none repeat scroll 0 0 #EEEEEE;
+	        border-radius: 5px 5px 5px 5px;
+	        color: #888888;
+	        display: inline-block;
+	        padding: 7px 15px;
+	    }
+	    .prev-next a:hover {
+	        background: none repeat scroll 0 0 #1BA1E2;
+	        color: #FFFFFF;
+	        text-decoration: none;
+	    }
+	    .prev-next .prev {
+	        margin-right: 10px;
+	    }
+	    .pagenavi {
+	        display: block;
+	        margin: 15px 0;
+	        text-align: center;
+	    }
+	    .pagenavi a, .pagenavi span {
+	        display: inline-block;
+	        height: 25px;
+	        line-height: 25px;
+	        margin: 0 2px 0 0;
+	        padding: 0 8px;
+	    }
+	    .pagenavi .current {
+	        border: 1px solid #EEEEEE;
+	        border-radius: 5px 5px 5px 5px;
+	        color: #BBBBBB;
+	        padding: 0 9px;
+	    }
+
+	    /*主容器的控制 宽度设死 并其左浮动*/
+	    #posts {
+	        clear: left; 
+	        float: left;
+	        width: 670px;
+	    }
+
+	    /*主要控制其上边框的style*/
+	    #posts-list {
+	        border-top: 1px solid #EEEEEE;
+	        margin: 0;
+	        padding: 0;
+	    }
+
+	    /*控制每个单元的style*/
+	    .entry {
+	        border-bottom: 1px solid #EEEEEE;
+	        padding: 28px 0 25px;	/*控制内边距*/
+	        position: relative;  /*位置设置成相对#posts-list定位*/
+	    }
+
+	    /*控制单元中 短介 的布局*/
+	    .entry p {
+	        margin: 15px 0; 
+	    }
+
+	    /*控制单元中 标题 的字体和布局*/
+	    .entry h2, .page_title, .post #post-title {
+	        font-size: 15px;
+	        font-weight: bold;
+	        margin: 0 0 5px;
+	    }
+	    .entry-content {
+	        line-height: 18px;
+	        margin: 10px 0 0;
+	    }
+
+	    .entry h2 a {
+	        color: #1BA1E2;
+	    }
+
+	    /*小单元中的所略图布局管理 */
+	    .entry-thumb {
+	        float: left;
+	        height: 110px;
+	        overflow: hidden;
+	        width: 150px;
+	    }
+	    .entry-thumb a {
+	        border: 1px solid #CCCCCC;
+	        display: block;  /*这里将其转换成块元素 就是为了能使a标签形成的矩形 包围内部的图片 否则会出现 两个行内元素重叠*/
+	        height: 100px;
+	        padding: 4px;
+	        width: 140px;
+	    }
+	    .entry-thumb a:hover {
+		    	/*
+		   		讲解background
+		   		background: #00FF00(颜色) url(bgimage.gif)(图片地址""可加可不加) no-repeat(背景图像是否重复) fixed(背景图像是否固定) top(背景图像的位置) inherit(规定应该从父元素继承) ;
+		    	*/
+	        background: none repeat scroll 0 0 #87CB44;	
+	        border: 1px solid #87CB44;
+	    }
+	    /*控制小单元中的 介绍字体的style*/
+	    .entry-body {
+	        color: #888888;
+	        float: left;
+	        margin-left: 10px;
+	        width: 505px;
+	    }
+
+	    /*单元中的 评论 分类*/
+	    .entry-meta a {
+	        color: #444444;
+	    }
+	    .entry-meta a:hover {
+	        color: #6BA82F;
+	    }
+	    /*利用css split 来进行icon图片的放置 */
+	    .entry-category-icon, .entry-comment-icon, .entry-view-icon, .entry-url-icon {
+	        background: url("http://cdn.ipc.me/themes/ipcmetro/images/sprite.png") no-repeat scroll 0 0 #FFFFFF;
+	        display: inline-block;
+	        margin-right: 10px;
+	        padding-left: 20px;
+	    }
+	    .entry-category-icon {	/*分类小图的控制*/
+	        background-position: -307px -34px;
+	    }
+	    .entry-comment-icon {	/*评论小图的控制*/
+	        background-position: -307px 0;
+	    }
+	    .entry-view-icon {	/*围观小图的控制*/
+	        background-position: -307px -17px;
+	    }
+	   	/*悬浮 查看全部*/
+	    .entry-more {
+	        background: none repeat scroll 0 0 #27AAE2;
+	        display: none;
+	        height: 161px;
+	        position: absolute;
+	        right: 0;
+	        top: 1px;
+	        width: 63px;
+	    }
+	    .entry-more span {
+	        background: url("http://cdn.ipc.me/themes/ipcmetro/images/sprite.png") no-repeat scroll -252px 0 #27AAE2;
+	        display: block;
+	        height: 50px;
+	        left: 6px;
+	        position: absolute;
+	        top: 50px;
+	        width: 50px;
+	    }
+	    .entry-more:hover{
+	    		color:'red';
+	    }
+	    .entry-more:hover span {
+	        background-position: -250px 0;
+	    }
+
+	    /*控制那个大单元*/
+	    .top-entry .entry-content {
+	        color: #888888;
+	    }
+	    /*控制大单元中的展示图*/
+	    .entry-image {
+	        text-align: center;
+	    }
+	    .entry-image a {
+	        display: inline-block;
+	        margin: 0 auto;
+	    }
+	    .top-entry .entry-title, .top-entry .entry-meta {
+	        padding-left: 68px;
+	    }
+	    .top-entry .entry-meta {
+	        position: relative;
+	    }
+	    /*月份展示*/
+	    .entry-number {
+	        background: none repeat scroll 0 0 #96D25C;
+	        color: #FFFFFF;
+	        display: block;
+	        font-family: arial;
+	        font-size: 12px;
+	        height: 15px;
+	        left: 160px;
+	        line-height: 15px;
+	        overflow: hidden;
+	        position: absolute;
+	        text-align: center;
+	        top: -7px;
+	        width: 60px;
+	        z-index: 10;
+	    }
+	    /*大单元对应的 月份*/
+	    .top-entry .entry-number {
+	        background: none repeat scroll 0 0 #72B332;
+	        font-size: 33px;
+	        font-weight: bold;
+	        height: 60px;
+	        left: 0;
+	        line-height: 80px;
+	        padding-left: 5px;
+	        text-align: left;
+	        top: -30px;
+	        width: 55px;
+	    }
+	    .entry-number .post-title-date {
+	        left: 2px;
+	        top: 18px;
+	    }
+	    .post-title-date {
+	        left: 3px;
+	        line-height: 20px;
+	        position: absolute;
+	        text-align: center;
+	        top: 27px;
+	        width: 40px;
+	    }
+	    .post-day {
+	        font-size: 26px;
+	        font-weight: bold;
+	    }
+	    .post-month {
+	        font-size: 12px;
+	    }
+    </style>
+</head>
+<body>
+	<div id="posts">
+		<div id="posts-list">
+			<div class="entry top-entry">
+				<h2 class="entry-title">
+					<a href="###" rel="bookmark">力荐！维珍航空创意广告堪比《X战警》！看得热血沸腾有木有！</a>
+				</h2>
+				<div class="entry-meta">
+					<span class="entry-category-icon">
+						<a href="###" title="查看 创意新鲜 中的全部文章" rel="category tag">创意新鲜</a>
+					</span>
+					<span class="entry-comment-icon">
+						<a href="###" title="《力荐！维珍航空创意广告堪比《X战警》！看得热血沸腾有木有！》上的评论">4 条评论</a>
+					</span>
+					<span id="spn10389" class="entry-view-icon">超过 2506 人围观</span>
+					<div class="entry-number">
+						<div class="post-title-date">
+							<center>
+								<span class="post-day">17</span>
+								<br>
+								<span class="post-month">二月</span>
+							</center>
+						</div>
+					</div>
+				</div>
+				<div class="entry-content">
+					<p class="entry-image">
+						<a href="###" title="力荐！维珍航空创意广告堪比《X战警》！看得热血沸腾有木有！">
+							<img width="450" border="0" height="250" src="http://img.ipc.me/uploads/post/10389/511f615b52e38.jpg"></a>
+					</p>
+					<p>
+						为了说明自己的员工都是顶尖高手，
+						<a href="###">virgin航空硬是把广告生生拍出了《X战警》和《复仇者联盟》的气势</a>
+						，看得人热血沸腾！一个成功的
+						<a href="###" target="_blank">广告</a>
+						就是要这样 &mdash;&mdash; 看完之后，你一点都不想成为他们的顾客，而是想加入他们，这条广告做到了……
+					</p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry top-entry">
+				<h2 class="entry-title">
+					<a href="###" rel="bookmark">Sony Xperia Z 图文评测 -  三防四核五英寸，索尼最新旗舰机能否掳获消费者？</a>
+				</h2>
+				<div class="entry-meta">
+					<span class="entry-category-icon">
+						<a href="###" title="查看 手机数码 中的全部文章" rel="category tag">手机数码</a>
+					</span>
+					<span class="entry-comment-icon">
+						<a href="###" title="《Sony Xperia Z 图文评测 -  三防四核五英寸，索尼最新旗舰机能否掳获消费者？》上的评论">5 条评论</a>
+					</span>
+					<span id="spn10385" class="entry-view-icon">超过 1982 人围观</span>
+					<div class="entry-number">
+						<div class="post-title-date">
+							<center>
+								<span class="post-day">17</span>
+								<br>
+								<span class="post-month">二月</span>
+							</center>
+						</div>
+					</div>
+				</div>
+				<div class="entry-content">
+					<p class="entry-image">
+						<a href="###" title="Sony Xperia Z 图文评测 -  三防四核五英寸，索尼最新旗舰机能否掳获消费者？">
+							<img width="450" border="0" height="250" src="http://img.ipc.me/uploads/post/10385/511f380bf3d55.jpg"></a>
+					</p>
+					<p>
+						迎向 2013 年，自 Sony 投入
+						<a href="###" target="_blank">Android</a>
+						手机系统阵营已迈入第 4 年的时光，历经去年完全掌握
+						<a href="###" target="_blank">手机</a>
+						主导权后，积极整合旗下各类消费性电子特色的方向也逐渐理出一条独具特色的道路……
+					</p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry top-entry">
+				<h2 class="entry-title">
+					<a href="###" rel="bookmark">18禁！岛国推出重口味成人体感游戏，自慰棒竟成控制器！？无力吐槽！</a>
+				</h2>
+				<div class="entry-meta">
+					<span class="entry-category-icon">
+						<a href="###" title="查看 游戏相关 中的全部文章" rel="category tag">游戏相关</a>
+					</span>
+					<span class="entry-comment-icon">
+						<a href="###" title="《18禁！岛国推出重口味成人体感游戏，自慰棒竟成控制器！？无力吐槽！》上的评论">6 条评论</a>
+					</span>
+					<span id="spn10394" class="entry-view-icon">超过 2657 人围观</span>
+					<div class="entry-number">
+						<div class="post-title-date">
+							<center>
+								<span class="post-day">17</span>
+								<br>
+								<span class="post-month">二月</span>
+							</center>
+						</div>
+					</div>
+				</div>
+				<div class="entry-content">
+					<p class="entry-image">
+						<a href="###" title="18禁！岛国推出重口味成人体感游戏，自慰棒竟成控制器！？无力吐槽！">
+							<img width="450" border="0" height="250" src="http://img.ipc.me/uploads/post/10394/511f3fd7d07d5.jpg"></a>
+					</p>
+					<p>
+						即将在2月22日发售的日本成人
+						<a href="###" target="_blank">游戏</a>
+						《
+						<a href="###">Custom Maid 3D</a>
+						》最大的卖点并非是游戏的情趣内容，而是随游戏一并推出的特殊体感
+						<a href="###" target="_blank">设备</a>
+						：自慰棒。体感诚可贵，健康价更高！骚年，请自重……
+					</p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10391/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">恶搞配音《笑傲春晚》爆笑来袭！基情满天飞，属蛇的春晚果然很弯！</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 电影视频 中的全部文章" rel="category tag">电影视频</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《恶搞配音《笑傲春晚》爆笑来袭！基情满天飞，属蛇的春晚果然很弯！》上的评论">1 条评论</a>
+						</span>
+						<span id="spn10391" class="entry-view-icon">超过 1340 人围观</span>
+						<span class="entry-number">02-17</span>
+					</div>
+					<div class="entry-content">
+						恶搞配音《笑傲春晚》终于来了：这春晚越来越精彩；尔康怎么也说相声了；连春晚都有“删减版”；表情帝；找力宏；卧槽+1；打败你的不是天真是吴邪；最遥远的距离；看完才知道，属蛇的春晚果然很弯……春晚吐槽篇 &mdash;&mdash; 笑傲春晚
+…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10392/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">地球近日不太平 - 直径 45 米小行星凌晨近距离飞掠地球</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 新闻相关 中的全部文章" rel="category tag">新闻相关</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《地球近日不太平 - 直径 45 米小行星凌晨近距离飞掠地球》上的评论">5 条评论</a>
+						</span>
+						<span id="spn10392" class="entry-view-icon">超过 2491 人围观</span>
+					</div>
+					<div class="entry-content">
+						昨晚小行星2012DA14近距离从地球旁边掠过，距离最近是在凌晨3:25分，这颗直径约50米的小天体距离地面仅27680公里，这一距离已经低于很多卫星的轨道，目前这颗小行星正逐渐远离地球。专家称昨天上午撞击俄罗斯的陨星与这颗小行星并无关联，仅仅是一个有趣的巧…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10239/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">海底世界的神奇装饰品 - 摄影师 Felix Salazar 微距镜头下美得炫目的珊瑚</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 艺术设计 中的全部文章" rel="category tag">艺术设计</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《海底世界的神奇装饰品 - 摄影师 Felix Salazar 微距镜头下美得炫目的珊瑚》上的评论">3 条评论</a>
+						</span>
+						<span id="spn10239" class="entry-view-icon">超过 1444 人围观</span>
+						<span class="entry-number">02-16</span>
+					</div>
+					<div class="entry-content">
+						洛杉矶摄影师 Felix Salazar 用镜头将彩色生物点缀的蓝色世界展现在了人们面前。深海中的珊瑚有红色、粉红色、蓝色和紫色，你可以很清晰看清其中的纹理，不论是珍珠一样的球体、冒泡的气囊，还是羽毛状的触手，在摄影师的镜头下都一览无遗……相关阅…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/9887/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">10大“完美”劫案 - 现实中的“完美犯罪”！这些高智商犯罪案例绝对直逼好莱坞电影！</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 杂乱无章 中的全部文章" rel="category tag">杂乱无章</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《10大“完美”劫案 - 现实中的“完美犯罪”！这些高智商犯罪案例绝对直逼好莱坞电影！》上的评论">9 条评论</a>
+						</span>
+						<span id="spn9887" class="entry-view-icon">超过 6671 人围观</span>
+					</div>
+					<div class="entry-content">
+						虽然说真正意义上的“完美犯罪”很难在现实中上演，但因为警方和技术的局限性，一些高智商的犯罪团伙，却经常会完成接近“完美”的世纪劫案，下面，我们就来看看“10大完美劫案”吧......No.10 双胞胎钻石盗窃悬案2009年2月25日，3个蒙面劫匪闯入欧洲…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10355/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">猛女犀利吐槽 2013 古装剧 - 宫斗剧退烧，历史剧又扎堆了，《林之汉传奇》不幸中枪</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 电影视频 中的全部文章" rel="category tag">电影视频</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《猛女犀利吐槽 2013 古装剧 - 宫斗剧退烧，历史剧又扎堆了，《林之汉传奇》不幸中枪》上的评论">5 条评论</a>
+						</span>
+						<span id="spn10355" class="entry-view-icon">超过 3797 人围观</span>
+						<span class="entry-number">02-16</span>
+					</div>
+					<div class="entry-content">
+						2012 宫斗剧满天飞的一年，不知有多少电视剧镜头亮瞎我们的氪金眼。如今迎来了2013年，宫斗剧虽然退烧，但是历史剧又扎堆了（这特么不带这么坑人的！！），《林之汉传奇》不幸深深中枪，惨遭女生犀利吐槽……女生犀利吐槽 2013 古装剧
+…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10384/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">现实版震撼灾难大片？！天降陨石雨袭击俄罗斯，400多人受伤！(视频)</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 新闻相关 中的全部文章" rel="category tag">新闻相关</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《现实版震撼灾难大片？！天降陨石雨袭击俄罗斯，400多人受伤！(视频)》上的评论">12 条评论</a>
+						</span>
+						<span id="spn10384" class="entry-view-icon">超过 4320 人围观</span>
+					</div>
+					<div class="entry-content">
+						当地时间2月15日，俄罗斯车里亚宾斯克州降下陨石雨，散落的陨石碎片落入乌拉尔(Urals)地区车里雅宾斯克(Chelyabinsk)市内，造成400多人受伤。俄罗斯内政部称大多数被碎玻璃所伤……当地时间早上9：20(北京时间11:20)，一个巨大的物体划过天空，能明显地看出…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10365/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">BowBlade - 神配件，把你心爱的手机改装成弓箭吧！</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 手机数码 中的全部文章" rel="category tag">手机数码</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《BowBlade - 神配件，把你心爱的手机改装成弓箭吧！》上的评论">1 条评论</a>
+						</span>
+						<span id="spn10365" class="entry-view-icon">超过 4800 人围观</span>
+						<span class="entry-number">02-15</span>
+					</div>
+					<div class="entry-content">
+						这可能是目前来说最牛叉的智能手机配件之一，名叫 BowBlade。与之相对应的是 iOS 和 Android 的射箭游戏程序。也就是说它可以轻易地把你的手机变成一个射箭模拟器……它的外形比较特殊，是长方形的。而材质非常有弹性，所以它更容易拉开和射击。不过为了…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10321/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">爆笑！2013 年十大最搞笑超级碗广告，笑得俺腰都要直不起来了~</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 电影视频 中的全部文章" rel="category tag">电影视频</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《爆笑！2013 年十大最搞笑超级碗广告，笑得俺腰都要直不起来了~》上的评论">7 条评论</a>
+						</span>
+						<span id="spn10321" class="entry-view-icon">超过 8356 人围观</span>
+					</div>
+					<div class="entry-content">
+						国内关心美式足球的童鞋应该不多，却有很多人关心超级碗……中间插播的那些精品广告。卖萌无止境；当爹也疯狂；老年人也有春天！！2013年十大最搞笑超级碗广告，笑死爹了，真不知道制作者是怎么想出这么有趣的点子……相关阅读：一刻千金的广告时…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10264/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">VMware Fusion 5 VS Parallels 8 - 两款主流 Mac OS X 虚拟机对比评测</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 Mac相关 中的全部文章" rel="category tag">Mac相关</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《VMware Fusion 5 VS Parallels 8 - 两款主流 Mac OS X 虚拟机对比评测》上的评论">4 条评论</a>
+						</span>
+						<span id="spn10264" class="entry-view-icon">超过 2524 人围观</span>
+						<span class="entry-number">02-15</span>
+					</div>
+					<div class="entry-content">
+						如果你想在 Mac上运行 Windows 操作系统，又不想设置 Boot Camp，那么虚拟机软件是不错的选择。OS X平台上，Parallels 和 VMware Fusion 两款虚拟机软件一直是竞争对手，那么这两款虚拟机软件谁最强呢……国外 MacTech 网站对这两款虚拟机进行了一些列跑分测试，测试…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="entry">
+				<div class="entry-thumb">
+					<a href="###">
+						<img width="140" border="0" height="100" src="http://img.ipc.me/uploads/post/10226/thumb/140x100.jpg"></a>
+				</div>
+				<div class="entry-body">
+					<h2 class="entry-title">
+						<a href="###" rel="bookmark">回到未来 - 苹果官网的15年，探究其网站是如何改善变化的</a>
+					</h2>
+					<div class="entry-meta">
+						<span class="entry-category-icon">
+							<a href="###" title="查看 杂乱无章 中的全部文章" rel="category tag">杂乱无章</a>
+						</span>
+						<span class="entry-comment-icon">
+							<a href="###" title="《回到未来 - 苹果官网的15年，探究其网站是如何改善变化的》上的评论">3 条评论</a>
+						</span>
+						<span id="spn10226" class="entry-view-icon">超过 3631 人围观</span>
+					</div>
+					<div class="entry-content">
+						在短短的十五年里，苹果的变化翻天覆地。从一个濒临破产步履蹒跚的公司，转变成为了一个当今世界上，科技公司中的巨人，重新定义了人们对科技的认知……既然苹果公司经历了如此巨大的变化，你会认为他们的官网 Apple.com 一定也会随之而发生改变。但…
+					</div>
+					<a class="entry-more" href="###" title="阅读全文...">
+						<span></span>
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="prev-next" style="border-bottom:none">
+			<a href="###">下一页 »</a>
+		</div>
+		<div class="pagenavi">
+			<span class="current">1</span>
+			<a href="###">2</a>
+			<a href="###">3</a>
+			<a href="###">4</a>
+			<a href="###">5</a>
+			<a href="###">6</a>
+			<a href="###">7</a>
+			<a href="###">8</a>
+			<a href="###">9</a>
+			<a href="###">10</a>
+			<a href="###">下一页 »</a>
+			<a href="###" class="extend" title="跳转到最后一页">末页</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$('.entry').hover(function(){
+		$(this).find('.entry-more').toggle();
+	})
+</script>
+</html>

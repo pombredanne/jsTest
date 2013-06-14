@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <style type="text/css">
+        body {
+            color: javascript:;404040;
+            font: 12px/1.5 Helvetica,arial;
+        }
+        a {
+            color: javascript:;2965B1;
+            text-decoration: none;
+        }
+        .bigDiv{
+            background-color: javascript:;FFFFFF;
+            border: 1px solid javascript:;E5E5E5;
+            border-radius: 5px 5px 0 0;/*圆角*/
+            width: 200px;
+        }
+        .bigDiv h2 {
+            background-color: javascript:;F0F0F0;
+            padding-left: 10px;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;/*h2居中显示*/
+            margin: 0;/*清除h2自带的上浮动*/
+        }
+        .block-content {
+            margin: 0 10px 10px;/*top left&&right bottm*/
+        }
+        ul, li, ol {
+            list-style: none outside none;/*总体来讲是为了浏览器兼容 http://blog.sina.com.cn/s/blog_818a1e5b0100vjll.html*/
+            margin: 0;
+            padding: 0;/*清除元素自有的内浮动*/
+        }
+        .bigDiv li {
+            line-height: 30px;
+            text-align: right;/*从这个案例以及第一个 可以看出 对文本控制float效果 可以采用text-align(只控制他孩子里的文本)*/
+        }
+        .bigDiv .title-link {
+            width: 120px;
+            float: left;
+            text-align: left;/*控制他自己内部的文本方式*/
+            overflow: hidden;/*超出宽度后 如何处理*/
+            text-overflow: ellipsis;/*文本超出后的部分如何处理 elipsis:....*/
+            white-space: nowrap;/*超出限制宽度的文本 是否换行处理*/
+        }
+        span {
+            color: javascript:;999999;
+        }
+
+        img {
+            margin-right: 5px;
+            border: 0 none;
+            vertical-align: middle;/*图片相对文本的对齐方式*/
+        }
+
+    </style>
+</head>
+<body>
+    <div class="bigDiv">
+        <h2>最新上线</h2>
+        <div class="block-content">
+            <ul class="title-list">
+                <li><a class="title-link" href="javascript:;"><img src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色11111111彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="javascript:;"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="javascript:;"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="javascript:;"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="javascript:;"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="javascript:;"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="javascript:;"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
