@@ -91,6 +91,24 @@
 			y()  //no 不能用()  其实y 已经没有意义了   始终返回 Object{}
 		*/
 
+        console.log([1,2,3,4][1,2,3])   // console.log([1,2,3,4][3]);
+
+        /* label 标签的使用
+            1:continue 只能用于循环当中 不能使用在条件语句中!  在使用label时候,不允许使用{} 包围
+            2:break 可以配合label 使用与任何语句(条件语句 循环语句)中. 对于{} 个人建议 在非循环语句中,应该加上{} 以示范围
+        */
+        //对于break 在非循环结构中使用   仅限于了解即可 不能深究
+        label:{
+            if(true){
+                //break; 错误
+                break label;
+            }
+        }
+        if(true){
+            break label;  //找不到 label 因此报错
+            }else{
+            break;        // 不能在未使用label前提下,在循环之外使用break
+        }
 	</script>
 </body>
 </html>
