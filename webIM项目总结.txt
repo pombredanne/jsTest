@@ -352,13 +352,6 @@ var t=Math.max.apply(Math,Array);  var nm=Math.max.call(this,2,3,4,8,1222,5,10);
 		            })
               </script>
 
------------jquery  自带event
-    $('#parentDiv').mouseout(function(){
-          if(fixedMouse(event, this)){  //这里的event 不过建议在 上面function()中写上e
-		    logs.innerHTML+="MouseOut<br />";
-          }
-    });
-
 -----------setTimout setInterval
     必须养成习惯
         setTimeout(function(){fn},time) //使用function
