@@ -37,7 +37,6 @@ a{color:#34538b; text-decoration:underline;}a:hover{color:#F30; text-decoration:
 
 /*默认提示文字是灰色的，可以通过CSS来改变文字样式：*/
 /*
-
 ::-webkit-input-placeholder { color:#f00; }
 input:-moz-placeholder { color:#f00; }
 
@@ -47,4 +46,5 @@ input:-moz-placeholder { color:#f00; }
 
 #field2:-moz-placeholder { color:#00f; }
 #field3:-moz-placeholder { color:#090; background:lightgreen; text-transform:uppercase; }
-#field4:-moz-placeholder { font-style:italic; text-decoration:overline; letter-spacing:3px; color:#999; }*/
+#field4:-moz-placeholder { font-style:italic; text-decoration:overline; letter-spacing:3px; color:#999; }
+*/
