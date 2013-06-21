@@ -1,0 +1,6 @@
+http://bryant24.iteye.com/blog/782104 
+
+http://www.aqee.net/docs/jquery.form.plugin/jquery.form.plugin.html
+http://malsup.com/jquery/form/
+
+http://malsup.github.io/jquery.form.js
