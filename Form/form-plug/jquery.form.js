@@ -147,19 +147,10 @@ $.fn.ajaxSubmit = function(options) {
         var form = $form[0], el, i, s, g, id, $io, io, xhr, sub, n, timedOut, timeoutHandle,
             deferred = $.Deferred();
 
-
-
-//          var length=elements.length;
-//        if (a) {
-//            for (i=0; i < length; i++) {
-//                el = $(elements[i]);
-//            }
-//        }
-
-        s = $.extend(true, {}, $.ajaxSettings, options);
+        s = $.extend(true, {}, $.ajaxSettings, options);  // 注意这里是 ajaxSettings
         s.context = s.context || s;
-        id = 'jqFormIO' + (new Date().getTime());
-        // TODO 这里难道不可以 自动创建一个iframe 重复使用吗?
+        id = 'jqFormIO' + (+new Date());
+        // TODO 这里难道不可以 自动创建一个iframe 重复使用吗? 创建后，又创建呢？？
         if (s.iframeTarget) {
             $io = $(s.iframeTarget);
             n = $io.attr2('name');
@@ -199,8 +190,9 @@ $.fn.ajaxSubmit = function(options) {
             }
         };
 
+        //TODO 学习active  ajaxSetings global  http://hustoknow.blogspot.com/2010/10/how-jqueryactive-code-works.html
         g = s.global;
-        if (g && 0 === $.active++) {
+        if (g && 0 === $.active++) {   // Watch for a new set of requests
             $.event.trigger("ajaxStart");
         }
 
@@ -224,7 +216,7 @@ $.fn.ajaxSubmit = function(options) {
             if (n && !sub.disabled) {
                 s.extraData = s.extraData || {};
                 s.extraData[n] = sub.value;
-                if (sub.type == "image") {
+                if (sub.type === "image") {
                     s.extraData[n+'.x'] = form.clk_x;
                     s.extraData[n+'.y'] = form.clk_y;
                 }
@@ -236,7 +228,7 @@ $.fn.ajaxSubmit = function(options) {
 
         var getDoc=function(frame) {
 
-            var doc = null;
+            var doc ;
 
             // IE8 cascading access check
             try {
@@ -272,7 +264,6 @@ $.fn.ajaxSubmit = function(options) {
         var doSubmit=function() {
             var t = $form.attr2('target'), a = $form.attr2('action');
 
-            // update form attrs in IE friendly way
             form.setAttribute('target',id);
             if (!method) {
                 form.setAttribute('method', 'POST');
