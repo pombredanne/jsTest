@@ -41,12 +41,7 @@
 			brothers.forms=forms;
 			brothers.objects=[];
 		
-		//TODO 无发现 创建子对象时不再绑定事件;
-		if(inited===true){
-			return false;
-		}
-		
-		forms.each(function(){
+        forms.each(function(){
 			if(this.validform_inited=="inited"){return true;}
 			this.validform_inited="inited";
 			
@@ -58,21 +53,22 @@
 			//防止表单按钮双击提交两次;
 			curform.validform_status="normal"; //normal | posting | posted;
 			
-			//让每个Validform对象都能自定义tipmsg;	
+			//让每个Validform对象都能自定义tipmsg;
 			$this.data("tipmsg",brothers.tipmsg);
 
-			//对所有带有 datatype的元素 绑定blur event    TODO 增加允许我修改eventtype
+			//对input: datatype的元素 绑定blur event
 			$this.delegate("[datatype]","blur",function(){
 				//TODO 修改这里的argument属性
 				Validform.util.check.call(this,$this);
 			});
-			
-			$this.delegate(":text","keypress",function(event){  //TODO 这个可以修改到submit选项中
+		
+            // input 中 确定键如何处理
+			$this.delegate(":text","keypress",function(event){ 
 				(event.keyCode===13 && $this.find(":submit").length===0)&&($this.submit())
 			});
 			
 			Validform.util.enhance.call($this,curform.settings.tiptype,curform.settings.usePlugin,curform.settings.tipSweep);
-			
+		
 			curform.settings.btnSubmit && $this.find(curform.settings.btnSubmit).bind("click",function(){
 				$this.trigger("submit");
 				return false;
@@ -121,7 +117,7 @@
 		toString:Object.prototype.toString,
 		
 		isEmpty:function(val){
-			return val==="" || val===$.trim(this.attr("tip"));		//TODO 这里是否修改为我的那个placehloder方法?
+			return val==="" || val===$.trim(this.attr("tip"));
 		},
 		
 		getValue:function(obj){
@@ -162,9 +158,6 @@
                 });
             }
            			
-			//TODO 去除 表单元素值比较时的信息提示增强;
-		
-            //TODO tip处理 一个bug 在页面load的时候 不出现tip
 			curform.find("[tip]").each(function(){//tip是表单元素的默认提示信息,这是点击清空效果;
 				//已经绑定事件时跳过;
 				if(this.validform_inited=="inited"){return true;}
