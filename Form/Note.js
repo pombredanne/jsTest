@@ -415,3 +415,11 @@ var fileUploadIframe=function (a) {
 
         return deferred;
     };
+
+// 验证插件
+/*
+    1: html5插件 http://www.zhangxinxu.com/wordpress/2012/12/html5-number-input-step-invidate/
+        DBC2SBC
+        novalidate  -- 取消默认验证
+    2: Valiform 优势    没发现什么优势 也就是 check处理丰富
+*/
