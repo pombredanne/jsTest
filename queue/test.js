@@ -163,7 +163,37 @@ $(function() {
         var k=$.queue(el, 'xm', arr);  // k:[cb1,cb2]
         
          //取出来 开始用他
-         $.dequeue(el, 'mx') 
-    http://www.cnblogs.com/snandy/archive/2013/02/18/2892749.html
-    http://www.css88.com/jqapi-1.9/dequeue/
+         $.dequeue(el, 'mx')
+
+    delay 方法在queue上的应用
+        delay（延迟时间，延迟对象/可选/）
+                 function cb() {
+                    console.log(1);
+                 }
+                 var $p = $('p');
+                 $p.delay(2000, 'mx').queue('mx', cb);
+
+                 $p.dequeue('mx'); // 2秒后输出1
+
+    promise 方法在queue上的应用
+         function ff1() {
+             alert(1)
+         }
+         function ff2() {
+             alert(2)
+         }
+         function succ() {
+             alert('done')
+         }
+         $body = $('body')
+         $body.queue('mx', ff1);
+         $body.queue('mx', ff2);
+          
+         var promise = $body.promise('mx');
+         promise.done(succ);
+          
+         setInterval(function() {
+             $body.dequeue('mx') // 先弹出1,2，最后是"done"
+         }, 1500)
+
 */
