@@ -46,7 +46,6 @@ $(function() {
                 }
             });*/
 
-            //TODO 这里尝试使用 for 循环
             for (var index = 0; index < $('.zns_box_head li').length; index++) {
                 (function(index) {
                     var value = $('.zns_box_head li').eq(index)
