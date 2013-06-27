@@ -103,7 +103,7 @@ var fileUploadIframe=function (a) {
                     doc = frame.contentWindow.document;
                 }
             } catch(err) {
-                // IE8 access denied under ssl & missing protocol
+                //  IE8 SSL下拒绝访问&丢失协议
                 log('cannot get iframe.contentWindow document: ' + err);
             }
 
@@ -112,7 +112,7 @@ var fileUploadIframe=function (a) {
             }
 
             try { // 简单检查在IE8可能会抛出下SSL或不匹配的协议
-                doc = frame.contentDocument ? frame.contentDocument : frame.document;
+                doc = frame.contentDocument || frame.document;
             } catch(err) {
                 log('cannot get iframe.contentDocument: ' + err);
                 doc = frame.document;
@@ -151,7 +151,7 @@ var fileUploadIframe=function (a) {
                 timeoutHandle = setTimeout(function() { timedOut = true; cb(CLIENT_TIMEOUT_ABORT); }, s.timeout);
             }
 
-            // look for server aborts
+            // 监听服务是否被abort 
             var checkState=function() {
                 try {
                     var state = getDoc(io).readyState;
@@ -172,7 +172,7 @@ var fileUploadIframe=function (a) {
 
             var extraInputs = [];
             try {
-                if (s.extraData) {
+                if (s.extraData) {    //上传的时候 是否添加额外数据
                     for (var n in s.extraData) {
                         if (s.extraData.hasOwnProperty(n)) {
                             if($.isPlainObject(s.extraData[n]) && s.extraData[n].hasOwnProperty('name') && s.extraData[n].hasOwnProperty('value')) {
@@ -228,6 +228,8 @@ var fileUploadIframe=function (a) {
                 log('cannot access response document');
                 e = SERVER_ABORT;
             }
+
+            //检查是否abort
             if (e === CLIENT_TIMEOUT_ABORT && xhr) {
                 xhr.abort('timeout');
                 deferred.reject(xhr, 'timeout');
@@ -238,11 +240,9 @@ var fileUploadIframe=function (a) {
                 return;
             }
 
-            if (!doc || doc.location.href == s.iframeSrc) {
+            if (doc.location.href == s.iframeSrc && !timedOut) {
                 // 还未回应的时候 继续
-                if (!timedOut){
                     return;
-                }
             }
             $io.load(function(){
                cb();
@@ -254,19 +254,15 @@ var fileUploadIframe=function (a) {
                     throw 'timeout';
                 }
 
+                // 判断数据类型 
                 var isXml = s.dataType == 'xml' || doc.XMLDocument || $.isXMLDoc(doc);
                 log('isXml='+isXml);
                 if (!isXml && window.opera && (doc.body === null || !doc.body.innerHTML)) {
                     if (--domCheckCount) {
-                        // in some browsers (Opera) the iframe DOM is not always traversable when
-                        // the onload callback fires, so we loop a bit to accommodate
                         log('requeing onLoad callback, DOM not available');
                         setTimeout(cb, 250);
                         return;
                     }
-                    // let this fall through because server response could be an empty document
-                    //log('Could not access iframe DOM after mutiple tries.');
-                    //throw 'DOMException: not available';
                 }
 
                 var docRoot = doc.body ? doc.body : doc.documentElement;
@@ -288,13 +284,14 @@ var fileUploadIframe=function (a) {
                 var dt = (s.dataType || '').toLowerCase(),
                     scr = /(json|script|text)/.test(dt);
 
+                // 如果返回数据是json script text 则放入textarea中
                 if (scr || s.textarea) {
                     var ta = doc.getElementsByTagName('textarea')[0];
-                    if (ta) {
+                    if (ta) { //ie
                         xhr.responseText = ta.value;
                         xhr.status = Number( ta.getAttribute('status') ) || xhr.status;
                         xhr.statusText = ta.getAttribute('statusText') || xhr.statusText;
-                    }else if (scr) {
+                    }else if (scr) { // 高版本 以及 火狐
                         var pre = doc.getElementsByTagName('pre')[0],
                             b = doc.getElementsByTagName('body')[0];
                         if (pre) {
@@ -350,17 +347,17 @@ var fileUploadIframe=function (a) {
                     $.event.trigger("ajaxError", [xhr, s, errMsg]);
             }
 
+            // 同 358行
             if (g){
                 $.event.trigger("ajaxComplete", [xhr, s]);
             }
-
-
             if (g && ! --$.active) {
                 $.event.trigger("ajaxStop");
             }
 
-            if (s.complete)
+            if (s.complete){
                 s.complete.call(s.context, xhr, status);
+            }
 
             callbackProcessed = true;
             if (s.timeout){
@@ -386,19 +383,19 @@ var fileUploadIframe=function (a) {
             return (doc && doc.documentElement && doc.documentElement.nodeName != 'parsererror') ? doc : null;
         };
         var parseJSON = $.parseJSON || function(s) {
-            /*jslint evil:true */
             return window['eval']('(' + s + ')');
         };
 
-        var httpData = function( xhr, type, s ) { // mostly lifted from jq1.4.4
+        var httpData = function( xhr, type, s ) { // 大多数在1.4之前已经解除
 
             var ct = xhr.getResponseHeader('content-type') || '',
                 xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
                 data = xml ? xhr.responseXML : xhr.responseText;
 
             if (xml && data.documentElement.nodeName === 'parsererror') {
-                if ($.error)
+                if ($.error){
                     $.error('parsererror');
+                }
             }
             if (s && s.dataFilter) {
                 data = s.dataFilter(data, type);
@@ -415,6 +412,74 @@ var fileUploadIframe=function (a) {
 
         return deferred;
     };
+
+//我个人在跨欲 做的上传 原理同上:
+
+
+// 创建ifram
+var iframeID = 'bafUploadIframe',
+    $iframe = $('#' + iframeID);
+
+if ($iframe.length === 0) {
+    $iframe = $("<iframe>", {
+        name: iframeID,
+        id: iframeID,
+        style: 'display:none'
+    }).appendTo($('body'));
+
+    if (document.documentMode < 8) {
+        $iframe[0].contentWindow.name = iframeID;
+    }
+}
+// 创建临时form
+var myform = $('#bafUploadForm'),
+    fileType = isFile ? 'file' : 'img',
+    url = '{0}/upload/' + fileType + '/ie?cb={1}&uid={2}&token={3}';
+url = url.format(BarfooIM.filehost, location.href, BarfooIM.userinfo.id, BarfooIM.userinfo.token);
+
+if (myform.length === 0) {
+    myform = $("<form>", {
+        method: "POST",
+        enctype: 'multipart/form-data',
+        action: url,
+        target: iframeID
+    }).appendTo($('body'));
+} else {
+    myform.attr('action', url);
+    $("#bafUploadForm input[type='file']").remove();
+}
+
+file.appendTo(myform); //file  就是上传条  
+//附加额外数据
+$('<input>', {
+    name: 't',
+    value: new Date().toString(),
+    style: 'display:none' //没有使hidden  在有些ie中会报错 因此采用默认的text
+}).appendTo(myform);
+
+myform.submit();
+
+var timeid = setInterval(function() {
+    try {
+
+        var _url = frames[iframeID].document.location.href;
+
+        if (_url != 'about:blank') {
+            clearInterval(timeid);
+            //加载完成  这些返回数据格式为json
+            var data = Uti.getQueryString('imdata', frames[iframeID].document.location);
+            data = jQuery.parseJSON(decodeURIComponent(data));
+            frames[iframeID].document.location.href = 'about:blank';
+
+            //success 处理            
+
+        }
+    } catch (e) {
+        clearInterval(timeid);
+        alert('上传文件失败')
+    }
+
+}, 500);
 
 // 验证插件
 /*
