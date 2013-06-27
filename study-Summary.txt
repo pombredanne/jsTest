@@ -623,3 +623,38 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
        --http://stackoverflow.com/questions/921374/how-do-i-convert-a-json-string-to-a-javascript-object-in-jquery
          http://www.cnblogs.com/lishenglyx/archive/2009/04/02/1427727.html
 
+-----------  addEventListener 注意事项:
+    1: 判断
+        if(window.addEventListener){
+            
+        }else if(window.attachEvent){
+            // 这里有必要进行判断一下
+        }
+    2: 阻止默认事件
+        ps: onselectstart  -- http://www.58lou.com/separticle.php?artid=181
+        
+        <div id="ftmp" onselectstart="return false">flondon</div>    // ok
+        <div id="tmp">flondon</div>  
+        <script>
+          //ok 无兼容性
+         document.getElementById("tmp").onselectstart =function(){
+            return false;
+         };  
+
+        if(document.addEventListener){  
+            document.getElementById("tmp").addEventListener("selectstart",
+            function(evt){
+                // TODO 阻止默认事件 return false 没作用
+                evt.preventDefault(); 
+                return false;
+            }, true);  
+        }else if(window.attachEvent){  
+            document.getElementById("tmp").attachEvent("onselectstart",
+            function(){
+            // ie下 只需要return false 即可
+            //window.event.returnValue= false
+            return false;});  
+         }  
+        </script>
+
+
