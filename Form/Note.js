@@ -413,8 +413,7 @@ var fileUploadIframe=function (a) {
         return deferred;
     };
 
-//我个人在跨欲 做的上传 原理同上:
-
+//我个人在跨欲 做的上传 原理同上:  --- http://www.58lou.com/separticle.php?artid=180
 
 // 创建ifram
 var iframeID = 'bafUploadIframe',
