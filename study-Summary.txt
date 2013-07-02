@@ -410,7 +410,10 @@ var t=Math.max.apply(Math,Array);  var nm=Math.max.call(this,2,3,4,8,1222,5,10);
 function getQueryString(name,url){
         var reg = new RegExp("(^|&|\\?)"+ name +"=([^&]*)(&|$)"), r;
         url=url||location.href;
-        if (r=url.match(reg)) return unescape(r[2]); return null;
+        if (r=url.match(reg)){
+            return unescape(r[2]);
+        }
+        return null;
 }
 
 -----------Url编码

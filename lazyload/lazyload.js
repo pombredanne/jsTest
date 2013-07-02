@@ -1,4 +1,6 @@
 
+//http://www.fantxi.com/blog/archives/preload-images-css-js/   一个ie讲解预加载的一些鸡肋知识
+
 (function($, window){
     var $window = $(window);
     $.fn.lazyload = function(options){
