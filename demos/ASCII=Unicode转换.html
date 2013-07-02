@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE> New Document </TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+
+<BODY>
+<script type="text/javascript">    
+/**   
+* ASCII with Unicode Covert 0.1   
+* Copyright (c) 2008, Hongbo Lee All rights reserved.   
+* Blog: http://www.lawuu.com   
+* Emai: gmojay@gmail.com   
+* Date: 2008.11.07 18:00   
+*/   
+   
+var type;    
+   
+//to Unicode with HTML    
+var toHTML = {    
+   
+    on : function (str) {    
+        var a = [], i = 0;    
+            
+        for (; i < str.length ;) a[i] = str.charCodeAt(i ++);    
+            
+        return "&#" + a.join(";&#") + ";";    
+    },    
+        
+    un : function (str) {    
+        return str.replace(/&#(x)?([^&]{1,5});?/g, function (a, b, c) {    
+            return String.fromCharCode(parseInt(c, b ? 16 : 10));    
+        });    
+    }    
+        
+};    
+   
+//to Unicode only    
+var toUN = {    
+   
+    on : function (str) {    
+        var a = [], i = 0;    
+            
+        for (; i < str.length ;) a[i] = ("00" + str.charCodeAt(i ++).toString(16)).slice(-4);    
+            
+        return "\\u" + a.join("\\u");    
+    },    
+        
+    un : function (str) {    
+        return unescape(str.replace(/\\/g, "%"));    
+    }    
+        
+};    
+   
+function covertFunc(type){    
+    if(document.getElementById("input").value==""){    
+        alert("Please input the word being coverted!");    
+        return false;    
+    }    
+    if(type=='1'){//to HTML on    
+        document.getElementById("output").value=toHTML.on(document.getElementById("input").value);    
+    }    
+    if(type=='2'){//to HTML un    
+        document.getElementById("output").value=toHTML.un(document.getElementById("input").value);    
+    }    
+    if(type=='3'){//to UN on    
+        document.getElementById("output").value=toUN.on(document.getElementById("input").value);    
+    }    
+    if(type=='4'){//to UN un    
+        document.getElementById("output").value=toUN.un(document.getElementById("input").value);    
+    }    
+}    
+</script>    
+<textarea id="input" rows="7" cols="50" /></textarea><br /><br />    
+To Unicode :     
+<input type="button" value="HTML+Unicode" onclick="covertFunc('1')" />    
+<input type="button" value="Unicode" onclick="covertFunc('3')" /><br /><br />    
+From Unicode :     
+<input type="button" value=" HTML+Unicode" onclick="covertFunc('2')" />    
+<input type="button" value="Unicode" onclick="covertFunc('4')" /><br /><br />    
+<textarea id="output" rows="7" cols="50" />the result will be outputed here</textarea>   
+</BODY>
+</HTML>
+

@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>3D</title>
+		<base href="http://fredhq.com/projects/roundabout"/>
+		<link href="/assets/projects/roundabout2/demos/demos.css" rel="stylesheet" />
+		<style>
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 0 auto;
+				width: 32em;
+				height: 24em;
+			}
+			li {
+				height: 20em;
+				width: 20em;
+				background-color: #ccc;
+				text-align: center;
+				cursor: pointer;
+				-webkit-backface-visibility: hidden;
+			}
+				li.roundabout-in-focus {
+					cursor: default;
+				}
+			li span {
+				display: block;
+				padding-top: 6em;
+			}
+
+			#carbonads-container {
+				clear: both;
+				margin-top: 1em;
+			}
+			#carbonads-container .carbonad {
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>3D</h1>
+
+		<ul>
+			<li><span>Block 1</span></li>
+			<li><span>Block 2</span></li>
+			<li><span>Block 3</span></li>
+			<li><span>Block 4</span></li>
+			<li><span>Block 5</span></li>
+		</ul>
+
+		<div id="carbonads-container"><div class="carbonad"><div id="azcarbon"></div><script type="text/javascript">var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = "http://engine.carbonads.com/z/15972/azcarbon_2_1_0_HORIZ"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);</script></div></div>
+
+		<div class="interact">
+			<p>
+				This will only appear 3D in browsers that support 3D CSS transforms.
+			</p>
+		</div>
+
+		<div class="return">
+			<a href="/projects/roundabout#demos">Back to Roundabout</a>
+		</div>
+
+		<script src="/lib/js/libraries/jquery.js"></script>
+		<script src="/lib/js/projects/roundabout/jquery.roundabout2.js"></script>
+		<script src="/lib/js/plugins/jquery.easing.js"></script>
+		<script>
+			$(document).ready(function() {
+
+				$('ul').roundabout({
+					minScale: 0.7,
+					easing: 'easeOutElastic',
+					duration: 1600
+				});
+			});
+		</script>
+
+	</body>
+</html>

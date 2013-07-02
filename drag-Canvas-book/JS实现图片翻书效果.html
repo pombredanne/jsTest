@@ -1,0 +1,151 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<HEAD>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<title>JS实现图片翻书效果</title>
+	<META http-equiv=imagetoolbar content=no>	<!--控制图片没有滚动条-->
+		<STYLE type=text/css>
+				/*固定的center*/
+		#center {
+		 LEFT: 50%; POSITION: absolute; TOP: 50%
+		}
+				/*背景颜色*/
+		#DHTMLBOOK {
+		 BACKGROUND: #000; LEFT: -455px; VISIBILITY: hidden; WIDTH: 900px; POSITION: relative; TOP: -290px; HEIGHT: 550px
+		}
+				/*字体*/
+		#TXTBOX {
+		 FONT-SIZE: 0.8em; WIDTH: 900px; COLOR: #aba193; FONT-FAMILY: verdana; POSITION: absolute; TOP: 560px; TEXT-ALIGN: center
+		}
+				/*图片显示*/
+		.page {
+		 OVERFLOW: hidden; BORDER-LEFT: #000000 1px solid; WIDTH: 50%; CURSOR: pointer; POSITION: absolute; HEIGHT: 100%
+		}
+				/*右边边界*/
+		.right {
+		 BORDER-RIGHT: #000000 1px solid; LEFT: 50%
+		}
+				/*翻页时候的背景颜色*/
+		.turn {
+		 BACKGROUND: #000000
+		}
+				/*图片整体的样式*/
+		.img {
+		 WIDTH: 200%; POSITION: absolute; HEIGHT: 100%
+		}
+		</STYLE>
+
+		<SCRIPT type=text/javascript><!--
+		document.onselectstart = function () { return false; }
+		var nI  = 0;
+		var kI  = 0;
+		var run = false;
+		function setOpacity(obj,o) {
+		 if (o<0) o=0; else if (o>100) o = 100;
+		 if (obj.filters)obj.filters.alpha.opacity=o; else obj.style.opacity = o/100;
+		}
+		function TPR__(p) {
+		 P1.style.left  = 50-(2.5*p)+"%";
+		 P1.style.width = (2.5*p)+"%";
+		 setOpacity(P1i, .5*p*p);
+		 if (p == 20) run = false;
+		}
+		function TPR_(p) {
+		 P2.style.width = 50-(2.5*p)+"%";
+		 setOpacity(P2i, 100-.5*(p*p));
+		 if (p == 20) {
+		  P2i.src = IMGSRC[kI].src;
+		  setOpacity(P2i, 100);
+		  P2.style.width = "50%";
+		  for(var i=1; i<=20; i++) setTimeout("TPR__("+i+")", i*32);
+		 }
+		}
+		function TPR() {
+		 if (!run) {
+		  run = true;
+		  P01i.src = IMGSRC[kI].src;
+		  P1.style.width = 0;
+		  kI++;
+		  if (kI>=nI) kI = 0;
+		  titLe(kI);
+		  P02i.src = IMGSRC[kI].src;
+		  P1i.src  = IMGSRC[kI].src;
+		  for (var i=1; i<=20; i++) setTimeout("TPR_("+i+")", i*32);
+		 } else setTimeout("TPR()", 100);
+		}
+		function TPL__(p) {
+		 P2.style.width = (2.5*p)+"%";
+		 setOpacity(P2i, .5*p*p);
+		 if (p == 20) run = false;
+		}
+		function TPL_(p) {
+		 P1.style.left  = (2.5*p)+"%";
+		 P1.style.width = 40+(10-2.5*p)+"%";
+		 setOpacity(P1i, 100-.5*(p*p));
+		 if (p == 20) {
+		  P1i.src = IMGSRC[kI].src;
+		  setOpacity(P1i, 100);
+		  P1.style.left  = 0;
+		  P1.style.width = "50%";
+		  for(var i=1; i<=20; i++) setTimeout("TPL__("+i+")", i*32);
+		 }
+		}
+		function TPL() {
+		 if (!run) {
+		  run = true;
+		  P02i.src = IMGSRC[kI].src;
+		  P2.style.width = 0;
+		  kI--;
+		  if (kI < 0) kI = nI-1;
+		  titLe(kI);
+		  P01i.src = IMGSRC[kI].src;
+		  P2i.src  = IMGSRC[kI].src;
+		  for(var i=1; i<=20; i++) setTimeout("TPL_("+i+")", i*32);
+		 } else setTimeout("TPL()", 100);
+		}
+		function titLe(p) {
+		 document.getElementById("TXTBOX").innerHTML = IMGSRC[p].alt;
+		}
+		onload = function() {
+		 IMGSRC  = document.getElementById("imgsrc").getElementsByTagName("img");
+		 DB      = document.getElementById("DHTMLBOOK");
+		 P01     = DB.getElementsByTagName("span")[0];
+		 P01i    = P01.getElementsByTagName("img")[0];
+		 P02     = DB.getElementsByTagName("span")[1];
+		 P02i    = P02.getElementsByTagName("img")[0];
+		 P1      = DB.getElementsByTagName("span")[2];
+		 P1i     = P1.getElementsByTagName("img")[0];
+		 P2      = DB.getElementsByTagName("span")[3];
+		 P2i     = P2.getElementsByTagName("img")[0];
+		 nI      = IMGSRC.length;
+		 P1i.src = IMGSRC[kI].src;
+		 P2i.src = IMGSRC[kI].src;
+		 titLe(kI);
+		 DB.style.visibility = "visible";
+		}
+		//-->
+		</SCRIPT>
+
+	<META content="MSHTML 6.00.6000.16809" name=GENERATOR>
+	</HEAD>
+	<BODY>
+		<DIV id=center>
+			<DIV id=DHTMLBOOK>
+				<SPAN class=page onMouseDown="return false;" ondblclick=TPL(); onclick=TPL();><IMG class=img></SPAN>
+				<SPAN class="page right" onmousedown="return false;" ondblclick=TPR(); onclick=TPR();><IMG class=img style="LEFT: -100%"></SPAN>
+				<SPAN class="page turn" onMouseDown="return false;" ondblclick=TPL(); onclick=TPL();><IMG class=img style="FILTER: alpha(); opacity: 1"></SPAN>
+				<SPAN class="page turn right" onmousedown="return false;" ondblclick=TPR(); onclick=TPR();><IMG class=img style="FILTER: alpha(); LEFT: -100%; opacity: 1"></SPAN> 
+
+					<DIV id=TXTBOX>
+
+					</DIV>
+			</DIV>
+		</DIV>
+
+		<DIV id=imgsrc style="VISIBILITY: hidden">
+			<IMG alt="白云大海图" src="http://imgsrc.baidu.com/baike/pic/item/83cab81ee187a95341341785.jpg">
+			<IMG alt="模特" src="http://www.ityoudao.com/UploadFiles/2010-03/2010040917071322563.gif">
+			<IMG alt="我爱春天" src="http://www.ityoudao.com/UploadFiles/2010-03/201004091706478820.gif">
+		</DIV>
+
+	</BODY>
+</HTML>

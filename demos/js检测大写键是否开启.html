@@ -1,0 +1,35 @@
+<!DOCTYPEHTMLPUBLIC"-//W3C//DTDHTML4.0Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>DetectCapsLock</TITLE>
+<script>
+function detectCapsLock(e){
+	var valueCapsLock=e.keyCode?e.keyCode:e.which;//CapsLock　是否打开
+	var valueShift=e.shiftKey?e.shiftKey:((valueCapsLock==16)?true:false);//shift键是否按住
+
+	if(((valueCapsLock>=65&&valueCapsLock<=90)&&!valueShift)//CapsLock打开，并且shift键没有按住
+	||((valueCapsLock>=97&&valueCapsLock<=122)&&valueShift))//CapsLock打开，并且按住shift键
+	document.getElementById('capStatus').style.visibility='visible';
+	else
+	document.getElementById('capStatus').style.visibility='hidden';
+
+	/*
+	javascript中keyCode代码对应表
+	event.keyCode=32空格
+	event.keyCode=13回车
+	event.keyCode=27Esc
+	event.keyCode=16)Shift
+	event.keyCode=17)Ctrl
+	event.keyCode=18)Alt
+	*/
+
+}
+</script>
+</HEAD>
+
+<BODY>
+<input type="password" name="pwd"  onkeypress="detectCapsLock(event)"/>
+<input type="text">
+<div id="capStatus" style="visibility:hidden"><font color=red>CapsLockison.<font></div>
+</BODY>
+</HTML>
