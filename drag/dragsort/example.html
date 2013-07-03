@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<style type="text/css">
+		body { font-family:Arial; font-size:12pt; padding:20px; width:820px; margin:20px auto; border:solid 1px black; }
+		h1 { font-size:16pt; }
+		h2 { font-size:13pt; }
+		ul { margin:0px; padding:0px; margin-left:20px; }
+		#list1, #list2 { width:350px; list-style-type:none; margin:0px; }
+		#list1 li, #list2 li { float:left; padding:5px; width:100px; height:100px; }
+		#list1 div, #list2 div { width:90px; height:50px; border:solid 1px black; background-color:#E0E0E0; text-align:center; padding-top:40px; }
+		#list2 { float:right; }
+		.placeHolder div { background-color:white !important; border:dashed 1px gray !important; }
+	</style>
+</head>
+<body>
+	<h1>jQuery List DragSort Example</h1>
+	
+	<a href="http://dragsort.codeplex.com/">Homepage</a><br/>
+	<br/>
+
+	<h2>Simple 1D list:</h2>
+	
+	<ul>
+		<li>bread</li>
+		<li>vegetables</li>
+		<li>meat</li>
+		<li>milk</li>
+		<li>butter</li>
+		<li>ice cream</li>
+	</ul>
+	<br/>
+	
+	<h2>table:</h2>
+	<table border="1">
+	  <tr>
+	    <th>Month</th>
+	    <th>Savings</th>
+	  </tr>
+	  <tr>
+	    <td>January</td>
+	    <td>$100</td>
+	  </tr>
+	   <tr>
+	    <td>January</td>
+	    <td>$100</td>
+	  </tr>
+	   <tr>
+	    <td>January</td>
+	    <td>$100</td>
+	  </tr>
+	   <tr>
+	    <td>January</td>
+	    <td>$100</td>
+	  </tr>
+	   <tr>
+	    <td>January</td>
+	    <td>$100</td>
+	  </tr>
+	   <tr>
+	    <td>January</td>
+	    <td>$100</td>
+	  </tr>
+	</table>
+	<br />
+
+
+	<h2>2D list with drag and drop between lists:</h2>
+	
+	<ul id="list2">
+		<li><div>10</div></li>
+		<li><div>11</div></li>
+		<li><div>12</div></li>
+		<li><div>13</div></li>
+		<li><div>14</div></li>
+		<li><div>15</div></li>
+	</ul>
+	
+	<ul id="list1">
+		<li><div>1</div></li>
+		<li><div>2</div></li>
+		<li><div>3</div></li>
+		<li><div>4</div></li>
+		<li><div>5</div></li>
+		<li><div>6</div></li>
+	</ul>
+	
+	<!-- save sort order here which can be retrieved on server on postback -->
+	<input name="list1SortOrder" type="hidden" />
+
+	
+
+	<div style="clear:both;"></div>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.dragsort-0.5.1.js"></script>
+	<script type="text/javascript">
+		$("ul:first").dragsort();
+		$("table:first").dragsort();
+		$("#list1, #list2").dragsort({ dragSelector: "div", dragBetween: true, dragEnd: saveOrder, placeHolderTemplate: "<li class='placeHolder'><div></div></li>" });
+		
+		function saveOrder() {
+			var data = $("#list1 li").map(function() { return $(this).children().html(); }).get();
+			$("input[name=list1SortOrder]").val(data.join("|"));
+		}
+	</script>
+</body>
+</html>
