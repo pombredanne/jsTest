@@ -67,7 +67,7 @@
 
 
 	<h2>2D list with drag and drop between lists:</h2>
-	
+
 	<ul id="list2">
 		<li><div>10</div></li>
 		<li><div>11</div></li>
@@ -76,7 +76,7 @@
 		<li><div>14</div></li>
 		<li><div>15</div></li>
 	</ul>
-	
+
 	<ul id="list1">
 		<li><div>1</div></li>
 		<li><div>2</div></li>
@@ -89,21 +89,39 @@
 	<!-- save sort order here which can be retrieved on server on postback -->
 	<input name="list1SortOrder" type="hidden" />
 
-	
-
 	<div style="clear:both;"></div>
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery.dragsort-0.5.1.js"></script>
 	<script type="text/javascript">
 		$("ul:first").dragsort();
-		$("table:first").dragsort();
-		$("#list1, #list2").dragsort({ dragSelector: "div", dragBetween: true, dragEnd: saveOrder, placeHolderTemplate: "<li class='placeHolder'><div></div></li>" });
+        $("table:first").dragsort();
+//		$("#list1, #list2").dragsort({
+//            dragSelector: "div",
+//            dragBetween: true,
+//            dragEnd: saveOrder,
+//            placeHolderTemplate: "<li class='placeHolder here'><div></div></li>",
+//            scrollContainer:'body'
+//        });
+        		$(" #list2").dragsort({
+                    dragSelector: "div",
+                    dragBetween: true,
+                    dragEnd: saveOrder,
+                    scrollContainer:'#list2',
+                    placeHolderTemplate: "<li class='placeHolder here'><div></div></li>"
+                });
 		
 		function saveOrder() {
 			var data = $("#list1 li").map(function() { return $(this).children().html(); }).get();
 			$("input[name=list1SortOrder]").val(data.join("|"));
 		}
+
 	</script>
+    <style type="text/css">
+        #list2{
+            max-height: 120px;
+            overflow: auto;
+        }
+    </style>
 </body>
 </html>
