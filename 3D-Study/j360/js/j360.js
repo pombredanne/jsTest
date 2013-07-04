@@ -29,17 +29,18 @@
             });
 
             $overlay = $obj.clone(true);
-            $overlay.html('<img src="images/loader.gif" class="loader" style="margin-top:' + ($obj.height()/2 - 15) + 'px" />');
-            $overlay.attr('id', 'view_overlay');
-            $overlay.css({
-                'position' : 'absolute',
-                'z-index': '5',
-                'top' : $obj.offset().top,
-                'left' : $obj.offset().left,
-                'background' : '#fff'
-            });
-            $obj.after($overlay);
-            $obj.after('<div id="colors_ctrls"></div>');
+            $overlay.html('<img src="images/loader.gif" class="loader" style="margin-top:' + ($obj.height()/2 - 15) + 'px" />')
+                    .attr('id', 'view_overlay')
+                    .css({
+                        'position' : 'absolute',
+                        'z-index': '5',
+                        'top' : $obj.offset().top,
+                        'left' : $obj.offset().left,
+                        'background' : '#fff'
+                    });
+
+            $obj.after($overlay).after('<div id="colors_ctrls"></div>');
+            
             jQuery('#colors_ctrls').css({
                 'width' : $obj.width(),
                 'position' : 'absolute',

@@ -96,20 +96,20 @@
 	<script type="text/javascript">
 		$("ul:first").dragsort();
         $("table:first").dragsort();
-//		$("#list1, #list2").dragsort({
-//            dragSelector: "div",
-//            dragBetween: true,
-//            dragEnd: saveOrder,
-//            placeHolderTemplate: "<li class='placeHolder here'><div></div></li>",
-//            scrollContainer:'body'
-//        });
-        		$(" #list2").dragsort({
-                    dragSelector: "div",
-                    dragBetween: true,
-                    dragEnd: saveOrder,
-                    scrollContainer:'#list2',
-                    placeHolderTemplate: "<li class='placeHolder here'><div></div></li>"
-                });
+		$("#list1, #list2").dragsort({
+            dragSelector: "div",
+            dragBetween: true,
+            dragEnd: saveOrder,
+            placeHolderTemplate: "<li class='placeHolder here'><div></div></li>",
+            scrollContainer:'body'
+        });
+//        		$(" #list2").dragsort({
+//                    dragSelector: "div",
+//                    dragBetween: true,
+//                    dragEnd: saveOrder,
+//                    scrollContainer:'#list2',
+//                    placeHolderTemplate: "<li class='placeHolder here'><div></div></li>"
+//                });
 		
 		function saveOrder() {
 			var data = $("#list1 li").map(function() { return $(this).children().html(); }).get();
@@ -117,11 +117,11 @@
 		}
 
 	</script>
-    <style type="text/css">
+    <!--<style type="text/css">
         #list2{
             max-height: 120px;
             overflow: auto;
         }
-    </style>
+    </style>-->
 </body>
 </html>

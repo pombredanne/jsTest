@@ -231,20 +231,12 @@ var t=Math.max.apply(Math,Array);  var nm=Math.max.call(this,2,3,4,8,1222,5,10);
         b.k=b.k||{};/*这一行 错误的  因为b是一个Object 不能这样对Object的子属性进行分配*/
 
 -----------判断ie
-
-    var isIE=!!window.ActiveXObject;
-    var isIE6=isIE&&!window.XMLHttpRequest;
-    var isIE8=isIE&&!!document.documentMode;
-    var isIE7=isIE&&!isIE6&&!isIE8;
-    if (isIE){
-        if (isIE6){
-            alert(”ie6″);
-        }else if (isIE8){
-            alert(”ie8″);
-        }else if (isIE7){
-            alert(”ie7″);
-        }
-    }
+    --http://blog.csdn.net/satans18/article/details/5502129
+    var isIE=!!window.ActiveXObject,
+        isIE6=isIE&&!window.XMLHttpRequest,
+        isIE8=isIE&&!!document.documentMode,
+        isIE7=isIE&&!isIE6&&!isIE8;
+     
     然后是一个稍微短的js判断是否ie的方法：
     2010年1月一位俄国人利用了IE与标准浏览器在处理数组的toString方法的差异，仅仅6bytes就完美完成了是否IE浏览器的检测：
     var var ie = 0
