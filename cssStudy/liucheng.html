@@ -1,0 +1,159 @@
+<html>
+<head>
+  <title>test</title>
+  <meta charset="utf-8">
+  <style type="text/css">
+      .test li{
+        list-style-type: none;
+        width:350px;
+        height: 92px;
+        margin-bottom: -20px;
+      }
+      .test li:hover .round,.test li:hover p{
+          color:#3ed4e5;
+          border-color:#3ed4e5;
+      }
+
+      .test p{
+        margin-bottom: 0px;
+      }
+
+      .test li span{
+        color:gray;
+        font-size:10px
+      }
+
+      .line{
+        border-left:#ccc 4px solid;
+        margin-left: 13px;
+        margin-top: -5px;
+      }
+      .round {
+          padding:5px;
+          width:10px; height:10px;
+          border: 5px solid #dedede;
+          border-radius:20px;
+          float:left;
+          margin-right:20px ;
+          text-align:center；
+          font-size: 20px;
+          line-height: 13px;
+          font-weight:bold;
+      }
+     .round1{
+          border: 5px solid #ccc;
+          border-radius:25px;
+          float:left;
+          margin-left: -7px;
+      }
+       .test li:last-child {
+          margin-bottom: auto;
+       }
+
+       .yes .round,.yes p{
+          color:#3ed4e5;
+          border-color:#3ed4e5;
+       }
+    </style>
+</head>
+<body>
+  <ul class="test">
+    <li>
+      <div class="round">1</div>
+      <p>
+        二叉树的遍历分组讨论
+        <br>
+        <span>邻居的三位同学邻居的三位组成的</span>
+      </p>
+      <div class="line">
+        <br>
+        <br>
+        <br></div>
+    </li>
+    <li>
+      <div class="round">&#10004</div>
+      <p>
+        二叉树的遍历分组讨论
+        <br>
+        <span>邻居的三位同学邻居的三位组成的</span>
+      </p>
+      <div class="line">
+        <br>
+        <br>
+        <br></div>
+    </li>
+    <li>
+      <div class="round">3</div>
+      <p>
+        二叉树的遍历分组讨论
+        <br>
+        <span>邻居的三位同学邻居的三位组成的</span>
+      </p>
+      <div class="line">
+        <br>
+        <br>
+        <div class="round1"></div>
+      </div>
+    </li>
+  </ul>
+
+  <style>
+  html,body,h2,p{padding:0;margin:0;}
+  body{font:12px/150% "Microsoft YaHei","SimSun",arial,serif;}
+  #main{width:1000px;margin:100px auto 0;}
+  #main > div.item{height:120px;padding-left:100px;position:relative;z-index:1;padding-top:10px;overflow:hidden;}
+  #main > div.item > h2{color:#000;font-size:16px;}
+  #main > div.item > p{color:#666;font-size:14px;}
+  #main > div.item > span{display:block;position:absolute;left:25px;top:15px;height:100%;}
+  #main > div.item strong{font-size:28px;position:relative;}
+  #main > div.item i{background-color:#ccc;display: block;height: 100%;left:5px;position: absolute;top: 33px;width: 4px;z-index:-3;}
+  #main > div.item strong::after{content:' ';display:block;position:absolute;top:-5px;left:-17px;width:50px;height:50px;border-radius:50px;background-color:#ccc;z-index:-2;}
+  #main > div.item strong::before{content:' ';display:block;position:absolute;top:-1px;left:-13px;width:42px;height:42px;border-radius:42px;background-color:#fff;z-index:-1;}
+  
+  /*ext*/
+  #main > div.item.end{height:80px;}
+  #main > div.item.end i::after{background-color:#ccc;border-radius:11px;bottom:48px;content: " ";display:block;height:11px;left:-4px;overflow: hidden;position:absolute;width:11px;}
+  #main > div.item.on > h2,#main > div.item.on strong{color:#1cb3f1;}
+  #main > div.item.on strong::after{background-color:#1cb3f1;}
+  #main > div.item.ok > span{top:7px;}
+  #main > div.item.ok strong::after{background-color:#999;}
+  #main > div.item.ok strong{color:#999;text-indent:-2px;display: block;padding-top:10px;}
+</style>
+
+  <div id="main">
+
+    <!--
+        说明:
+        循环的 .item;
+        如果为当前高亮则添加 .on;
+        如果已经成功则添加 .ok, 且把strong标签里换成&#10004;;
+        最后一个为 .end;
+        -->
+
+    <div class="item ok">
+      <h2>二叉树的遍历分组讨论</h2>
+      <p>邻居的三们同学邻居的三位组成的(第一步)</p>
+      <span> <strong>&#10004;</strong> <i></i>
+      </span>
+    </div>
+
+    <div class="item on">
+      <h2>二叉树的遍历分组讨论</h2>
+      <p>邻居的三们同学邻居的三位组成的(第二步)</p>
+      <span> <strong>2</strong> <i></i>
+      </span>
+    </div>
+
+    <div class="item end">
+      <h2>二叉树的遍历分组讨论</h2>
+      <p>邻居的三们同学邻居的三位组成的(第三步)</p>
+      <span>
+        <strong>3</strong>
+        <i></i>
+      </span>
+    </div>
+
+  </div>
+
+</body>
+</html>
