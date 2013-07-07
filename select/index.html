@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset=utf-8 />
+    <title>JS Bin</title>
+</head>
+<body>
+<div id="main">
+    <div class="clear" style="height:100px;">
+        <div class="xlSelect">
+            <a href="javascript:void(0);" class="text">您的职业是?<em><i></i></em></a>
+            <div class="option">
+                <ul>
+                    <li class="first">您的职业是?</li>
+                    <li>php工程师</li>
+                    <li>前端工程师</li>
+                    <li>java工程师</li>
+                    <li>mysql数据库</li>
+                    <li>客服代表</li>
+                    <li>主管经理</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src="plut.js"></script>
+<script>
+$(function(){
+    window.k=$('div.xlSelect').xlSelect();
+});
+
+
+</script>
+</body>
+</html>

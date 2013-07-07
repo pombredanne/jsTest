@@ -1,0 +1,29 @@
+/*清浮动*/
+.clear { zoom: 1; }
+.clear:after { clear: both; content: ""; display: block; height: 0; overflow: hidden; visibility: hidden; }
+body{}
+
+#main{width:1000px;margin:100px auto 0;}
+
+.xlSelect ul,.xlSelect li{margin:0;padding:0; list-style:none;}
+.xlSelect{float:left;font-size:12px;min-width:100px;}
+.xlSelect a{color:#333; text-decoration:none;outline:none;}
+.xlSelect .text{background-color:#fff;display:block;padding:0 50px 0 10px;height:22px;line-height:22px;border:1px solid #999;position:relative; transition:border-color .3s;overflow:hidden;}
+.xlSelect .text em{display:block;width:20px;height:22px;position:absolute;right:0;top:0;overflow:hidden;transition:background-color .3s;cursor:pointer;}
+.xlSelect .text i{display:block;height:0;width:0;position:absolute;right:4px;top:8px;border:5px dashed transparent;border-top:5px solid #999;overflow:hidden;transition:border-top-color .3s;}
+
+.xlSelect .option{display:none;position:absolute;top:22px;left:0;background-color:#fff;z-index:10001;width:100%;}
+.xlSelect .option ul{border: 1px solid #7eb4ea;overflow:hidden;overflow-y:auto;padding-bottom:5px;min-height:10px;}
+.xlSelect .option li{height:22px;line-height:22px;padding-left:10px; cursor:pointer;}
+.xlSelect .option li.first{border-bottom:1px dashed #f3f3f3;}
+.xlSelect .option li.first{color:#999;}
+.xlSelect .option li.first:hover{background-color:#f0f0f0;color:#333;}
+.xlSelect .option li:hover,.xlSelect .option li.on{background-color:#39f;color:#fff;}
+
+.xlSelect.on {position:relative;z-index:1000;}
+.xlSelect.on .option{display:block;box-shadow:0 0 10px #ccc;}
+.xlSelect.on .text{border-bottom:none;border-color:#7eb4ea;box-shadow:0 0 10px #ccc;z-index:10002;}
+
+.xlSelect:hover .text em{background-color:#eaf3fc;}
+.xlSelect:hover .text i{border-top-color:#000;}
+.xlSelect:hover .text{border-color:#7eb4ea;box-shadow:0 0 10px #ccc;}
