@@ -191,6 +191,27 @@ var _Dom={
             event.cancelBubble = true;
         }
     },
+    contains:function(){  // 判断a是否包含b itself 是否包括a===b
+         if (itself && a == b) {
+            return true
+         }
+         if (a.contains) {
+             if (a.nodeType === 9){// document
+                 return true;
+             }
+             return a.contains(b);
+         } else if (a.compareDocumentPosition) {
+             return !!(a.compareDocumentPosition(b) & 16);
+         }
+         while ((b = b.parentNode)){
+             if (a === b) return true;
+         }
+         return false;
+        /*
+            jquery:
+                return ($a.closest(b).length>0);//$a 必须是jquery对象
+        */
+    },
     select:{
         checkItem: function(objSelect, objItemValue) {
             var	isExit = false;

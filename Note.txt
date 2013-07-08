@@ -652,4 +652,38 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
          }  
         </script>
 
+----------   jquery 插件缺憾 以及 碎点知识补足
+    1: jquery 无法给对象添加 私有属性 
+        eg: $('div').ppname='rambo'// 这样不会成功
+        可以采用 data方法 进行弥补 或者直接给dom结构绑定 即 $('div')[0].ppname
+    2: var k=$('div').xl(); k.remove();  这种形式可以使用以下两种:
+        $.fn.xl = function () {
+            function a(name){
+                this.kl=name;
+            }
+            a.prototype=jQuery.prototype;  //如果还想继续链式调用jquery的方法
+            加上这个
+            a.prototype._name=function(){
+                console.log(2)
+            }
+            return new a('fd')
+        }
+        var k=$('div').xl();
+        console.log(k)  //function
+        
+        $.fn.xl=function(){
+            $.fn.xl()._name=function(){
+               if(contains($(this),self)){  // (1)
+                   console.log(2);    
+               }
+            }   
+        }
+
+        两种方法的共同点 
+            如果第一种方法加上啦 a.prototype=jQuery.prototype
+            那么两种方法都一样,
+            将_name方法添加到啦jquery的原型中,任何对象都可以调用 使用他
+            因此必须进行判断一下 或者建议使用第一种 去掉a.proty`````
+            判断方法:  见(1)
+                
 
