@@ -6,6 +6,27 @@
 	}
 	return txt.toString();
 
+获取选中的html：
+	function getSelectedContents() {
+		if (window.getSelection) { //chrome,firefox,opera
+			var range = window.getSelection().getRangeAt(0);
+			var container = document.createElement('div');
+			console.log(container)
+			container.a(range.cloneContents());
+			return container.innerHTML;
+			//return window.getSelection(); //只复制文本
+		} else if (document.getSelection) { //其他
+			var range = window.getSelection().getRangeAt(0);
+			var container = document.createElement('div');
+			container.a(range.cloneContents());
+			return container.innerHTML;
+			//return document.getSelection(); //只复制文本
+		} else if (document.selection) { //IE特有的
+			return document.selection.createRange().htmlText;
+			//return document.selection.createRange().text; //只复制文本
+		}
+	}
+
 定义范围:
 	var userSelection;
 	if (window.getSelection) { //现代浏览器
@@ -15,31 +36,18 @@
 	}
 
 由范围对象定义Range对象:
-var getRangeObject = function(selectionObject) {
-    if (selectionObject.getRangeAt){
-    		return selectionObject.getRangeAt(0);
-    }else { // TODO 较老版本Safari! 将调查 safar 这一选项可忽视   
-        var range = document.createRange();
-        range.setStart(selectionObject.anchorNode,selectionObject.anchorOffset);
-        range.setEnd(selectionObject.focusNode,selectionObject.focusOffset);
-        return range;
-    }
-}
-var rangeObject = getRangeObject(userSelection);
+	var getRangeObject = function(selectionObject) {
+	    if (selectionObject.getRangeAt){
+	    		return selectionObject.getRangeAt(0);
+	    }else { // TODO 较老版本Safari! 将调查 safar 这一选项可忽视   
+	        var range = document.createRange();
+	        range.setStart(selectionObject.anchorNode,selectionObject.anchorOffset);
+	        range.setEnd(selectionObject.focusNode,selectionObject.focusOffset);
+	        return range;
+	    }
+	}
+	var rangeObject = getRangeObject(userSelection);
 
 定义document rang对象
 	ff:document.createRange()
 	<IE9:document.body.createTextRange();
-
-选择 范围中的文本:
-	function selectText() {
-	    if (document.selection) {
-	        var range = document.body.createTextRange();
-	        range.moveToElementText(document.getElementById('selectable'));
-	        range.select();	// 这里
-	    } else if (window.getSelection) {
-	        var range = document.createRange();
-	        range.selectNode(document.getElementById('selectable'));
-	        window.getSelection().addRange(range);  // 这里
-	    }
-	}

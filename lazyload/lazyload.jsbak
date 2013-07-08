@@ -12,6 +12,38 @@
  * Version:  1.8.4
  *
  */
+ /*
+         http://www.admin10000.com/document/1011.html
+        html code:
+            <div id="container">
+              <div id="inner_container">
+                    <img width="765" height="574" alt="BMW M3 GT" data-original="img/bmw_m3_gt.jpg" src="img/bmw_m3_gt.jpg" style="display: block;">
+                    <img width="765" height="574" alt="BMW M3 GT" data-original="img/bmw_m3_gt.jpg" src="img/bmw_m3_gt.jpg" style="display: block;">
+                    <img width="765" height="574" alt="BMW M3 GT" data-original="img/bmw_m3_gt.jpg" src="img/bmw_m3_gt.jpg" style="display: block;">
+                    <img width="765" height="574" alt="BMW M3 GT" data-original="img/bmw_m3_gt.jpg" src="img/bmw_m3_gt.jpg" style="display: block;">
+              </div>
+            </div>
+
+       style code:
+         #container {
+             overflow: scroll;
+             width: 800px;
+         }
+        #inner_container {
+             width: 4750px;
+         }
+
+       js code:
+          $("img.lazy").lazyload();
+          $("img.lazy").lazyload({ threshold : 200 });//提前200px加载
+          $("img.lazy").lazyload({ event : "click" });//自定义触发事件
+          $("img.lazy").lazyload({ effect : "fadeIn" });//显示效果
+          $("img.lazy").lazyload({ skipInvisible : false });//加载不可见的 默认:不可见img 不load
+          $("img.lazy").lazyload({
+                  container: $("#container")
+            });
+   */
+
 (function($, window, document, undefined) {
     var $window = $(window);
 

@@ -174,6 +174,6 @@
         "above-the-dom"  : function(a) { return !$.belowthefold(a,'',0); },   //[上下] 已经翻过去的
         "right-the-dom": function(a) { return $.rightoffold(a,'',0); },     //[左右] 还未翻过去的
         "left-the-dom" : function(a) { return !$.rightoffold(a,'',0); },    //[左右]  已经翻过去的
-        "in-viewport"    : function(a) { return $.inviewport(a,'',0);},       //可是区域
+        "in-viewport"    : function(a) { return $.inviewport(a,'',0);}       //可是区域
     });
 })(jQuery, window);
