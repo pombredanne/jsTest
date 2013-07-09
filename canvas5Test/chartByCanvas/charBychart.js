@@ -1,5 +1,8 @@
 /*
     canvas:无法给隐藏的选项 进行绘制  可以考虑加上该选项  是否允许给hidden元素 添加
+ http://www.cnblogs.com/tim-li/archive/2012/08/06/2580252.html#top
+ http://www.w3school.com.cn/html5/canvas_transform.asp
+ http://www.w3school.com.cn/html5/canvas_arc.asp
 */
 
 "use strict";

@@ -5,7 +5,7 @@
 </head>
 <body>
 
-    <canvas id="Test" width="400" height="300"></canvas>
+    <canvas id="Test" width="600" height="600"></canvas>
 
 
 
@@ -13,38 +13,27 @@
     <script type="text/javascript" src="jquery-migrate-1.1.1.js"></script>
     <script type="text/javascript" src="charBychart.js"></script>
     <script type="text/javascript">
-        var test=_canvans($('#Test')[0]);
-        test.Rect({
-            fillStyle:'red',
+        var testcanvas=_canvans($('#Test')[0]);
+        testcanvas.Rect({
+            fillStyle:'blue',
+            isFill:false,
             x:0,
-            y:10,
+            y:0,
             width:100,
             height:100
         }).Rect({
-            fillStyle:'blue',
-            x:110,
-            y:10,
+            x:120,
+            y:0,
             width:100,
-            height:100,
-            isFill:false
-        }).clear({
-            x:40,
-            y:40,
-            width:220,
-            height:20
+            height:100
         }).Arc({
-            x:200,
-            y:150,
-            radius:100,
+            x:50,
+            y:160,
+            radius:50,
             straAngle:0,
-            endAngle:Math.PI * 2,
-            fillStyle:'blue',
-            fjdwwwwwwfjkld:4
-        }).line(function(ctx){
-            ctx.lineTo(200, 100).lineTo(20,50).lineTo(30,30);
-        },'red').line(function(ctx){
-            ctx.moveTo(160,60).lineTo(80,190);
-        },'yellow')
+            endAngle:0.5*Math.PI,
+            anticlockwise:true
+        })
     </script>
 
 </body>
