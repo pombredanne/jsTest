@@ -118,24 +118,24 @@
         }
         alert(a);  //作用域  undefined in window
 
-        function a(x) {
+        function b(x) {
             return x * 2;
         }
-        var a;  //  想想 如果是 var a=1;????
+        var b;  //  想想 如果是 var a=1;????
+        alert(b);  
 
-        "use strict";   // TODO 为什么将函数内部的 严格模式 注释就不管用呢?  难道也是严格模式的作用域>?  http://ishouldbeageek.me/2013/06/09/strict-mode/
-        function b(x, y, a) {
+        "use strict";    // TODO 为什么在linux下将函数内部的 严格模式 注释就不管用呢?  难道也是严格模式的作用域>?  http://ishouldbeageek.me/2013/06/09/strict-mode/
+        function c(x, y, a) {
             "use strict";
             arguments[2] = 10;
             alert(a);
         }
-        b(1, 2, 3);
-        alert(a);  
-
-        function a() {
+        c(1, 2, 3);
+        
+        function d() {
             alert(this);    // this 在js中有一个隐式的等式  this= x||window;  x: 调用者
         }
-        a.call(null); 
+        d.call(null); 
     </script>
 </body>
 </html>
