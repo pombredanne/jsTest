@@ -81,7 +81,7 @@
                 context.beginPath();
                 context.arc(300, 150, 50, 0, Math.PI/2 , false);
                 context.fillStyle = 'rgba(255,0,0,0.25)';
-                context.fill();
+                context.fill();     // fill 填充的是 路径包起来的范围 比如 正方形里面加了一个圆 填充不是那个圆 是外面包起来的范围  TODO 但是 如果正方形中包围一个rect则 会全部包围 因此如果想达到以上效果 可以尝试使用 canvas书中的制作剪纸图形里用 路径来自己花
                 context.strokeStyle = 'blue';
                 context.closePath();
                 context.stroke();
@@ -93,7 +93,7 @@
 
     <section>
         <header>
-            <h1>画圆()</h1>
+            <h1>画圆(arc)</h1>
         </header>
         <canvas id="canvasArc" width="400" height="300"></canvas>
 
@@ -103,10 +103,19 @@
                     context = canvas.getContext('2d');
 
                 context.beginPath();
-                context.arc(200, 150, 100, 0, Math.PI * 2, true);
+                context.arc(100, 100, 80, 0, Math.PI * 2, true); // TODO 在绘制类似同心圆的时候 外圆 和内圆 顺时针 逆时针不同才能绘制出空心的 否则就是大圆内画小园
                 context.closePath();
                 context.fillStyle = 'rgba(0,255,0,0.25)';
                 context.fill();
+
+                //context.strokeStyle='yellow';
+                context.beginPath();
+                context.moveTo(200,0);
+                context.lineTo(200,100);
+                context.arcTo(200,180,280,180,45);  // 关于圆弧的介绍 --http://www.mb5u.com/HTML5/html5_96424.html
+                context.lineTo(320,180);
+                context.closePath();
+                context.stroke();
             }
             canvasArc('canvasArc')
         </script>
@@ -114,7 +123,7 @@
 
     <section>
         <header>
-            <h1>画线test(lineTo moveTo)</h1>
+            <h1>画线(lineTo moveTo)</h1>
         </header>
         <canvas id="canvasLineTest" width="400" height="300"></canvas>
 
@@ -138,6 +147,35 @@
             canvasLineTest('canvasLineTest')
         </script>
     </section>
+    
+    <section>
+        <header>
+            <h1>贝塞尔曲线2次方程（bezierCurveTo）</h1>
+        </header>
+        <canvas id="bezierCurveTo2" width="400" height="300"></canvas>
+        <script type="text/javascript">
+            function bezierCurveTo2(id) {
+                var can = document.getElementById(id);
+                var cxt = can.getContext('2d');
+
+                //绘制起始点、控制点、终点
+                cxt.beginPath();
+                cxt.moveTo(20,170);
+                cxt.lineTo(130,40);   // 为了证实 控制点 坐标xp yp
+                cxt.lineTo(180,150);
+                cxt.stroke();
+
+                cxt.strokeStyle = "rgba(255,0,0,1)";
+
+                //绘制2次贝塞尔曲线
+                cxt.beginPath();
+                cxt.moveTo(20,170);
+                cxt.quadraticCurveTo(130,40,180,150);   // cxt.quadraticCurveTo(xp,yp,x,y);  xp yp:控制点   x y :终点
+                cxt.stroke();
+            }
+            bezierCurveTo2('bezierCurveTo2')
+        </script>
+    </section>
 
     <section>
         <header>
@@ -147,6 +185,7 @@
 
         <script type="text/javascript">
             //http://lblovesnow-163-com.iteye.com/blog/1447918
+            // 贝塞尔曲线 必须有一个moveTo   作为起点 否则 则 使用第一控制点为起点 二次曲线也一样
             function bezierCurveTo3(id) {
                 var canvas = document.getElementById(id);
                 if (canvas == null) {
@@ -166,39 +205,10 @@
                 context.strokeStyle = "rgba(200,0,0,1)";
                 context.beginPath();
                 context.moveTo(25,175);
-                context.bezierCurveTo(60,80,150,30,170,150);
+                context.bezierCurveTo(60,80,150,30,170,150);   // context.bezierCurveTo(xp1,yp1,xp2,yp2,x,y); xp1 yp1:第一控制点 xp2 yp2:第二控制点 x y:重点坐标
                 context.stroke();
             }
             bezierCurveTo3('bezierCurveTo3')
-        </script>
-    </section>
-
-    <section>
-        <header>
-            <h1>贝塞尔曲线2次方程（bezierCurveTo）</h1>
-        </header>
-        <canvas id="bezierCurveTo2" width="400" height="300"></canvas>
-        <script type="text/javascript">
-            function bezierCurveTo2(id) {
-                var can = document.getElementById(id);
-                var cxt = can.getContext('2d');
-
-                //绘制起始点、控制点、终点
-                cxt.beginPath();
-                cxt.moveTo(20,170);
-                cxt.lineTo(130,40);
-                cxt.lineTo(180,150);
-                cxt.stroke();
-
-                cxt.strokeStyle = "rgba(255,0,0,1)";
-
-                //绘制2次贝塞尔曲线
-                cxt.beginPath();
-                cxt.moveTo(20,170);
-                cxt.quadraticCurveTo(130,40,180,150);
-                cxt.stroke();
-            }
-            bezierCurveTo2('bezierCurveTo2')
         </script>
     </section>
 
@@ -427,7 +437,7 @@
                     context = canvas.getContext("2d");
 
                 image.onload = function () {
-                    //裁剪图像 首先选择一个块 然后clip裁剪图像
+                    //裁剪图像 首先选择一个块 然后clip裁剪图像  clip: 只显示裁剪出的这个区域 对于本例 即就显示一个200,120的rect
                     context.rect(50,20,200,120);
                     context.stroke();
                     context.clip();
