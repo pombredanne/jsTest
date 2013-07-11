@@ -502,7 +502,7 @@
                     context.drawImage(image, 0, 0,200,200);
 
                     //实验证明imagedata取的是canvas所在范围画的图形，不止是图片  不会取该区域内是空白的canvas的像素
-                    var imagedata = context.getImageData(0, 0, 400, 300);     // 跨域操作的话,会出现 The operation is insecure.(该操作是不安全的)
+                    var imagedata = context.getImageData(0, 0, 400, 300);     // 跨域操作的话,在本地测试的时候,把图片放到跟html不同一的文件夹里也会出现 The operation is insecure.(该操作是不安全的)
 
                     /*
                         上面那个创建imagedata 会有跨域的影响 参照-- http://vinqon.com/codeblog/?detail/11079
@@ -548,7 +548,7 @@
                 context.fillStyle = "#00f";                 //  字体颜色
                 context.font = "italic 30px sans-serif";    //  字体种类大小设置
                 context.textBaseline = 'top';               //  textBaseline  绘制文本的时候,X基准。 (最近的一条 有可能是canva本身的边)
-                context.textAlign='left';                      //  textAlign  绘制文本的时候,Y基准(最近的一条 有可能是canva本身的边)
+                context.textAlign='left';                      //  textAlign  绘制文本的时候,Y基准(最近的一条 有可能是canva本身的边)   可以参照书上example3.4
 
                 //填充字符串
                 var txt="fill示例文字";
