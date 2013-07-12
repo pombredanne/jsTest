@@ -136,47 +136,9 @@ var CD = {};
 
                     2:  直接通过调用该函数的实例函数
                     alert(yx01.constructor())
-
-                eval&&new Function 关系:
-                    eval('alert(3)') == new Function('alert(3)')() 
-
-
-                关于让window.onload 执行多次 :
-                1:
-                    <script language="javascript">   
-                        window.onload = function() {  
-                            alert('1');  
-                        };  
-                    </script> 
-                    <script type="text/javascript">  
-                        var saved;  
-                        if (typeof window.onload == 'function') {  
-                            saved = window.onload;  
-                        }  
-                        window.onload = function() {  
-                            if (saved) saved();  
-                            alert('2');  
-                        };  
-                    </script>
-                2:原理同我们使用的一样 使用事件机制
-                function addEvent(obj,evt,fn) {    
-                    evt=evt||'load';                                       
-                    var saved;  
-                    if (typeof obj["on"+evt] == "function") {  
-                        saved = obj["on"+evt];  
-                    }  
-                    obj["on"+evt] = function () {  
-                        if (saved) saved();       
-                        fn();                 
-                    }                     
-                }  
             */
 
-            // (function(k){
-            //     CD.event.add(window, 'load',function(){CD.create(k)} );  //TODO 学习这种 load多个函数 的方法    
-            // })(config.id)
-
-            CD.event.add(window, 'load', new Function('CD.create("'+config.id+'")'));  //TODO 学习这种 load多个函数 的方法
+            CD.event.add(window, 'load', new Function('CD.create("'+config.id+'")'));
         }
     };
     CD.create = function(id, mode) {

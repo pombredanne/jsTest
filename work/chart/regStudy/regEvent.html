@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>svg事件操作</title>
+</head>
+<script>
+	//http://hi.baidu.com/onewaymail/item/5de817265927681509750830
+	function changeColor(evt){
+		var rect = evt.target;
+       	rect.setAttributeNS(null, "fill", "red")
+	}
+
+	var svgns = "http://www.w3.org/2000/svg";
+	function makeShape(evt) {
+		svgDoc = evt.target.ownerDocument;
+		var rect = svgDoc.createElementNS(svgns, "rect");
+		rect.setAttributeNS(null, "x", "5");
+		rect.setAttributeNS(null, "y", "5");
+		rect.setAttributeNS(null, "width", "40");
+		rect.setAttributeNS(null, "height", "40");
+		rect.setAttributeNS(null, "fill", "red");
+		rect.addEventListener("click", changeColor, false);
+		var set = svgDoc.createElementNS(svgns, "set");
+		set.setAttributeNS(null, "attributeName", "fill");
+		set.setAttributeNS(null, "to", "blue");
+		set.setAttributeNS(null, "begin", "click");
+		rect.appendChild(set);
+		evt.target.appendChild(rect);
+	}
+	function changeColor(evt) {
+		var target = evt.target;
+		target.setAttributeNS(null, "fill", "blue");
+	}
+</script>
+<body>
+<!-- 	<svg>
+		<rect x="15" y="15" width="40" height="40" fill="red">
+			<set attributeName="fill" to="blue" begin="click"/>
+		</rect>
+
+		<rect x="65" y="15" width="40" height="40" fill="blue" onclick= "changeColor(evt)"/>
+	</svg> -->
+	<svg onload="makeShape(evt)">
+	</svg>
+</body>
+</html>

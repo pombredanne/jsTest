@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Canvas drag事件分析</title>
+</head>
+<body>
+	<section>
+		<div>
+			<canvas id="canvas" width="400" height="300">
+				This text is displayed if your browser does not support HTML5 Canvas.
+				原文地址:  http://html5.litten.com/how-to-drag-and-drop-on-an-html5-canvas/
+			</canvas>
+		</div>
+	</section>
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas'),
+			ctx = canvas.getContext('2d'),
+			WIDTH=canvas.width,
+			HEIGHT=canvas.height,
+			windowToCanvas=function(canvas,x,y){
+				var bbox = canvas.getBoundingClientRect();  //bbox.width  包括边框宽度
+			    return {
+			        x: x - bbox.left * (canvas.width  / bbox.width),
+			        y: y - bbox.top  * (canvas.height / bbox.height)
+			    };
+			},
+			drag = {
+				rect: function(x, y, w, h) {
+					ctx.beginPath();
+					ctx.rect(x, y, w, h);
+					ctx.closePath();
+					ctx.fill();
+				},
+				clear: function() {
+					ctx.clearRect(0, 0, WIDTH, HEIGHT);    //  关于几种清除的方法测试  http://jsperf.com/ctx-clearrect-vs-canvas-width-canvas-width/2  
+				},
+				draw: function(move) {
+					this.clear();
+					ctx.fillStyle = "#FAF7F8";
+					this.rect(0, 0, WIDTH, HEIGHT);
+					if(!move){
+						ctx.fillStyle = "#444444";
+						this.rect(60, 35, 30, 30);	
+					}
+				}
+			};
+
+			drag.draw();
+
+			canvas.onmousemove=function(event){
+				var loc = windowToCanvas(canvas, event.clientX, event.clientY);
+				
+				var x=loc.x-15,
+					y=loc.y-15;
+				/*
+					关于给canvas内部某一个物体做事件的方法,
+					1: isPointInPath   http://www.xyhtml5.com/html5-canvas-event-handler.html   http://bbs.blueidea.com/thread-2979405-1-1.html--(在每次mousedown的时候,重绘画布,通过当前点击物体的x,y与isPointInPath的上下文环境中的x,y进行比对,找出当前点击者,并对其进行拖动)
+						var p = windowToCanvas(canvas, event.clientX, event.clientY);
+						ctx.isPointInPath(p.x, p.y)
+					
+					2: 类似这种笨方法了
+						if(x>60&&x<=90&&y<75&&y>35){
+							 
+						}
+				*/
+				
+				drag.draw(true);
+				ctx.fillStyle = "#444444";
+				drag.rect(x, y, 30, 30)	
+			}
+	</script>
+
+</body>
+</html>
+﻿

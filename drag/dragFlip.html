@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8"/>
+      <title>放大图像--获取可视化区域</title>
+      <style> 
+         body {
+            background: rgba(100, 145, 250, 0.3);
+         }
+
+         #canvas1 {
+            border: thin solid #AAAAAA;
+            cursor: crosshair;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            margin-right: 0;
+            padding: 0;
+        }
+
+         #rubberbandDiv {
+            position: absolute;
+            border: 3px solid yellow;
+            cursor: crosshair;
+            display: none;
+         }
+
+      </style>
+   </head>
+
+  <body>
+      <div id='rubberbandDiv'></div>
+
+      <canvas id='canvas1' width='800' height='520'>
+         Canvas not supported
+      </canvas>
+      <script>
+        /*
+            图片放大原理:
+            1:根据选择框的坐标,来利用canvas操作i图片的功能进行相应放大
+
+            对于在document直接绑定事件, 可以学习多次window.onload事件方法 
+        */
+
+
+        var  rubberbanddiv = document.getElementById('rubberbandDiv'),
+              downXY={},
+              booldrag=false;
+
+        canvas1.onmousedown=function(event){     //默认取id 作为选项
+             rubberbanddiv.style.left=event.clientX+'px';
+             rubberbanddiv.style.top=event.clientY+'px';    
+            downXY.x=event.clientX;
+            downXY.y=event.clientY;
+            booldrag=true;
+        }
+
+        document.onmousemove=function(event){
+            if(booldrag){
+                rubberbanddiv.style.display='inline';
+                
+                 var x=event.clientX,
+                      y=event.clientY,
+                      width=x-downXY.x,
+                      height=y-downXY.y;
+                    
+                (x < downXY.x)&&(rubberbandDiv.style.left = x + 'px');
+                (y<downXY.y)&&(rubberbandDiv.style.top  = y  + 'px');
+
+                rubberbanddiv.style.width=Math.abs(width)+'px';
+                rubberbanddiv.style.height=Math.abs(height)+'px';
+            }
+        }
+        document.onmouseup=function(event){ 
+            event.preventDefault();
+             booldrag=false;
+        }
+
+      </script>
+  </body>
+</html>

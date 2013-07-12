@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drawing Axes</title>
+
+    <style>
+      body {
+         background: #eeeeee;
+      }
+
+      #canvas {
+         background: #ffffff;
+         cursor: pointer;
+         margin-left: 10px;
+         margin-top: 10px;
+         -webkit-box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+         -moz-box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+         box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+      }
+      #readout {
+          margin-top: 10px;
+          margin-left: 15px;
+          color: blue;
+      }
+    </style>
+  </head>
+
+   <body>
+      <div id='readout'></div>
+      <canvas id='canvas' width='600' height='400'>
+         Canvas not supported
+      </canvas>
+
+      <script>
+          var ctx = document.getElementById('canvas').getContext('2d'),
+              UNIT = 10,
+              unitNum = 5,
+              readout=document.getElementById('readout');
+
+
+          var buildline=function(ctx,moveX,moveY,ToX,ToY){
+              ctx.beginPath();
+              ctx.moveTo(moveX,moveY);
+              ctx.lineTo(ToX,ToY);
+              ctx.closePath();
+              ctx.stroke();
+          };
+
+          function drawGrid(ctx, color, stepx, stepy) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 0.5;
+            
+
+           
+            for (var i = stepx + 0.5; i < ctx.canvas.width; i += stepx) {
+              buildline(ctx,i,0,i,ctx.canvas.height);
+            }
+
+            for (var i = stepy + 0.5; i < ctx.canvas.height; i += stepy) {
+              buildline(ctx,0,i,ctx.canvas.width,i);
+            }
+
+            ctx.strokeStyle = 'blue'
+            ctx.beginPath();
+            ctx.moveTo(UNIT * 4, UNIT * 4);
+            ctx.lineTo(UNIT * 4, UNIT * 35);
+            ctx.lineTo(UNIT * 55, UNIT * 35);
+            ctx.stroke();
+            ctx.font = "15px serif";
+            ctx.fillStyle='blue'
+
+
+            for (i = 1; i < 31; i++) {
+              var y = 39 - (4 + i);
+              if (i % unitNum === 0) {
+                  buildline(ctx,UNIT * 3, UNIT * y,UNIT * 5, UNIT * y);
+                  ctx.textBaseline='bottom';
+                  ctx.fillText(i,UNIT, UNIT *(y+1));
+              } else {
+                 buildline(ctx,UNIT * 3.5, UNIT * y,UNIT * 4.5, UNIT * y);
+              }
+            }
+
+            for (i = 1; i < 51; i++) {
+              var x = (4 + i);
+              if (i % unitNum === 0) {
+                buildline(ctx,UNIT * x, UNIT * 34,UNIT * x, UNIT * 36);
+                ctx.textAlign='center';
+                ctx.fillText(i,UNIT * x, UNIT * 38);
+              } else {
+                buildline(ctx,UNIT * x, UNIT * 34.5,UNIT * x, UNIT * 35.5);
+              }
+            }
+          }
+
+          function windowToCanvas(canvas, x, y){
+              var bbox = canvas.getBoundingClientRect();  //bbox.width  包括边框宽度  http://www.cnblogs.com/qieqing/archive/2008/10/06/1304399.html
+              return {
+                  x: x - bbox.left * (canvas.width  / bbox.width),
+                  y: y - bbox.top  * (canvas.height / bbox.height)
+              };
+          }
+
+          document.getElementById('canvas').onmousemove=function(event){
+              var canvas=ctx.canvas,
+                  loc = windowToCanvas(canvas, event.clientX, event.clientY);
+              
+              ctx.clearRect(0,0,canvas.width,canvas.height);
+              drawGrid(ctx, 'lightgray', 10, 10);
+
+              ctx.strokeStyle = 'rgba(0,0,230,0.8)';
+              ctx.lineWidth = 0.5;
+              var x=loc.x,
+                  y=loc.y;
+
+              buildline(ctx,x + 0.5, 0,x + 0.5, canvas.height);
+              buildline(ctx,0,y + 0.5,canvas.width, y + 0.5);
+
+              readout.innerHTML = '(' + x.toFixed(0) + ', ' + y.toFixed(0) + ')';
+          };
+
+          drawGrid(ctx, 'lightgray', 10, 10);
+      </script>
+  </body>
+</html>

@@ -12,12 +12,10 @@
   <script>
   function addLoadEvent(func) {
     var oldonload = window.onload;
-    console.log(typeof oldonload)
     if (typeof oldonload != "function") {
       window.onload = func;
     }else {
-      window.onload = function() {
-        //原理很简单 利用多次修改 onload 函数 使其最后都将其添加进去
+      window.onload = function() { //原理很简单 利用多次修改 onload 函数 使其最后都将其添加进去   这个原理 同样使用于 document window的其他方法 document.onmouseove
         oldonload();
         func();
       }
