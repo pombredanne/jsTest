@@ -8,7 +8,7 @@ blog( Javascript InfoVis Toolkit)--
     http://blog.pixelingene.com/2011/07/building-a-tree-diagram-in-d3-js/
     
 
-----svg
+----svg   ie9+    
 http://msdn.microsoft.com/zh-cn/library/ie/bg124139(v=vs.85).aspx
 http://svgjs.com/test/    
  http://keith-wood.name/svg.html
@@ -19,6 +19,11 @@ http://svgjs.com/test/
  ---  ie svg的插件  svgviewer  SVGWeb   http://www.savarese.com/software/svgplugin/
  
  
+ ----vml   ie9-
+ http://www.itlearner.com/code/vml/step1.html
+ Raphaël JavaScript   在 SVG 可用时使用 SVG，在 SVG 不可用时使用 VML。
+
+
  --- canvas  svg 比较
  http://www.jb51.net/html5/70974.html
  svg事件 注意项目  http://www.jb51.net/html5/70973.html

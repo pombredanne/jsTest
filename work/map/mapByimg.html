@@ -7,10 +7,11 @@
 </head>
 <body>
     <div class="maps">
-        <!--<div class="help1">-->
-            <img class="help" src="images/gif.gif" width="324" height="473" usemap="#Map">
-        <!--</div>-->
-        <img src="images/shanxi.png" class="map"  width="3564" height="473"  border="0" >
+        <div class="help1">
+            <img src="images/shanxi.png" class="map"  width="3564" height="473"  border="0" >
+            <img class="help" src="images/shanxi.png" width="324" height="473" usemap="#Map">
+            <!--<img class="help" src="images/gif.gif" width="324" height="473" usemap="#Map">-->
+        </div>
         <map name="Map" id="Map">
             <area shape="poly" coords="129,121" >
             <!--<area shape="poly" onMouseOver="a()" alt="YnLin" href="http://www.baidu.com" coords="133,168,132,159,133,151,135,145,138,145,144,145,150,149,154,147,154,143,159,137,164,137,168,137,172,141,174,148,176,155,178,155,180,151,182,149,186,145,195,140,201,140,206,134,212,134,219,134,223,135,231,140,236,144,236,147,237,153,242,158,244,158,250,159,252,157,256,151,259,147,260,143,262,139,266,135,264,129,262,122,259,116,256,112,254,107,254,102,254,99,255,93,260,89,266,85,268,80,268,71,268,66,272,58,276,52,278,44,278,37,275,33,275,24,278,22,272,21,270,21,266,26,265,30,264,35,260,37,258,41,251,35,237,30,244,37,238,37,235,41,221,50,222,55,217,58,211,65,206,75,203,75,200,79,196,82,188,91,192,99,192,105,192,111,187,111,182,107,182,113,182,117,182,121,176,127,172,127,170,127,166,127,160,127,152,126,150,124,148,119,144,116,140,113,136,111,134,113,132,115,128,119,126,120,124,123,122,125,120,128,120,132,119,138,119,141,120,145,121,149,120,154,119,159,124,163,127,166,130,169,133,170" href="#">-->
@@ -33,35 +34,27 @@
             height:473px;
             position:relative;
             overflow: hidden;
-            /*background: #F3F2E2 url(images/shanxi.png) no-repeat;*/
         }
-
         .maps .help{
-            position:absolute; left:0px; top:0px;
-            z-index: 10;
+            position:absolute;  /* 当他们拥有定位属性  不管是相对 还是绝对 都会总从 一叠一叠摞起来 里面的在外面的上面, 后出现的在先出现的上面.*/
+            left:0px;
+            top:0px;
+            opacity: 0;	/*这是重点哦 当然如果是使用gif.gif图片的话 这就多余了*/
         }
-
         img.map{
             position:relative;
         }
     </style>
     <script type="text/javascript">
-        //width="3564"
         function a(){
             alert(2)
         }
-
-        var html=$('#Map')[0].outerHTML;
-
         $('#Map area').eq(1).mousemove(function(){
             console.log(2)
             $('img.map').css('left','-324px');
-            //$('img.map').append(html);
         });
         $('#Map area').eq(2).mousemove(function(){
-            console.log(23231)
-            //$('img.map').css('left','-324px');
-            //$('img.map').append(html);
+            console.log(23231);
         });
     </script>
 </body>
