@@ -372,6 +372,7 @@ function pieChart() {
     }
 
 
+
     /**
      * Draw an individual slice in the chart.
      *
@@ -420,6 +421,11 @@ function pieChart() {
         context.shadowColor = ( slice == currentPullOutSlice ) ? pullOutShadowColour : "rgba( 0, 0, 0, 0 )";
         context.fill();
         context.shadowColor = "rgba( 0, 0, 0, 0 )";
+//     TODO 添加直线
+        context.textAlign = "center";
+        context.font = pullOutLabelFont;
+        var midAngle=(startAngle + endAngle) / 2;
+        context.fillText( chartData[slice]['label'], centreX + Math.cos(midAngle) * ( chartRadius   ), centreY + Math.sin(midAngle) * ( chartRadius  ) );
 
         if ( slice == currentPullOutSlice ) {
             context.lineWidth = pullOutBorderWidth;
