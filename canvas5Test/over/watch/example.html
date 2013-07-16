@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>A One Minute Stopwatch</title>
+
+    <style>
+      body {
+         background: #eeeeee;
+      }
+
+      #controls {
+         position: absolute;
+         top: 30px;
+         left: 40px;
+         padding: 10px;
+         background: rgba(0, 0, 0, 0.1);
+         border: thin solid rgba(0, 0, 0, 0.25);
+         -webkit-box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+         -moz-box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+         box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+      }
+
+      #canvas {
+         background: #ffffff;
+         cursor: crosshair;
+         margin-left: 10px;
+         margin-top: 10px;
+         -webkit-box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+         -moz-box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+         box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+      }
+
+    </style>
+  </head>
+
+   <body>
+      <canvas id='canvas' width='750' height='600'>
+         Canvas not supported
+      </canvas>
+
+      <div id='controls'>
+         Seconds (0-60): <input id='seconds' type='text' value='0' size='4'/>
+         <input id='startStopButton' type='button' value='Start'/>
+      </div>
+      
+      <script src = 'requestNextAnimationFrame.js'></script>
+      <script src = 'stopwatch.js'></script>
+      <script src = 'example.js'></script>
+  </body>
+</html>
