@@ -33,13 +33,6 @@ var canvas = document.getElementById('canvas'),
     timerSetting = 0,
     stopwatch = new Stopwatch();
 
-function windowToCanvas(canvas, x, y) {
-    var bbox = canvas.getBoundingClientRect();
-    return { x: x - bbox.left * (canvas.width  / bbox.width),
-        y: y - bbox.top  * (canvas.height / bbox.height)
-    };
-}
-
 function drawGrid(color, stepx, stepy) {
     ctx.save()
 
@@ -82,19 +75,19 @@ function drawCentroid() {
 }
 
 function drawHand(loc) {
-    var initialAngle = -Math.PI/2 + (Math.PI / 180) * (timerSetting / 60 * 360),
+    var initialAngle = (Math.PI / 180) * (timerSetting / 60 * 360)-Math.PI/2,
         angle = initialAngle,
-        stopwatchElapsed = stopwatch.getElapsedTime(),
+        stopwatchElapsed = stopwatch.getElapsedTime(),   // 单位:ms
         seconds,
         radius,
         endpt,
-        rag=angle;
+        rag=-Math.PI/2;
 
-    if (stopwatchElapsed) {
-        //rag = -Math.PI/2 + (Math.PI / 180) * ((timerSetting - stopwatchElapsed/1000) / 60 * 360),       //TODO 倒计时模式
-            //seconds = parseFloat(timerSetting - stopwatchElapsed/1000).toFixed(2);
-        rag = -Math.PI/2 + (Math.PI / 180) * ((-timerSetting*1000 + stopwatchElapsed/1000) / 60 * 360),
-            seconds = parseFloat(timerSetting - stopwatchElapsed/1000).toFixed(2);
+    if (stopwatchElapsed && stopwatchElapsed/1000<timerSetting ) {
+       //rag = (Math.PI / 180) * ((timerSetting - stopwatchElapsed/1000) / 60 * 360)-Math.PI/2;       //TODO 倒计时模式
+       //seconds = parseFloat(timerSetting - stopwatchElapsed/1000).toFixed(2);
+       rag = (Math.PI / 180) * (( stopwatchElapsed/1000) / 60 * 360)-Math.PI/2;
+       seconds = parseFloat(timerSetting - stopwatchElapsed/1000).toFixed(2);
         if (seconds > 0) {
             secondsInput.value = seconds;
         }
@@ -107,9 +100,9 @@ function drawHand(loc) {
         };
     }
     else {
-        endpt = { x: circle.x - radius * Math.cos(rag),
-            y: circle.y - radius * Math.sin(rag)
-        };
+       endpt = { x: circle.x - radius * Math.cos(rag),
+           y: circle.y - radius * Math.sin(rag)
+       };
     }
     ctx.save();
 
@@ -246,7 +239,7 @@ startStopButton.onclick = function (e) {
     if (value === 'Start') {
         stopwatch.start();
         startStopButton.value = 'Stop';
-        requestNextAnimationFrame(animate);
+        animate();
         secondsInput.disabled = true;
     }else {
         stopwatch.stop();
