@@ -8,22 +8,24 @@ work:
 		http://datavlab.org/2012/08/23/3385
 
 	统计图：
-		http://marshal.easymorse.com/archives/2823
-		http://www.rgraph.net/examples/index.html
-		http://www.elated.com/articles/snazzy-animated-pie-chart-html5-jquery/    ---pie chart原理 制作
+        --rgraph
+            http://marshal.easymorse.com/archives/2823
+            http://www.rgraph.net/examples/index.html
+        --flot
+            http://blog.raphaelzhang.com/2012/11/flotcharts-briefing/
+            http://www.flotcharts.org/flot/examples/
+        http://www.elated.com/articles/snazzy-animated-pie-chart-html5-jquery/    ---pie chart原理 制作
 		http://www.anxioussilence.co.uk/blog/2010/04/27/html-5-graph-slider/	  --- line chart原理
 
 		牛逼的半开源的
 		Highcharts 			fusioncharts
-
-
-https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement  --火狐讲解svg
 
 blog( Javascript InfoVis Toolkit)--
     http://blog.pixelingene.com/2011/07/building-a-tree-diagram-in-d3-js/
 
 ----svg   ie9+    
 	http://msdn.microsoft.com/zh-cn/library/ie/bg124139(v=vs.85).aspx
+    https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement  --火狐讲解svg
 	http://svgjs.com/test/    
 	http://keith-wood.name/svg.html
 	http://commons.oreilly.com/wiki/index.php/SVG_Essentials/Getting_Started
@@ -39,6 +41,14 @@ blog( Javascript InfoVis Toolkit)--
  ----vml   ie9-
 	 http://www.itlearner.com/code/vml/step1.html
 	 Raphaël JavaScript   在 SVG 可用时使用 SVG，在 SVG 不可用时使用 VML。
+
+-----canvas plug
+    http://jcscript.com/documentation/functions/down
+    http://html-canvas-lib.sourceforge.net/#about
+   --jquery 相关的 
+    http://plugins.jquery.com/tag/canvas/
+    http://canvasquery.com/
+    http://www.canvastext.com/   ---canvas text  相关的 感觉没啥用
 
 
  --- canvas  svg 比较
@@ -56,9 +66,6 @@ blog( Javascript InfoVis Toolkit)--
 		不适合游戏应用
  
 http://www.clanfei.com/category/front-end/2/  --优化
-http://www.gbin1.com/technology/javascript/   --博客
-http://www.jiawin.com/web-chart-highcharts/   --博客1
-
 
  clearShadow:  
  一个还未搞懂的东西   http://searchcode.com/codesearch/view/1035559
