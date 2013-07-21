@@ -580,7 +580,7 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
     document.designMode = "on";
     document.execCommand('enableObjectResizing', false, 'false');
     
------------  字符传唤  
+-----------  字符转换
     function report(){
         var str=document.getElementById("hidden").innerHTML;
         str=str.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
