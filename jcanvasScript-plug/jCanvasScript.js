@@ -11,6 +11,9 @@
  1:设置canvases数组,用来存放 我们使用的canvas 包括自定义的id 或者class
  2:当我们再次调用绘图方法时,eg:circle 他会重复上面的方法, 然后找到相应的circle相关的方法,将我们定义的圆心 颜色 坐标等值填充到canvases相应的存储中
  3:当我们再次调用start方法的时候,这时候检查并绘制图像
+    ps: canvas.frame 这是主要函数 绘画 执行点击等等动作 都是在哲理 利用requestnimFrame循环调用这个 通过判断 this.redraw 来确定是否重绘
+        proto.object   里面是为事件啊 什麽的做好赋值
+        jCanvas 主要是利用变已经赋值完成的变量, 如点击事件 通过他下达点击命令 然后等待 canvas.frame执行
  */
 
 (function (window, undefined) {
@@ -153,8 +156,7 @@
                             animateTransforms(key,this,queue);
                             queue[key]=false;
                             queue.animateKeyCount--;
-                            if(!queue.animateKeyCount)
-                            {
+                            if(!queue.animateKeyCount){
                                 if(queue.animateFn)queue.animateFn.apply(this);
                                 this.animateQueue.splice(q,1);
                                 q--;
@@ -219,9 +221,12 @@
             optns.redraw=1;
         },
         setMouseEvent=function (fn,eventName){
-            if(fn===undefined)this['on'+eventName]();
-            else this['on'+eventName] = fn;
-            if(eventName=='mouseover'||eventName=='mouseout')eventName='mousemove';
+            if(fn===undefined){
+                this['on'+eventName]();
+            }else{
+                this['on'+eventName] = fn;
+            }
+            eventName=eventName=='mouseover'||eventName=='mouseout'?'mousemove':eventName;
             objectCanvas(this).optns[eventName].val=true;
             return this;
         },
@@ -290,9 +295,14 @@
             }
             colorKeeper.color.notColor = null;
             return colorKeeper;
-        };
-
-    var animateFunctions={
+        },
+        objectCanvas=function(object){      //返回当前执行的canvas
+            return canvases[object.optns.canvas.number];
+        },
+        objectLayer=function(object){        //返回当前层
+            return objectCanvas(object).layers[object.optns.layer.number];
+        },
+        animateFunctions={
             linear:function(progress,params){
                 return progress;
             },
@@ -318,8 +328,7 @@
                 var x=params.x||1.5;
                 return m_pow(n,10 * (progress - 1)) * m_cos(m * progress * m_pi * x / k);
             },
-            bounce:function(progress,params)
-            {
+            bounce:function(progress,params){
                 var n=params.n||4;
                 var b=params.b||0.25;
                 var sum = [1];
@@ -334,385 +343,351 @@
             }
         },
         imageDataFilters={
-            color:{fn:function(width,height,matrix,type){
-                var old,i,j;
-                matrix=matrix[type];
-                for(i=0;i<width;i++)
-                    for(j=0;j<height;j++)
-                    {
-                        old=this.getPixel(i,j);
-                        old[matrix[0]]=old[matrix[0]]*2-old[matrix[1]]-old[matrix[2]];
-                        old[matrix[1]]=0;
-                        old[matrix[2]]=0;
-                        old[matrix[0]]=old[matrix[0]]>255?255:old[matrix[0]];
-                        this.setPixel(i,j,old);
+            color:{
+                fn:function(width,height,matrix,type){
+                    var old,i,j;
+                    matrix=matrix[type];
+                    for(i=0;i<width;i++){
+                        for(j=0;j<height;j++){
+                            old=this.getPixel(i,j);
+                            old[matrix[0]]=old[matrix[0]]*2-old[matrix[1]]-old[matrix[2]];
+                            old[matrix[1]]=0;
+                            old[matrix[2]]=0;
+                            old[matrix[0]]=old[matrix[0]]>255?255:old[matrix[0]];
+                            this.setPixel(i,j,old);
+                        }
                     }
-            },matrix:
-            {
-                red:[0,1,2],
-                green:[1,0,2],
-                blue:[2,0,1]
-            }},
-            linear:{fn:function(width,height,matrix,type){
-                var newMatrix=[],old,i,j,k,m,n;
-                matrix=matrix[type];
-                m=matrix.length;
-                n=matrix[0].length;
-                for(i=0;i<width;i++)
-                {
-                    newMatrix[i]=[];
-                    for(j=0;j<height;j++)
-                    {
-                        newMatrix[i][j]=[0,0,0,1];
-                        for(m=0;m<3;m++)
-                            for(n=0;n<3;n++)
-                            {
-                                old=this.getPixel(i-parseInt(m/2),j-parseInt(n/2));
-                                for(k=0;k<3;k++)
-                                {
-                                    newMatrix[i][j][k]+=old[k]*matrix[m][n];
-                                }
-                            }
-                    }
-                }
-                for(i=0;i<width;i++)
-                {
-                    for(j=0;j<height;j++)
-                        this.setPixel(i,j,newMatrix[i][j]);
+                },
+                matrix:{
+                    red:[0,1,2],
+                    green:[1,0,2],
+                    blue:[2,0,1]
                 }
             },
+            linear:{
+                fn:function(width,height,matrix,type){
+                    var newMatrix=[],old,i,j,k,m,n;
+                    matrix=matrix[type];
+                    m=matrix.length;
+                    n=matrix[0].length;
+                    for(i=0;i<width;i++){
+                        newMatrix[i]=[];
+                        for(j=0;j<height;j++){
+                            newMatrix[i][j]=[0,0,0,1];
+                            for(m=0;m<3;m++){
+                                for(n=0;n<3;n++){
+                                    old=this.getPixel(i-parseInt(m/2),j-parseInt(n/2));
+                                    for(k=0;k<3;k++)
+                                    {
+                                        newMatrix[i][j][k]+=old[k]*matrix[m][n];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for(i=0;i<width;i++){
+                        for(j=0;j<height;j++){
+                            this.setPixel(i,j,newMatrix[i][j]);
+                        }
+                    }
+                },
                 matrix:{
                     sharp:[[-0.375,-0.375,-0.375],[-0.375,4,-0.375],[-0.375,-0.375,-0.375]],
                     blur:[[0.111,0.111,0.111],[0.111,0.111,0.111],[0.111,0.111,0.111]]
                 }
             }
-        };
-
-    function multiplyM(m1,m2){
-        return [[(m1[0][0]*m2[0][0]+m1[0][1]*m2[1][0]),(m1[0][0]*m2[0][1]+m1[0][1]*m2[1][1]),(m1[0][0]*m2[0][2]+m1[0][1]*m2[1][2]+m1[0][2])],[(m1[1][0]*m2[0][0]+m1[1][1]*m2[1][0]),(m1[1][0]*m2[0][1]+m1[1][1]*m2[1][1]),(m1[1][0]*m2[0][2]+m1[1][1]*m2[1][2]+m1[1][2])]];
-    }
-
-    function multiplyPointM(x,y,m){
-        return {
-            x:(x*m[0][0]+y*m[0][1]+m[0][2]),
-            y:(x*m[1][0]+y*m[1][1]+m[1][2])
-        }
-    }
-
-    function transformPoint(x,y,m){
-        return{
-            x:(x*m[1][1]-y*m[0][1]+m[0][1]*m[1][2]-m[1][1]*m[0][2])/(m[0][0]*m[1][1]-m[1][0]*m[0][1]),
-            y:(-x*m[1][0]+y*m[0][0]-m[0][0]*m[1][2]+m[1][0]*m[0][2])/(m[0][0]*m[1][1]-m[1][0]*m[0][1])
-        }
-    }
-    function getRect(object,rect,type)
-    {
-        if(type=='poor')return rect;
-        var min={x:rect.x,y:rect.y},max={x:rect.x+rect.width,y:rect.y+rect.height},
-            m=multiplyM(object.matrix(),objectLayer(object).matrix()),
-            lt=multiplyPointM(min.x,min.y,m),
-            rt=multiplyPointM(max.x,min.y,m),
-            lb=multiplyPointM(min.x,max.y,m),
-            rb=multiplyPointM(max.x,max.y,m),
-            coords=[[lt.x,lt.y],[rt.x,rt.y],[lb.x,lb.y],[rb.x,rb.y]];
-        if(type=='coords')return coords;
-        var minX, minY,
-            maxX=minX=lt.x,
-            maxY=minY=lt.y;
-        for(var i=0;i<4;i++)
-        {
-            if(maxX<coords[i][0])maxX=coords[i][0];
-            if(maxY<coords[i][1])maxY=coords[i][1];
-            if(minX>coords[i][0])minX=coords[i][0];
-            if(minY>coords[i][1])minY=coords[i][1];
-        }
-        return {x:minX,y:minY,width:maxX-minX,height:maxY-minY};
-    }
-
-    function getCenter(object,point,type){
-        if(type=='poor')return point;
-        return multiplyPointM(point.x,point.y,multiplyM(object.matrix(),objectLayer(object).matrix()));
-    }
-
-
-    function getOffset(elem) {
-        if (elem.getBoundingClientRect) {
-            return getOffsetRect(elem)
-        } else {
-            return getOffsetSum(elem)
-        }
-    }
-
-    function getOffsetSum(elem) {
-        var top=0, left=0
-        while(elem) {
-            top = top + parseInt(elem.offsetTop)
-            left = left + parseInt(elem.offsetLeft)
-            elem = elem.offsetParent
-        }
-        return {
-            top: top,
-            left: left
-        }
-    }
-
-    function getOffsetRect(elem) {
-        var box = elem.getBoundingClientRect()
-        var body = document.body||{};
-        var docElem = document.documentElement
-        var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop
-        var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft
-        var clientTop = docElem.clientTop || body.clientTop || 0
-        var clientLeft = docElem.clientLeft || body.clientLeft || 0
-        var top  = box.top +  scrollTop - clientTop
-        var left = box.left + scrollLeft - clientLeft
-        return {
-            top: m_round(top),
-            left: m_round(left)
-        }
-    }
-    function checkEvents(object,optns)
-    {
-        checkMouseEvents(object,optns);
-        checkKeyboardEvents(object,optns);
-    }
-    function checkKeyboardEvents(object,optns)
-    {
-        if(!object.optns.focused)return;
-        if(optns.keyDown.val!=false)if(typeof object.onkeydown=='function')object.onkeydown(optns.keyDown);
-        if(optns.keyUp.val!=false)if(typeof object.onkeyup=='function')object.onkeyup(optns.keyUp);
-        if(optns.keyPress.val!=false)if(typeof object.onkeypress=='function')object.onkeypress(optns.keyPress);
-    }
-    function isPointInPath(object,x,y)
-    {
-        var point={};
-        var canvas=objectCanvas(object);
-        var ctx=canvas.optns.ctx;
-        var layer=canvas.layers[object.optns.layer.number];
-        point.x=x;
-        point.y=y;
-        if(FireFox_lt_7){
-            point=transformPoint(x,y,layer.matrix());
-            point=transformPoint(point.x,point.y,object.matrix());
-        }
-
-        if(ctx.isPointInPath===undefined || object._img!==undefined || object._imgData!==undefined || object._proto=='text'){
-            var rectangle=object.getRect('poor');
-            var poorPoint=transformPoint(x,y,multiplyM(object.matrix(),layer.matrix()));
-            if(rectangle.x<=poorPoint.x && rectangle.y<=poorPoint.y && (rectangle.x+rectangle.width)>=poorPoint.x && (rectangle.y+rectangle.height)>=poorPoint.y)return point;
-        }else{
-            if(ctx.isPointInPath(point.x,point.y)){
-                return point;
+        },
+        multiplyM=function (m1,m2){
+            return [[(m1[0][0]*m2[0][0]+m1[0][1]*m2[1][0]),(m1[0][0]*m2[0][1]+m1[0][1]*m2[1][1]),(m1[0][0]*m2[0][2]+m1[0][1]*m2[1][2]+m1[0][2])],[(m1[1][0]*m2[0][0]+m1[1][1]*m2[1][0]),(m1[1][0]*m2[0][1]+m1[1][1]*m2[1][1]),(m1[1][0]*m2[0][2]+m1[1][1]*m2[1][2]+m1[1][2])]];
+        },
+        multiplyPointM=function (x,y,m){
+            return {
+                x:(x*m[0][0]+y*m[0][1]+m[0][2]),
+                y:(x*m[1][0]+y*m[1][1]+m[1][2])
             }
-        }
-        return false
-    }
-    function checkMouseEvents(object,optns)
-    {
-        var point=false,
-            mm=optns.mousemove,
-            md=optns.mousedown,
-            mu=optns.mouseup,
-            c=optns.click,
-            dc=optns.dblclick,
-            x=mm.x||md.x||mu.x||dc.x||c.x,
-            y=mm.y||md.y||mu.y||dc.y||c.y;
-        if(x!=false)
-        {
-            point=isPointInPath(object,x,y);
-        }
-        if(point)
-        {
-
-            if(mm.x!=false)
-                mm.object=object;
-            if(md.x!=false)
-                md.objects[md.objects.length]=object;
-            if(c.x!=false)
-                c.objects[c.objects.length]=object;
-            if(dc.x!=false)
-                dc.objects[dc.objects.length]=object;
-            if(mu.x!=false)
-                mu.objects[mu.objects.length]=object;
-            optns.point=point;
-        }
-    }
-
-    function objectLayer(object)
-    {
-        return objectCanvas(object).layers[object.optns.layer.number];
-    }
-    function objectCanvas(object)
-    {
-        return canvases[object.optns.canvas.number];
-    }
-    function layer(idLayer,object,array)
-    {
-        redraw(object);
-        var objectCanvas=object.optns.canvas;
-        var objectLayer=object.optns.layer;
-        if (idLayer===undefined)return objectLayer.id;
-        if(objectLayer.id==idLayer)return object;
-        var oldIndex={
-            i:objectCanvas.number,
-            j:objectLayer.number
-        };
-        objectLayer.id=idLayer;
-        var newLayer=jCanvaScript.layer(idLayer);
-        var newIndex={
-            i:newLayer.optns.canvas.number,
-            j:newLayer.optns.number
-        };
-        var oldArray=canvases[oldIndex.i].layers[oldIndex.j][array],newArray=canvases[newIndex.i].layers[newIndex.j][array];
-        oldArray.splice(object.optns.number,1);
-        object._level=object.optns.number=newArray.length;
-        newArray[object._level]=object;
-        objectLayer.number=newIndex.j;
-        objectCanvas.number=newIndex.i;
-        objectCanvas.id=newLayer.optns.canvas.id;
-        redraw(object);
-        return object;
-    }
-
-    function take(f,s) {
-        for(var key in s)
-        {
-            switch(typeof s[key])
-            {
-                case 'function':
-                    if(key.substr(0,2)=='on')break;
-                    if(f[key]===undefined)f[key]=s[key];
-                    break;
-                case 'object':
-                    if(key=='optns' || key=='animateQueue')break;
-                    if(key=='objs' || key=='grdntsnptrns')
-                    {
-                        for(var i in s[key])
-                        {
-                            if(s[key].hasOwnProperty(i))
-                                s[key][i].clone().layer(f.optns.id);
-                        }
-                        break;
-                    }
-                    if(!s[key] || key==='ctx')continue;
-                    f[key]=typeof s[key].pop === 'function' ? []:{};
-                    take(f[key],s[key]);
-                    break;
-                default:
-                    if(key=='_level')break;
-                    f[key]=s[key];
+        },
+        transformPoint=function (x,y,m){
+            return{
+                x:(x*m[1][1]-y*m[0][1]+m[0][1]*m[1][2]-m[1][1]*m[0][2])/(m[0][0]*m[1][1]-m[1][0]*m[0][1]),
+                y:(-x*m[1][0]+y*m[0][0]-m[0][0]*m[1][2]+m[1][0]*m[0][2])/(m[0][0]*m[1][1]-m[1][0]*m[0][1])
             }
-        }
-    }
-
-    function canvas(idCanvas,object,array){
-        redraw(object);
-        var objectCanvas=object.optns.canvas;
-        var objectLayer=object.optns.layer;
-        if(idCanvas===undefined)return canvases[objectCanvas.number].optns.id;
-        if(canvases[objectCanvas.number].optns.id==idCanvas)return object;
-        var oldIndex={
-            i:objectCanvas.number,
-            j:objectLayer.number
-        };
-        jCanvaScript.canvas(idCanvas);
-        for(var i=0;i<canvases.length;i++)
-        {
-            var canvasItem=canvases[i];
-            if(canvasItem.optns.id==idCanvas)
-            {
-                var oldArray=canvases[oldIndex.i].layers[oldIndex.j][array],newArray=canvasItem.layers[0][array];
-                oldArray.splice(object.optns.number,1);
-                normalizeLevels(oldArray);
-                object._level=object.optns.number=newArray.length;
-                newArray[object._level]=object;
-                objectLayer.number=0;
-                objectCanvas.number=i;
-                objectCanvas.id=canvasItem.optns.id;
-                objectLayer.id=canvasItem.layers[0].optns.id;
+        },
+        getRect=function (object,rect,type){
+            if(type=='poor')return rect;
+            var min={x:rect.x,y:rect.y},max={x:rect.x+rect.width,y:rect.y+rect.height},
+                m=multiplyM(object.matrix(),objectLayer(object).matrix()),
+                lt=multiplyPointM(min.x,min.y,m),
+                rt=multiplyPointM(max.x,min.y,m),
+                lb=multiplyPointM(min.x,max.y,m),
+                rb=multiplyPointM(max.x,max.y,m),
+                coords=[[lt.x,lt.y],[rt.x,rt.y],[lb.x,lb.y],[rb.x,rb.y]];
+            if(type=='coords')return coords;
+            var minX, minY,
+                maxX=minX=lt.x,
+                maxY=minY=lt.y;
+            for(var i=0;i<4;i++){
+                if(maxX<coords[i][0])maxX=coords[i][0];
+                if(maxY<coords[i][1])maxY=coords[i][1];
+                if(minX>coords[i][0])minX=coords[i][0];
+                if(minY>coords[i][1])minY=coords[i][1];
             }
-        }
-        redraw(object);
-        return object;
-    }
-    function normalizeLevels(array)
-    {
-        for(var i=0;i<array.length;i++)
-        {
-            array[i].optns.number=i;
-        }
-    }
-    function setLayerAndCanvasToArray(array,newLayerId,newLayerNumber,newCanvasId,newCanvasNumber)
-    {
-        var limit=array.length,
-            optns,canvas,layer;
-        for(var i=0;i<limit;i++)
-        {
-            optns=array[i].optns;
-            canvas=optns.canvas;
-            layer=optns.layer;
-            canvas.id=newCanvasId;
-            canvas.number=newCanvasNumber;
-            layer.id=newLayerId;
-            layer.number=newLayerNumber;
-        }
-    }
-    function levelChanger(array){
-        array.sort(function(a,b){
-            if(a._level>b._level)return 1;
-            if(a._level<b._level)return -1;
-            return 0;
-        });
-        normalizeLevels(array);
-        return array.length;
-    }
+            return {x:minX,y:minY,width:maxX-minX,height:maxY-minY};
+        },
+        getOffsetSum=function (elem) {
+            var top=0, left=0
+            while(elem) {
+                top = top + parseInt(elem.offsetTop)
+                left = left + parseInt(elem.offsetLeft)
+                elem = elem.offsetParent
+            }
+            return {
+                top: top,
+                left: left
+            }
+        },
+        getOffsetRect=function(elem) {
+            var box = elem.getBoundingClientRect(),
+                body = document.body||{},
+                docElem = document.documentElement,
+                scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
+                scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
+                clientTop = docElem.clientTop || body.clientTop || 0,
+                clientLeft = docElem.clientLeft || body.clientLeft || 0,
+                top  = box.top +  scrollTop - clientTop,
+                left = box.left + scrollLeft - clientLeft;
+            return {
+                top: m_round(top),
+                left: m_round(left)
+            }
+        },
+        getCenter=function (object,point,type){
+            if(type=='poor')return point;
+            return multiplyPointM(point.x,point.y,multiplyM(object.matrix(),objectLayer(object).matrix()));
+        },
+        getOffset=function (elem) {         //获取画布具体位置 上面两个为辅助函数
+            if (elem.getBoundingClientRect) {
+                return getOffsetRect(elem)
+            } else {
+                return getOffsetSum(elem)
+            }
+        },
+        checkEvents=function (object,optns){
+            checkMouseEvents(object,optns);
+            checkKeyboardEvents(object,optns);
+        },
+        checkKeyboardEvents=function (object,optns){
+            if(!object.optns.focused)return;
+            (optns.keyDown.val!=false&&typeof object.onkeydown=='function')&&(object.onkeydown(optns.keyDown));
+            (optns.keyUp.val!=false&&typeof object.onkeyup=='function')&&object.onkeyup(optns.keyUp);
+            (optns.keyPress.val!=false&&typeof object.onkeypress=='function') && (object.onkeypress(optns.keyPress));
+        },
+        isPointInPath=function(object,x,y){         //判断鼠标是否处在事件物体上
+            var point={},
+                canvas=objectCanvas(object),
+                ctx=canvas.optns.ctx,
+                layer=canvas.layers[object.optns.layer.number];
 
-    function objDeleter(array){
-        var isAnyObjectDeleted;
-        do{
-            isAnyObjectDeleted=false;
-            for(var i=0;i<array.length;i++)
-            {
-                if(array[i].optns.deleted)
-                {
-                    array.splice(i,1);
-                    isAnyObjectDeleted=true;
+            point.x=x;
+            point.y=y;
+            if(FireFox_lt_7){
+                point=transformPoint(x,y,layer.matrix());
+                point=transformPoint(point.x,point.y,object.matrix());
+            }
+            if(ctx.isPointInPath===undefined || object._img!==undefined || object._imgData!==undefined || object._proto=='text'){
+                var rectangle=object.getRect('poor'),
+                    poorPoint=transformPoint(x,y,multiplyM(object.matrix(),layer.matrix()));
+                if(rectangle.x<=poorPoint.x && rectangle.y<=poorPoint.y && (rectangle.x+rectangle.width)>=poorPoint.x && (rectangle.y+rectangle.height)>=poorPoint.y)return point;
+            }else{
+                if(ctx.isPointInPath(point.x,point.y)){
+                    return point;
                 }
             }
-        }while(isAnyObjectDeleted);
-        normalizeLevels(array);
-        return array.length;
-    }
+            return false
+        },
+        checkMouseEvents=function (object,optns){
+            var point=false,
+                mm=optns.mousemove,
+                md=optns.mousedown,
+                mu=optns.mouseup,
+                c=optns.click,
+                dc=optns.dblclick,
+                x=mm.x||md.x||mu.x||dc.x||c.x,
+                y=mm.y||md.y||mu.y||dc.y||c.y;
 
-    function stopDrag(object, event, optns){
-        var drag=optns.drag;
-        if(optns.drag.init && optns.drag.object){
-            if(object.optns.drop.val==true){
-
-                if(drag.init==drag.object)
-                    drag.init.visible(true);
-                if(typeof object.optns.drop.fn=='function')
-                    object.optns.drop.fn.call(object,drag.init);
-            }else{
-                drag.object.visible(false);
-                drag.init.visible(true);
-                drag.init.optns.translateMatrix[0][2]=drag.object.optns.translateMatrix[0][2];
-                drag.init.optns.translateMatrix[1][2]=drag.object.optns.translateMatrix[1][2];
-                changeMatrix(drag.init);
-                if(drag.object!=drag.init)drag.object.visible(false);
-                if(typeof drag.init.optns.drag.stop=='function')
-                    drag.init.optns.drag.stop.call(drag.init,{x:event.x,y:event.y});
+            if(x!=false){
+                point=isPointInPath(object,x,y);
             }
-            return (drag.x!=drag.startX || drag.y!==drag.startY)
-        }
-        return false;
-    }
+            if(point){
+                if(mm.x!=false)
+                    mm.object=object;
+                if(md.x!=false)
+                    md.objects[md.objects.length]=object;
+                if(c.x!=false)
+                    c.objects[c.objects.length]=object;
+                if(dc.x!=false)
+                    dc.objects[dc.objects.length]=object;
+                if(mu.x!=false)
+                    mu.objects[mu.objects.length]=object;
+                optns.point=point;
+            }
+        },
+        layer=function (idLayer,object,array){
+            redraw(object);
+            var objectCanvas=object.optns.canvas;
+            var objectLayer=object.optns.layer;
+            if (idLayer===undefined)return objectLayer.id;
+            if(objectLayer.id==idLayer)return object;
+            var oldIndex={
+                i:objectCanvas.number,
+                j:objectLayer.number
+            };
+            objectLayer.id=idLayer;
+            var newLayer=jCanvaScript.layer(idLayer),
+                newIndex={
+                    i:newLayer.optns.canvas.number,
+                    j:newLayer.optns.number
+                },
+                oldArray=canvases[oldIndex.i].layers[oldIndex.j][array],newArray=canvases[newIndex.i].layers[newIndex.j][array];
+            oldArray.splice(object.optns.number,1);
+            object._level=object.optns.number=newArray.length;
+            newArray[object._level]=object;
+            objectLayer.number=newIndex.j;
+            objectCanvas.number=newIndex.i;
+            objectCanvas.id=newLayer.optns.canvas.id;
+            redraw(object);
+            return object;
+        },
+        take=function (f,s) {
+            for(var key in s){
+                switch(typeof s[key])
+                {
+                    case 'function':
+                        if(key.substr(0,2)=='on')break;
+                        if(f[key]===undefined)f[key]=s[key];
+                        break;
+                    case 'object':
+                        if(key=='optns' || key=='animateQueue')break;
+                        if(key=='objs' || key=='grdntsnptrns')
+                        {
+                            for(var i in s[key])
+                            {
+                                if(s[key].hasOwnProperty(i))
+                                    s[key][i].clone().layer(f.optns.id);
+                            }
+                            break;
+                        }
+                        if(!s[key] || key==='ctx')continue;
+                        f[key]=typeof s[key].pop === 'function' ? []:{};
+                        take(f[key],s[key]);
+                        break;
+                    default:
+                        if(key=='_level')break;
+                        f[key]=s[key];
+                }
+            }
+        },
+        canvas=function (idCanvas,object,array){
+            redraw(object);
+            var objectCanvas=object.optns.canvas,
+                objectLayer=object.optns.layer;
+            if(idCanvas===undefined)return canvases[objectCanvas.number].optns.id;
+            if(canvases[objectCanvas.number].optns.id==idCanvas)return object;
+            var oldIndex={
+                i:objectCanvas.number,
+                j:objectLayer.number
+            };
+            jCanvaScript.canvas(idCanvas);
+            for(var i=0;i<canvases.length;i++){
+                var canvasItem=canvases[i];
+                if(canvasItem.optns.id==idCanvas){
+                    var oldArray=canvases[oldIndex.i].layers[oldIndex.j][array],newArray=canvasItem.layers[0][array];
+                    oldArray.splice(object.optns.number,1);
+                    normalizeLevels(oldArray);
+                    object._level=object.optns.number=newArray.length;
+                    newArray[object._level]=object;
+                    objectLayer.number=0;
+                    objectCanvas.number=i;
+                    objectCanvas.id=canvasItem.optns.id;
+                    objectLayer.id=canvasItem.layers[0].optns.id;
+                }
+            }
+            redraw(object);
+            return object;
+        },
+        normalizeLevels=function (array)
+        {
+            for(var i=0;i<array.length;i++)
+            {
+                array[i].optns.number=i;
+            }
+        },
+        setLayerAndCanvasToArray=function (array,newLayerId,newLayerNumber,newCanvasId,newCanvasNumber){
+            var limit=array.length,
+                optns,canvas,layer;
+            for(var i=0;i<limit;i++)
+            {
+                optns=array[i].optns;
+                canvas=optns.canvas;
+                layer=optns.layer;
+                canvas.id=newCanvasId;
+                canvas.number=newCanvasNumber;
+                layer.id=newLayerId;
+                layer.number=newLayerNumber;
+            }
+        },
+        levelChanger=function(array){
+            array.sort(function(a,b){
+                if(a._level>b._level)return 1;
+                if(a._level<b._level)return -1;
+                return 0;
+            });
+            normalizeLevels(array);
+            return array.length;
+        },
+        objDeleter=function (array){
+            var isAnyObjectDeleted;
+            do{
+                isAnyObjectDeleted=false;
+                for(var i=0;i<array.length;i++)
+                {
+                    if(array[i].optns.deleted)
+                    {
+                        array.splice(i,1);
+                        isAnyObjectDeleted=true;
+                    }
+                }
+            }while(isAnyObjectDeleted);
+            normalizeLevels(array);
+            return array.length;
+        },
+        stopDrag=function (object, event, optns){
+            var drag=optns.drag;
+            if(optns.drag.init && optns.drag.object){
+                if(object.optns.drop.val==true){
 
+                    if(drag.init==drag.object)
+                        drag.init.visible(true);
+                    if(typeof object.optns.drop.fn=='function')
+                        object.optns.drop.fn.call(object,drag.init);
+                }else{
+                    drag.object.visible(false);
+                    drag.init.visible(true);
+                    drag.init.optns.translateMatrix[0][2]=drag.object.optns.translateMatrix[0][2];
+                    drag.init.optns.translateMatrix[1][2]=drag.object.optns.translateMatrix[1][2];
+                    changeMatrix(drag.init);
+                    if(drag.object!=drag.init)drag.object.visible(false);
+                    if(typeof drag.init.optns.drag.stop=='function')
+                        drag.init.optns.drag.stop.call(drag.init,{x:event.x,y:event.y});
+                }
+                return (drag.x!=drag.startX || drag.y!==drag.startY)
+            }
+            return false;
+        };
 
+    //绘制方法
     var proto={};
 
-    proto.object=function(){
-
+    proto.object=function(){    // 绘制公用部分
         this._visible=true;
         this._composite='source-over';
         this._name="";
@@ -743,10 +718,10 @@
         this._transformdx=0;
         this._transformdy=0;
         this._matrixChanged=false;
-        
+
         this.getCenter=function(type){
             var rect=this.getRect('poor'),
-                    point = {
+                point = {
                     x:(rect.x*2+rect.width)/2,
                     y:(rect.y*2+rect.height)/2
                 };
@@ -763,8 +738,7 @@
                 if(bufOptns.val)return bufOptns.cnv;
                 else return false;
             if(bufOptns.val===doBuffering)return this;
-            if(doBuffering)
-            {
+            if(doBuffering){
                 var cnv=bufOptns.cnv=document.createElement('canvas'),
                     ctx=bufOptns.ctx=cnv.getContext('2d'),
                     rect=bufOptns.rect=this.getRect(),
@@ -785,9 +759,7 @@
                 this._y=bufOptns.y;
                 this.transform(oldM[0][0], oldM[1][0], oldM[0][1], oldM[1][1], rect.x, rect.y,true);
                 bufOptns.val=true;
-            }
-            else
-            {
+            }else{
                 this.translate(-bufOptns.rect.x+bufOptns.dx,-bufOptns.rect.y+bufOptns.dy);
                 this.optns.buffer={val:false};
             }
@@ -908,7 +880,7 @@
             objectLayer(this).optns.anyObjDeleted = true;
             redraw(this);
         }
- 
+
         this.attr=function(parameter,value){
             if(typeof parameter==='object')
                 var parameters=parameter;
@@ -922,7 +894,7 @@
             return this.animate(parameters);
         }
 
-        // 事件处理
+        //真正绑定事件
         this.focus=function(fn){
             if(fn===undefined){
                 this.optns.focused=true;
@@ -978,7 +950,7 @@
         {
             return setMouseEvent.call(this,fn,'mouseout');
         }
-        
+
 
         this.queue=function(){
             var animateQueueLength=this.animateQueue.length, queue,i,j,duration=0,longFn=0,fn,args=arguments;
@@ -988,14 +960,11 @@
                     args[i].apply(this);
                     args[i]=false;
                     i++;
-                    if(this.animateQueue.length>animateQueueLength)
-                    {
-                        for (j=animateQueueLength;j<this.animateQueue.length;j++)
-                        {
+                    if(this.animateQueue.length>animateQueueLength){
+                        for (j=animateQueueLength;j<this.animateQueue.length;j++){
                             queue=this.animateQueue[j];
                             if(queue.duration!==undefined){
-                                if(queue.duration>duration)
-                                {
+                                if(queue.duration>duration){
                                     duration=queue.duration;
                                     longFn=j;
                                 }
@@ -1018,8 +987,7 @@
                 }
             }
         }
-        this.stop=function(jumpToEnd,runCallbacks)
-        {
+        this.stop=function(jumpToEnd,runCallbacks){
             this.optns.animated=false;
             if(runCallbacks===undefined)runCallbacks=false;
             if(jumpToEnd===undefined)jumpToEnd=false;
@@ -1564,7 +1532,7 @@
     }
     //TODO 不能接受他这里为什么这样? proto.object.prototype=new proto.object();
 
-    proto.shape=function(){
+    proto.shape=function(){     //绘制几何形状
         this._colorR=0;
         this._colorG=0;
         this._colorB=0;
@@ -1577,8 +1545,8 @@
         this._lineWidth = 1;
         this._cap = 'butt';
         this._join = 'miter';
-        this._miterLimit= 1; 
-        
+        this._miterLimit= 1;
+
         this.color = function(color){
             if (color===undefined)return [this._colorR,this._colorG,this._colorB,this._alpha];
             return this.attr('color',color);
@@ -1645,7 +1613,7 @@
     }
     proto.shape.prototype=new proto.object;
 
-    proto.lines=function(){
+    proto.lines=function(){     //绘制线段
         this.getCenter=function(type){
             var point={
                 x:this._x0,
@@ -1744,10 +1712,8 @@
         }
     }
     proto.lines.prototype=new proto.shape;
-
     proto.line=function(){
-        this.draw=function(ctx)
-        {
+        this.draw=function(ctx){
             if(this._x0===undefined)return;
             ctx.moveTo(this._x0,this._y0);
             for(var j=1;j<this.shapesCount;j++)
@@ -1764,7 +1730,8 @@
         this.pointNames=['_x','_y'];
     }
     proto.line.prototype=new proto.lines;
-    proto.qCurve=function(){
+
+    proto.qCurve=function(){        //绘制函数曲线
         this.draw=function(ctx)
         {
             if(this._x0===undefined)return;
@@ -1784,8 +1751,7 @@
     }
     proto.qCurve.prototype=new proto.lines;
     proto.bCurve=function(){
-        this.draw=function(ctx)
-        {
+        this.draw=function(ctx){
             if(this._x0===undefined)return;
             ctx.moveTo(this._x0,this._y0);
             for(var j=1;j<this.shapesCount;j++)
@@ -1803,7 +1769,7 @@
     }
     proto.bCurve.prototype=new proto.lines;
 
-    proto.circle = function () {
+    proto.circle = function () {        //绘制圆圈
         this.getCenter = function (type) {
             return getCenter(this, {x:this._x, y:this._y}, type);
         }
@@ -1827,7 +1793,7 @@
     }
     proto.circle.prototype = new proto.shape;
 
-    proto.rect = function () {
+    proto.rect = function () {      //矩形
         this.getRect = function (type) {
             return getRect(this, {x:this._x, y:this._y, width:this._width, height:this._height}, type);
         }
@@ -1846,7 +1812,8 @@
         this._proto = 'rect';
     }
     proto.rect.prototype = new proto.shape;
-    proto.arc = function () {
+
+    proto.arc = function () {   //圆弧
         this.getRect = function (type) {
             var points = {x:this._x, y:this._y},
                 startAngle = this._startAngle, endAngle = this._endAngle, radius = this._radius,
@@ -1964,7 +1931,7 @@
     }
     proto.arc.prototype = new proto.shape;
 
-    proto.text = function () {
+    proto.text = function () {      //字体
         this.font = function (font) {
             return this.attr('font', font);
         }
@@ -2042,8 +2009,8 @@
     }
     proto.text.prototype = new proto.shape;
 
-    proto.grdntsnptrn=function()
-    {
+    // 渐变操作
+    proto.grdntsnptrn=function(){
         this.layer=function(idLayer)
         {
             return layer(idLayer,this,'grdntsnptrns');
@@ -2078,8 +2045,7 @@
         }
         return this;
     }
-    proto.gradients=function()
-    {
+    proto.gradients=function(){
         this.colorStopsCount=0;
         this.paramNames=['_pos','_colorR','_colorG','_colorB','_alpha'];
         this.addColorStop=function(pos,color){
@@ -2157,8 +2123,7 @@
     }
     proto.gradients.prototype=new proto.grdntsnptrn;
 
-    proto.pattern = function()
-    {
+    proto.pattern = function(){
         this.create = function(canvasOptns)
         {
             if(this.optns.animated)animating.call(this,canvasOptns);
@@ -2177,8 +2142,9 @@
         this._proto='pattern';
     }
     proto.pattern.prototype=new proto.grdntsnptrn;
-    proto.lGradient=function()
-    {
+
+
+    proto.lGradient=function(){ //线性渐变
         this.create = function(canvasOptns)
         {
             if(this.optns.animated)animating.call(this,canvasOptns);
@@ -2203,8 +2169,8 @@
         this._proto='lGradient';
     }
     proto.lGradient.prototype=new proto.gradients;
-    proto.rGradient=function()
-    {
+
+    proto.rGradient=function(){     //圆圈渐变
         this.create = function(canvasOptns)
         {
             if(this.optns.animated)animating.call(this);
@@ -2232,9 +2198,7 @@
     }
     proto.rGradient.prototype=new proto.gradients;
 
-
-    proto.layer=function()
-    {
+    proto.layer=function(){             //层操作
         this.position=function(){
             var objs=this.objs,
                 points,point,i,
@@ -2367,15 +2331,6 @@
             proto.layer.prototype.setOptns.call(this,ctx);
             return this;
         }
-        this.afterDraw=function(optns)
-        {
-            optns.ctx.closePath();
-            optns.ctx.restore();
-            if(this.optns.clipObject)
-            {
-                proto.layer.prototype.afterDraw.call(this.optns.clipObject,optns);
-            }
-        }
         this.clone=function(idLayer,params)
         {
             var clone=jCanvaScript.layer(idLayer);
@@ -2411,8 +2366,7 @@
                 objs[i].animate({opacity:val},duration,easing,onstep,fn);
             return this;
         }
-        this.draw=function(canvasOptns)
-        {
+        this.draw=function(canvasOptns){    //绘制图像动作 但并不会立即显示在页面
             var optns=this.optns,
                 bufOptns=optns.buffer,
                 ctx=canvasOptns.ctx;
@@ -2437,30 +2391,37 @@
             for(i=0;i<this.objs.length;i++)
             {
                 var object=this.objs[i];
-                if(typeof (object.draw)=='function')
-                {
+                if(typeof (object.draw)=='function'){
                     this.setOptns(ctx);
-                    if(object.beforeDraw(canvasOptns))
-                    {
-                        if(typeof (object.draw)=='function')
-                        {
+                    if(object.beforeDraw(canvasOptns)){
+                        if(typeof (object.draw)=='function'){
                             var objBufOptns=object.optns.buffer;
-                            if(objBufOptns.val)
+                            if(objBufOptns.val){
                                 ctx.drawImage(objBufOptns.cnv,objBufOptns.x,objBufOptns.y);
-                            else
-                                object.draw(ctx);
-                            if(bufOptns.optns)
+                            }else{
+                                object.draw(ctx);  //进入相关图形绘制方法中 即proto eg:circle  proto.circle.darw方法进行绘制圆形
+                            }
+                            if(bufOptns.optns){
                                 object.afterDraw(bufOptns.optns);
-                            else
+                            }else{
                                 object.afterDraw(canvasOptns);
+                            }
                         }
                     }
                 }
             }
             return this;
         }
-        this.objects=function(map)
-        {
+        this.afterDraw=function(optns){
+            optns.ctx.closePath();
+            optns.ctx.restore();
+            if(this.optns.clipObject)
+            {
+                proto.layer.prototype.afterDraw.call(this.optns.clipObject,optns);
+            }
+        }
+
+        this.objects=function(map){
             var myGroup=group(),i=0;
             while(this.objs[i]!==undefined)
                 myGroup.elements[i]=this.objs[i++];
@@ -2492,14 +2453,51 @@
         this._proto='layer';
     }
     proto.layer.prototype=new proto.object;
-    function layers(idLayer)
-    {
+    function layers(idLayer){
         var layer=new proto.layer();
         return layer.base(idLayer);
     }
 
-    proto.imageData=function()
-    {
+    proto.image=function(){     //image操作
+        this.getRect=function(type)
+        {
+            var points={x:this._x,y:this._y,width:this._width,height:this._height};
+            return getRect(this,points,type);
+        }
+        this.draw=function(ctx)
+        {
+            ctx.drawImage(this._img,this._sx,this._sy,this._swidth,this._sheight,this._x,this._y,this._width,this._height);
+        }
+        this.base=function(image,x,y,width,height,sx,sy,swidth,sheight)
+        {
+            if(typeof image!='object' || image.src!==undefined || image.nodeName !== undefined)
+                image={image:image,x:x,y:y,width:width,height:height,sx:sx,sy:sy,swidth:swidth,sheight:sheight};
+            image=checkDefaults(image,{width:false,height:false,sx:0,sy:0,swidth:false,sheight:false});
+            if(image.width===false)
+            {
+                image.width=image.image.width;
+                image.height=image.image.height;
+            }
+            if(image.swidth===false)
+            {
+                image.swidth=image.image.width;
+                image.sheight=image.image.height;
+            }
+            proto.image.prototype.base.call(this,image);
+            this._img=image.image;
+            this._width=image.width;
+            this._height=image.height;
+            this._sx=image.sx;
+            this._sy=image.sy;
+            this._swidth=image.swidth;
+            this._sheight=image.sheight;
+            return this;
+        }
+        this._proto='image';
+    }
+    proto.image.prototype=new proto.object;
+
+    proto.imageData=function(){         // image 转换
         this.filter=function(filterName,filterType)
         {
             var filter=imageDataFilters[filterName];
@@ -2562,10 +2560,8 @@
             clone._imgData=undefined;
             return clone;
         }
-        this.draw=function(ctx)
-        {
-            if(this._imgData===undefined)
-            {
+        this.draw=function(ctx){
+            if(this._imgData===undefined){
                 this._imgData=ctx.createImageData(this._width,this._height);
                 for(var i=0;i<this._width*this._height*4;i++)
                     this._imgData.data[i]=this._data[i];
@@ -2610,71 +2606,25 @@
         this._proto='imageData';
     }
     proto.imageData.prototype=new proto.object;
-    proto.image=function()
-    {
-        this.getRect=function(type)
-        {
-            var points={x:this._x,y:this._y,width:this._width,height:this._height};
-            return getRect(this,points,type);
-        }
-        this.draw=function(ctx)
-        {
-            ctx.drawImage(this._img,this._sx,this._sy,this._swidth,this._sheight,this._x,this._y,this._width,this._height);
-        }
-        this.base=function(image,x,y,width,height,sx,sy,swidth,sheight)
-        {
-            if(typeof image!='object' || image.src!==undefined || image.nodeName !== undefined)
-                image={image:image,x:x,y:y,width:width,height:height,sx:sx,sy:sy,swidth:swidth,sheight:sheight};
-            image=checkDefaults(image,{width:false,height:false,sx:0,sy:0,swidth:false,sheight:false});
-            if(image.width===false)
-            {
-                image.width=image.image.width;
-                image.height=image.image.height;
-            }
-            if(image.swidth===false)
-            {
-                image.swidth=image.image.width;
-                image.sheight=image.image.height;
-            }
-            proto.image.prototype.base.call(this,image);
-            this._img=image.image;
-            this._width=image.width;
-            this._height=image.height;
-            this._sx=image.sx;
-            this._sy=image.sy;
-            this._swidth=image.swidth;
-            this._sheight=image.sheight;
-            return this;
-        }
-        this._proto='image';
-    }
-    proto.image.prototype=new proto.object;
 
-
-    proto.groups=function()
-    {
-        for(var Class in proto)
-        {
+    proto.groups=function(){
+        for(var Class in proto){
             if(Class=='group'||Class=='groups')continue;
             var tmp=new proto[Class];
-            for(var key in tmp)
-            {
-                if(typeof tmp[key]=='function' && this[key]===undefined)
-                {
-                    (function(group,key)
-                    {
+            for(var key in tmp){
+                if(typeof tmp[key]==='function' && this[key]===undefined){
+                    (function(group,key){
                         group[key]=function(){
-                            var argumentsClone=[];
-                            var args=[];
-                            var i=0;
+                            var argumentsClone=[],
+                                args=[],
+                                i=0,
+                                _len=this.elements.length;
                             while(arguments[i]!==undefined)
                                 args[i]=arguments[i++];
-                            for(i=0;i<this.elements.length;i++)
-                            {
+                            for(i=0;i<_len;i++){
                                 var element=this.elements[i];
                                 take(argumentsClone,args);
-                                if(typeof element[key]=='function')
-                                {
+                                if(typeof element[key]==='function'){
                                     element[key].apply(element,argumentsClone);
                                 }
                             }
@@ -2725,13 +2675,10 @@
                     }
                 }
             }
-            if(fns.length)
-            {
-                for(i=0;i<subgroup.elements.length;i++)
-                {
+            if(fns.length){
+                for(i=0;i<subgroup.elements.length;i++){
                     element=subgroup.elements[i];
-                    for(j=0;j<fns.length;j++)
-                    {
+                    for(j=0;j<fns.length;j++){
                         fn=fns[j];
                         value2=fn.val;
                         rel=fn.rel;
@@ -2768,8 +2715,7 @@
                                 if(!(typeof value1==value2))rel='del';
                                 break;
                         }
-                        if(rel=='del')
-                        {
+                        if(rel=='del'){
                             subgroup.unmatchedElements[subgroup.unmatchedElements.length]=element;
                             subgroup.elements.splice(i,1);
                             i--;
@@ -2786,12 +2732,10 @@
             return this;
         }
     }
-    proto.group=function()
-    {
+    proto.group=function(){
         this._proto='group';
     };
     proto.group.prototype=new proto.groups;
-
     function group(){
         var group=new proto.group;
         return group.base();
@@ -2910,8 +2854,7 @@
         {
             protoItem.prototype.base.call(this,parameters);
             var i=0;
-            for(var key in parameters)
-            {
+            for(var key in parameters){
                 var parameter = (args[i] !== undefined)?args[i]:parameters[key];
                 this['_'+key]=parameter;
                 if(key=='color')this.color(parameter);
@@ -3085,7 +3028,7 @@
         }
 
         canvas.optns ={
-            id:idCanvas, 
+            id:idCanvas,
             number:lastCanvas,
             ctx: canvas.cnv.getContext('2d'),
             width: canvas.cnv.offsetWidth||canvas.cnv.width,
@@ -3141,20 +3084,18 @@
                 this.cnv.onkeyup=function(e){
                     keyEvent(e,'keyUp',optns);
                 }
-                this.cnv.onkeydown=function(e)
-                {
+                this.cnv.onkeydown=function(e){
                     keyEvent(e,'keyDown',optns);
                 }
-                this.cnv.onkeypress=function(e)
-                {
+                this.cnv.onkeypress=function(e){
                     keyEvent(e,'keyPress',optns);
                 }
-                this.cnv.onmouseout=this.cnv.onmousemove=function(e)
-                {
+                this.cnv.onmouseout=this.cnv.onmousemove=function(e){
                     mouseEvent(e,'mousemove',optns);
                 };
+
                 optns.timeLast=new Date();
-                this.interval=requestAnimFrame(function(time){
+                this.interval=requestAnimFrame(function(time){   //开始监听
                         canvas.interval=canvas.interval||1;
                         canvas.frame(time);},
                     this.cnv);
@@ -3173,8 +3114,7 @@
         canvas.restart = function() {
             return this.pause().start(true);
         }
-        canvas.del=function()
-        {
+        canvas.del=function(){
             cancelRequestAnimFrame(this.interval);
             this.layers=[];
             canvases.splice(this.optns.number,1);
@@ -3214,10 +3154,10 @@
                 this.interval=requestAnimFrame(function(time){thisCanvas.frame(time);},thisCanvas.cnv);
                 this.interval=this.interval||1;
             }
-            if(!optns.redraw){
-                return this;
-            }
+
+            if(!optns.redraw){ return this;}   //循环监听 然后判断optns.redraw
             optns.redraw--;
+            
             optns.ctx.clearRect(0,0,optns.width,optns.height);
             if(this.layers.length==0){
                 return this;
@@ -3237,24 +3177,22 @@
                     setLayerAndCanvasToArray(layer.grdntsnptrns,layerOptns.id,layerOptns.number,idCanvas,this.optns.number);
                 }
             }
-            for(i=0;i<limit;i++){
+
+            for(i=0;i<limit;i++){  //检查并绘制图像
                 var object=this.layers[i];
-                if(typeof (object.draw)==='function')
-                    if(object.beforeDraw(optns)){
-                        if(typeof (object.draw)==='function'){
-                            object.draw(optns);
-                            object.afterDraw(optns);
-                        }
-                    }
+                if(typeof (object.draw)==='function' && object.beforeDraw(optns)){
+                    object.draw(optns);
+                    object.afterDraw(optns);
+                }
             }
-            
+
             //  绑定事件 回调函数
             var mm=optns.mousemove,
                 mouseDown=optns.mousedown,
                 mouseUp=optns.mouseup,
                 click=this.optns.click,
                 dblClick=this.optns.dblclick;
-            if(mm.x!=false){  //绑定mousemove事件
+            if(mm.x!=false){
                 if(optns.drag.object!=false){
                     var drag=optns.drag,
                         dobject=drag.object;
@@ -3314,6 +3252,7 @@
                 }
                 optns.mousemove.object=false;
             }
+
             if(mouseDown.objects.length){
                 var mdObjectsLength = mouseDown.objects.length - 1;
                 mdCicle:
@@ -3322,8 +3261,7 @@
                         for(var j=0;j<2;j++)
                         {
                             mdObject=mouseDownObjects[j];
-                            if(mdObject.optns.drag.val==true && mdObject.optns.drag.disabled==false && i == mdObjectsLength)
-                            {
+                            if(mdObject.optns.drag.val==true && mdObject.optns.drag.disabled==false && i == mdObjectsLength){
                                 drag=optns.drag;
                                 dobject=drag.object=mdObject.optns.drag.object.visible(true);
                                 drag.drag=mdObject.optns.drag.drag;
@@ -3348,7 +3286,8 @@
                     }
                 mouseDown.objects=[];
             }
-            if(mouseUp.objects.length){ 
+
+            if(mouseUp.objects.length){
                 muCicle:
                     for(i=mouseUp.objects.length-1;i>-1;i--)
                     {
@@ -3366,18 +3305,18 @@
                 mouseUp.objects=[];
             }
 
-            if(click.objects.length){  
+            if(click.objects.length){
                 cCicle:
-                    for(i=click.objects.length-1;i>-1;i--)
-                    {
+                    for(i=click.objects.length-1;i>-1;i--){
                         var mouseClickObjects=[click.objects[i],objectLayer(click.objects[i])], clickObject;
-                        for(j=0;j<2;j++)
-                        {
+                        for(j=0;j<2;j++){
                             clickObject = mouseClickObjects[j];
                             stopDrag(clickObject, click, optns);
-                            if(typeof clickObject.onclick == 'function')
-                                if(clickObject.onclick({x:click.x,y:click.y,event:click.event})===false)
+                            if(typeof clickObject.onclick == 'function'){
+                                if(clickObject.onclick({x:click.x,y:click.y,event:click.event})===false){
                                     break cCicle;
+                                }
+                            }
                         }
                     }
                 this.optns.drag={object:false,x:0,y:0};
@@ -3399,11 +3338,11 @@
                 dblClick.objects=[];
             }
             optns.keyUp.val=optns.keyDown.val=optns.keyPress.val=click.x=dblClick.x=mouseUp.x=mouseDown.x=mm.x=false;
+
             return this;
         }
         return canvas;
     }
-
 
     window.jCanvaScript = window.jc = jCanvaScript;
 })(window, undefined);
