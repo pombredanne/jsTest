@@ -4536,8 +4536,7 @@ String.prototype.sbc2dbc = function ()
  * new Date().format('HH时mm分')->10时36分
  * @author 庄元
  */
-Date.prototype.format = function(fmt)
-{
+Date.prototype.format = function(fmt){
   var o = 
   {
     "M+" :this.getMonth() + 1,//月份

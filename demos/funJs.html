@@ -47,8 +47,7 @@
 		1 || "foo" && 0 ;
 		
 		(1,2,3);   // 好比 var i=1,ii=2,iii=3;  因此 return 3    同理还有  a:b;  //假设 a b 都已经定义  将会返回 最后一个b  2:3  不行
-		{ foo : 123 ,ff:33232} // error   {a:2}  yes   {a:2,b:2} no
-
+		{ foo : 123 ,ff:33232} // error   {a:2}==> 2  yes   {a:2,b:2} no
 
 		[+true, +false];  // 隐式转换为 [+1,+0]
 		++'52';  // ++ -- 操作符只能使用于变量 eg:var t=3; t++ or ++t
@@ -68,6 +67,9 @@
 			({}+'b')	 ==>  "[Object Object]b"
 			({})    	 ==>   Object {}
 			{}		 ==>   undefined
+            {}+5  //5  会进行自动转换
+            var t={};
+            t+5     ==> "[object Object]5" 
 		*/
 		({} + 'b' > {} + 'a'); 
 
