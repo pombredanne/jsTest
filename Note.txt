@@ -686,4 +686,7 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
             因此必须进行判断一下 或者建议使用第一种 去掉a.proty`````
             判断方法:  见(1)
                 
+---------    javascript Date对象的特殊点
+    1:new Date('2013-03-4');   // 非ie(ie11暂未测试)浏览器无法正常换算成Date对象
+    2:new Date(’2013-03-01′)不一定等于new Date(’2013/03/01′)        ----http://bbs.9ria.com/thread-175853-1-1.html
 
