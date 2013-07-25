@@ -7,11 +7,9 @@
             afterNoon: "下午",
             //weekNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
             weekNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-        
     }
     $("input").timer(option);
     $("div").timer(option)
-    
     
     注意:
         当设置"h-m-s"格式的时候,为了代码的执行效率以及质量,weizhi:选项将不可使用
@@ -20,7 +18,6 @@
 
 (function($){
     function Timer(){
-    
         this._defaults = {
             format: "yy-mm-dd W hh:MM:ss",
             morning: "上午",
@@ -153,8 +150,6 @@
                   } 
                 //clearInterval(colok)             
               }
-                  
-                                       
             }
             
         
@@ -166,5 +161,4 @@
     }
     
     $.timer = new Timer();
-    
 })(jQuery);

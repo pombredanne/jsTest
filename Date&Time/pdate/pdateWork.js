@@ -3,8 +3,33 @@
  * Copyright © 2012 David Bushell | BSD & MIT license | http://dbushell.com/
  */
 
-(function(window, document, undefined)
-{
+function formatDate(date,style){        //此方法在FF中会将数据缓存 因此 平均时间大约在0.5ms  chrome不缓存数据,但平均速度老大 ie你懂得  相比moment速度相当
+    style=style||'YYYY-MM-DD';
+    var o = {
+        "M+" : date.getMonth() + 1, //month
+        "D+" : date.getDate(),      //day
+        "H+" : date.getHours(),     //hour
+        "m+" : date.getMinutes(),   //minute
+        "S+" : date.getSeconds(),   //second
+        "W+" : "天一二三四五六".charAt(date.getDay()),   //week
+        "Q+" : Math.floor((date.getMonth() + 3) / 3), //quarter
+        "S" : date.getMilliseconds() //millisecond
+    }
+    if(/(Y+)/.test(style)){
+        style = style.replace(RegExp.$1,(date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+
+    for(var k in o){
+        if(new RegExp("("+ k +")").test(style)){
+            style = style.replace(RegExp.$1,
+                RegExp.$1.length == 1 ? o[k] :
+                    ("00" + o[k]).substr(("" + o[k]).length));
+        }
+    }
+    return style;
+}
+
+(function(window, document, undefined){
     'use strict';
 
     /**
@@ -16,8 +41,7 @@
 
         sto = window.setTimeout,
 
-        addEvent = function(el, e, callback, capture)
-        {
+        addEvent = function(el, e, callback, capture){
             if (hasEventListeners) {
                 el.addEventListener(e, callback, !!capture);
             } else {
@@ -25,8 +49,7 @@
             }
         },
 
-        removeEvent = function(el, e, callback, capture)
-        {
+        removeEvent = function(el, e, callback, capture){
             if (hasEventListeners) {
                 el.removeEventListener(e, callback, !!capture);
             } else {
@@ -34,8 +57,7 @@
             }
         },
 
-        fireEvent = function(el, eventName, data)
-        {
+        fireEvent = function(el, eventName, data){
             var ev;
 
             if (document.createEvent) {
@@ -123,32 +145,17 @@
             }
             return to;
         },
-        formatDate=function(date,style){        //此方法在FF中会将数据缓存 因此 平均时间大约在0.5ms  chrome不缓存数据,但平均速度老大 ie你懂得  相比moment速度相当
-            style=style||'YYYY-MM-DD';
-            var o = {
-                "M+" : date.getMonth() + 1, //month
-                "D+" : date.getDate(),      //day
-                "H+" : date.getHours(),     //hour
-                "m+" : date.getMinutes(),   //minute
-                "S+" : date.getSeconds(),   //second
-                "W+" : "天一二三四五六".charAt(date.getDay()),   //week
-                "Q+" : Math.floor((date.getMonth() + 3) / 3), //quarter
-                "S" : date.getMilliseconds() //millisecond
+        getText=(function(){
+            if (document.all) {
+                return function(element) {
+                    return element.innerText;
+                };
+            } else{
+                return function(element) {
+                    return element.textContent
+                };
             }
-            if(/(Y+)/.test(style)){
-                style = style.replace(RegExp.$1,(date.getFullYear() + "").substr(4 - RegExp.$1.length));
-            }
-
-            for(var k in o){
-                if(new RegExp("("+ k +")").test(style)){
-                    style = style.replace(RegExp.$1,
-                        RegExp.$1.length == 1 ? o[k] :
-                            ("00" + o[k]).substr(("" + o[k]).length));
-                }
-            }
-            return style;
-        },
-
+        })(),
 
         /**
          * defaults and localisation
@@ -164,7 +171,7 @@
             // the default output format for `.toString()` and `field` value
             format: 'YYYY-MM-DD',
 
-            // the initial date to view when first opened
+            // the initial date to view when fte(a.replace(/-/g,"/"))
             defaultDate: null,
 
             // make the `defaultDate` the initial selected value
@@ -188,7 +195,7 @@
             maxMonth: undefined,
 
             isRTL: false,
-
+            isInput:true,
             // how many months are visible (not implemented yet)
             numberOfMonths: 1,
 
@@ -201,7 +208,7 @@
                 weekdays      : ['周日','周一','周二','周三','周四','周五','周六'],
                 weekdaysShort : ['日','一','二','三','四','五','六']
             },
-
+    
             // callback function
             onSelect: null,
             onOpen: null,
@@ -322,20 +329,31 @@
         var self = this,
             opts = self.config(options);
 
-        self._onMouseDown = function(e)
-        {
+        if(opts.field.tagName.toUpperCase()!=='INPUT'){
+            opts.fieldInp=opts.valTex;
+            opts.isInput=false;
+        }else{
+            opts.fieldInp=opts.field;
+        }
+
+        self._onMouseDown = function(e){
+
             if (!self._v) {
                 return;
             }
+
             e = e || window.event;
-            var target = e.target || e.srcElement;
+
+            var target = e.target || e.srcElement,
+                id=target.id;
+
             if (!target) {
                 return;
             }
 
             if (!hasClass(target, 'is-disabled')) {
                 if (hasClass(target, 'pika-button') && !hasClass(target, 'is-empty')) {
-                    self.setDate(new Date(self._y, self._m, parseInt(target.innerHTML, 10)));
+                    self.setDate(new Date(self._y, self._m, parseInt(getText(target), 10)));
                     if (opts.bound) {
                         sto(function() {
                             self.hide();
@@ -350,6 +368,21 @@
                     self.nextMonth();
                 }
             }
+
+            if(id){
+                if(id==='clear'){
+                    if(self._o.isInput){
+                        self._o.fieldInp.value='';
+                    }else{
+                        self._o.fieldInp.innerHTML='';
+                    }
+                }
+                if(id==='today'){
+                    self.setDate(new Date(),false);
+                }
+                self.hide();
+            }
+
             if (!hasClass(target, 'pika-select')) {
                 if (e.preventDefault) {
                     e.preventDefault();
@@ -359,10 +392,10 @@
             } else {
                 self._c = true;
             }
+
         };
 
-        self._onChange = function(e)
-        {
+        self._onChange = function(e){
             e = e || window.event;
             var target = e.target || e.srcElement;
             if (!target) {
@@ -376,19 +409,25 @@
             }
         };
 
-        self._onInputChange = function(e)
-        {
+        self._onInputChange = function(e){
             var date;
 
             if (e.firedBy === self) {
                 return;
             }
             if (hasMoment) {
-                date = window.moment(opts.field.value, opts.format);
+                if(opts.isInput){
+                    date = window.moment(opts.fieldInp.value, opts.format);
+                }else{
+                    date = window.moment(getText(opts.fieldInp), opts.format);
+                }
                 date = date ? date.toDate() : null;
-            }
-            else {
-                date = new Date(Date.parse(opts.field.value));
+            }else {
+                if(opts.isInput){
+                    date = new Date(Date.parse(opts.field.value));
+                }else{
+                    date = new Date(trim(Date.parse(getText(opts.fieldInp))));
+                }
             }
             self.setDate(isDate(date) ? date : null);
             if (!self._v) {
@@ -396,28 +435,22 @@
             }
         };
 
-        self._onInputFocus = function(e)
-        {
+        self._onInputFocus = function(e){
             self.show();
         };
 
-        self._onInputClick = function(e)
-        {
+        self._onInputClick = function(e){
             self.show();
         };
 
-        self._onInputBlur = function(e)
-        {
+        self._onInputBlur = function(e){
             if (!self._c) {
-                self._b = sto(function() {
-                    self.hide();
-                }, 50);
+                self._b=self.hide();
             }
             self._c = false;
         };
 
-        self._onClick = function(e)
-        {
+        self._onClick = function(e){
             e = e || window.event;
             var target = e.target || e.srcElement,
                 pEl = target;
@@ -456,10 +489,16 @@
             addEvent(opts.field, 'change', self._onInputChange);
 
             if (!opts.defaultDate) {
-                if (hasMoment && opts.field.value) {
-                    opts.defaultDate = window.moment(opts.field.value, opts.format).toDate();
+                var _value;
+                if(opts.isInput){
+                    _value=opts.field.value;
+                }else{
+                    _value=getText(opts.fieldInp);
+                }
+                if (hasMoment && _value) {
+                    opts.defaultDate = window.moment(_value, opts.format).toDate();
                 } else {
-                    opts.defaultDate = new Date(Date.parse(opts.field.value));
+                    opts.defaultDate = new Date(Date.parse(_value));
                 }
                 opts.setDefaultDate = true;
             }
@@ -469,9 +508,9 @@
 
         if (isDate(defDate)) {
             if (opts.setDefaultDate) {
-                self.setDate(defDate, true);
-            } else {
                 self.gotoDate(defDate);
+            } else {
+                self.setDate(defDate, true);
             }
         } else {
             self.gotoDate(new Date());
@@ -506,7 +545,6 @@
             }
 
             var opts = extend(this._o, options, true);
-
             opts.isRTL = !!opts.isRTL;
 
             opts.field = (opts.field && opts.field.nodeName) ? opts.field : null;
@@ -553,7 +591,7 @@
          */
         toString: function(format)
         {
-           // return !isDate(this._d) ? '' : hasMoment ? window.moment(this._d).format(format || this._o.format) : this._d.toDateString();
+            // return !isDate(this._d) ? '' : hasMoment ? window.moment(this._d).format(format || this._o.format) : this._d.toDateString();
             return !isDate(this._d) ? '' : hasMoment ? window.moment(this._d).format(format || this._o.format) : formatDate(this._d);
         },
 
@@ -613,7 +651,12 @@
             this.gotoDate(this._d);
 
             if (this._o.field) {
-                this._o.field.value = this.toString();
+                if(this._o.isInput){
+                    this._o.field.value = this.toString();
+                }else{
+                    this._o.fieldInp.innerHTML = this.toString();
+                }
+
                 fireEvent(this._o.field, "change", { firedBy: this });
             }
             if (!preventOnSelect && typeof this._o.onSelect === 'function') {
@@ -770,6 +813,7 @@
                     r = 0;
                 }
             }
+            data.push('<tr><th scope="col" colspan="2"><abbr id="clear">清空</abbr></th><th scope="col" colspan="3"><abbr id="today">今天</abbr></th><th scope="col" colspan="2"><abbr id="close">关闭</abbr></th></tr>')
             return renderTable(opts, data);
         },
 
@@ -831,5 +875,18 @@
         }
 
     };
-
+    var dynamicLoading = {
+        css: function(path){
+            if(!path || path.length === 0){
+                throw new Error('argument "path" is required !');
+            }
+            var head = document.getElementsByTagName('head')[0];
+            var link = document.createElement('link');
+            link.href = path;
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            head.appendChild(link);
+        }
+    }
+    dynamicLoading.css('/static/g/js/datetime/pdate/dateStyle.css')
 })(window, window.document);

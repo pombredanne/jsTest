@@ -688,5 +688,5 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
                 
 ---------    javascript Date对象的特殊点
     1:new Date('2013-03-4');   // 非ie(ie11暂未测试)浏览器无法正常换算成Date对象
+       解决办法:function strToData(a){return new Date(a.replace(/-/g,"/"))}
     2:new Date(’2013-03-01′)不一定等于new Date(’2013/03/01′)        ----http://bbs.9ria.com/thread-175853-1-1.html
-
