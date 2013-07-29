@@ -320,28 +320,21 @@ Drag.prototype = {
     },
     //拖动
     Move: function(oEvent) {
-        //判断是否锁定
         if(this.Lock){ this.Stop(); return; };
         //清除选择
         window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
-        //设置移动参数
         var iLeft = oEvent.clientX - this._x, iTop = oEvent.clientY - this._y;
-        //设置范围限制
         if(this.Limit){
-            //设置范围参数
             var mxLeft = this.mxLeft, mxRight = this.mxRight, mxTop = this.mxTop, mxBottom = this.mxBottom;
-            //如果设置了容器，再修正范围参数
             if(!!this._mxContainer){
                 mxLeft = Math.max(mxLeft, 0);
                 mxTop = Math.max(mxTop, 0);
                 mxRight = Math.min(mxRight, this._mxContainer.clientWidth);
                 mxBottom = Math.min(mxBottom, this._mxContainer.clientHeight);
             };
-            //修正移动参数
             iLeft = Math.max(Math.min(iLeft, mxRight - this.Drag.offsetWidth), mxLeft);
             iTop = Math.max(Math.min(iTop, mxBottom - this.Drag.offsetHeight), mxTop);
         }
-        //设置位置，并修正margin
         if(!this.LockX){ this.Drag.style.left = iLeft - this._marginLeft + "px"; }
         if(!this.LockY){ this.Drag.style.top = iTop - this._marginTop + "px"; }
         //附加程序
@@ -434,32 +427,7 @@ Resize.prototype = {
         var resize = getById(resize), fun;
         if(!resize) return;
         //根据方向设置
-        switch (side.toLowerCase()) {
-            case "up" :
-                fun = this.Up;
-                break;
-            case "down" :
-                fun = this.Down;
-                break;
-            case "left" :
-                fun = this.Left;
-                break;
-            case "right" :
-                fun = this.Right;
-                break;
-            case "left-up" :
-                fun = this.LeftUp;
-                break;
-            case "right-up" :
-                fun = this.RightUp;
-                break;
-            case "left-down" :
-                fun = this.LeftDown;
-                break;
-            case "right-down" :
-            default :
-                fun = this.RightDown;
-        };
+        fun=this[{up:'Up',down:'Down',left:'Left',right:'Right','left up':'LeftUp','right up':'RightUp','left down':'LeftDown','right down':'RightDown'}[side.toLowerCase()]]||this.RightDown;
         //设置触发对象
         addEventHandler(resize, "mousedown", BindAsEventListener(this, this.Start, fun));
     },

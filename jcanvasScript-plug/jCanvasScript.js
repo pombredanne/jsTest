@@ -2459,17 +2459,15 @@
     }
 
     proto.image=function(){     //image操作
-        this.getRect=function(type)
-        {
+        this.getRect=function(type){
             var points={x:this._x,y:this._y,width:this._width,height:this._height};
             return getRect(this,points,type);
         }
-        this.draw=function(ctx)
-        {
-            ctx.drawImage(this._img,this._sx,this._sy,this._swidth,this._sheight,this._x,this._y,this._width,this._height);
+        this.draw=function(ctx){
+            //ctx.drawImage(this._img,this._sx,this._sy,this._swidth,this._sheight,this._x,this._y,this._width,this._height);  TODO  这里他原先顺序有误
+            ctx.drawImage(this._img,this._x,this._y,this._width,this._height,this._sx,this._sy,this._swidth,this._sheight);
         }
-        this.base=function(image,x,y,width,height,sx,sy,swidth,sheight)
-        {
+        this.base=function(image,x,y,width,height,sx,sy,swidth,sheight){
             if(typeof image!='object' || image.src!==undefined || image.nodeName !== undefined)
                 image={image:image,x:x,y:y,width:width,height:height,sx:sx,sy:sy,swidth:swidth,sheight:sheight};
             image=checkDefaults(image,{width:false,height:false,sx:0,sy:0,swidth:false,sheight:false});
