@@ -5,7 +5,6 @@
 	<title>测试canvas 截图</title>
     <script type="text/javascript" src="../../jquery.1.8.3.min.js"></script>
     <script type="text/javascript" src="../../jcanvasScript-plug/excanvas.js"></script>
-    <script type="text/javascript" src="../../jcanvasScript-plug/jCanvasScript.js"></script>
     <style type="text/css">
         #rubberbandDiv {
             position: absolute;
@@ -28,78 +27,74 @@
 	<canvas id="canvas" width="436" height="500"></canvas>
 	<canvas id="cacheCanvas" style="display: none;" width="436" height="500" ></canvas>
 <div><img id="test" src="" alt=''/></div>
+    <script type="text/javascript" src="test.js"></script>
     <script type="text/javascript">
-        var img=new Image();
-        img.src="test.jpg";
-        img.onload=function(){
-            jc.start('canvas');
-            jc.image(img,0,0);
-            jc.start('canvas');
-        };
-        
 
-        var windowToCanvas=function (canvas, x, y){
-            var bbox = canvas.getBoundingClientRect();  //bbox.width  包括边框宽度  http://www.cnblogs.com/qieqing/archive/2008/10/06/1304399.html
-            return {
-                x: x - bbox.left * (canvas.width  / bbox.width),
-                y: y - bbox.top  * (canvas.height / bbox.height)
-            };
-        }
-
-        // 拖动
-        var  rubberbanddiv = document.getElementById('rubberbandDiv'),
-                downXY={},
-                booldrag=false;
-
-        canvas.onmousedown=function(event){     //默认取id 作为选项
-            rubberbanddiv.style.left=event.clientX+'px';
-            rubberbanddiv.style.top=event.clientY+'px';
-            downXY.x=event.clientX;
-            downXY.y=event.clientY;
-            booldrag=true;
-            downXY.start=windowToCanvas($('#canvas')[0],event.clientX,event.clientY);
-        }
-
-        document.onmousemove=function(event){
-            if(booldrag){
-                rubberbanddiv.style.display='inline';
-
-                var x=event.clientX,
-                        y=event.clientY,
-                        width=x-downXY.x,
-                        height=y-downXY.y;
-
-                (x < downXY.x)&&(rubberbandDiv.style.left = x + 'px');
-                (y<downXY.y)&&(rubberbandDiv.style.top  = y  + 'px');
-
-                rubberbanddiv.style.width=Math.abs(width)+'px';
-                rubberbanddiv.style.height=Math.abs(height)+'px';
-            }
-        }
-        document.onmouseup=function(event){
-            event.preventDefault();
-            booldrag=false;
-
-            downXY.end=windowToCanvas($('#canvas')[0],event.clientX,event.clientY);
-
-            var ctx=$('#cacheCanvas')[0].getContext('2d');
-            // ctx.drawImage(img,
-            //         downXY.start.x,downXY.start.y,
-            //         downXY.end.x-downXY.start.x,downXY.end.y-downXY.start.y,
-            //         0,0,
-            //         436,500);
-
-            jc.start('cacheCanvas').image(img,
-                    downXY.start.x,downXY.start.y,
-                    downXY.end.x-downXY.start.x,downXY.end.y-downXY.start.y,
-                    0,0,
-                    436,500
-                    );
-           jc.start('cacheCanvas');
-
-            var src=$('#cacheCanvas')[0].toDataURL("image/jpeg");
-            $('#test').attr('src',src);
-        }
+        //  TODO  对比发现 dom操作 真的很浪费
+//        var img = new Image(),
+//             windowToCanvas = function(canvas, x, y) {
+//                 var bbox = canvas.getBoundingClientRect(); //bbox.width  包括边框宽度  http://www.cnblogs.com/qieqing/archive/2008/10/06/1304399.html
+//                 return {
+//                     x: x - bbox.left * (canvas.width / bbox.width),
+//                     y: y - bbox.top * (canvas.height / bbox.height)
+//                 };
+//             },
+//             ctx = $('#canvas')[0].getContext('2d'),
+//             ctx1 = $('#cacheCanvas')[0].getContext('2d'),
+//             drawimg = function(event) {
+//                 //downXY.end = windowToCanvas($('#canvas')[0], event.clientX, event.clientY);
+//                 var end = windowToCanvas($('#canvas')[0], event.clientX, event.clientY);
+//                 ctx1.drawImage(img,
+//                     downXY.start.x, downXY.start.y,
+//                     end.x - downXY.start.x, end.y - downXY.start.y,
+//                     0, 0,
+//                     436, 500);
+//                 var src = $('#cacheCanvas')[0].toDataURL("image/jpeg");
+//                 $('#test').attr('src', src);
+//             };
+//
+//         img.src = "test.jpg";
+//         img.onload = function() {
+//             ctx.drawImage(img, 0, 0);
+//         };
+//
+//         // 拖动
+//         var rubberbanddiv = document.getElementById('rubberbandDiv'),
+//             downXY = {},
+//             booldrag = false;
+//
+//         canvas.onmousedown = function(event) { //默认取id 作为选项
+//             rubberbanddiv.style.left = event.clientX + 'px';
+//             rubberbanddiv.style.top = event.clientY + 'px';
+//             downXY.x = event.clientX;
+//             downXY.y = event.clientY;
+//             booldrag = true;
+//             downXY.start = windowToCanvas($('#canvas')[0], event.clientX, event.clientY);
+//         }
+//
+//         document.onmousemove = function(event) {
+//             if (booldrag) {
+//                 rubberbanddiv.style.display = 'inline';
+//
+//                 var x = event.clientX,
+//                     y = event.clientY,
+//                     width = x - downXY.x,
+//                     height = y - downXY.y;
+//
+//                 (x < downXY.x) && (rubberbandDiv.style.left = x + 'px');
+//                 (y < downXY.y) && (rubberbandDiv.style.top = y + 'px');
+//
+//                 rubberbanddiv.style.width = Math.abs(width) + 'px';
+//                 rubberbanddiv.style.height = Math.abs(height) + 'px';
+//
+//                 drawimg(event);
+//             }
+//         }
+//         document.onmouseup = function(event) {
+//             event.preventDefault();
+//             booldrag = false;
+//            // drawimg(event);
+//         }
     </script>
 </body>
 </html>
