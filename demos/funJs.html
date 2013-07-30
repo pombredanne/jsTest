@@ -46,7 +46,7 @@
 		// 优先级  ！ > 算术运算符 > 关系运算符 > && > || > 赋值运算符  -- http://www.slyar.com/blog/c-operator-priority.html 
 		1 || "foo" && 0 ;
 		
-		(1,2,3);   // 好比 var i=1,ii=2,iii=3;  因此 return 3    同理还有  a:b;  //假设 a b 都已经定义  将会返回 最后一个b  2:3  不行
+		(1,2,3);   // 好比 var i=1,ii=2,iii=3;  因此 按照优先原则 return 3    同理还有  a:b;  //假设 a b (var a=4,b=2;  a:b) 都已经定义  将会返回 最后一个b  2:3  不行
 		{ foo : 123 ,ff:33232} // error   {a:2}==> 2  yes   {a:2,b:2} no
 
 		[+true, +false];  // 隐式转换为 [+1,+0]
@@ -138,6 +138,14 @@
             alert(this);    // this 在js中有一个隐式的等式  this= x||window;  x: 调用者
         }
         d.call(null); 
+
+        var k=function (){
+            alert(2);
+        };
+        function k(){
+            alert(4);
+        }
+        k();  //会打印除2    不管var k在function k 前还是后 都会打印出2   原因function 权限比var权限重  因此在预编译的时候,肯定会先编译,然后var 将其 重写
     </script>
 </body>
 </html>
