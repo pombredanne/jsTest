@@ -360,51 +360,47 @@ Drag.prototype = {
 //缩放程序
 var Resize = Class.create();
 Resize.prototype = {
-    //缩放对象
     initialize: function(obj, options) {
-        this._obj = getById(obj);//缩放对象
+        this._obj = getById(obj);                                                           //缩放Dom对象 
+        this._styleWidth = this._styleHeight = this._styleLeft = this._styleTop = 0;
+        this._sideRight = this._sideDown = this._sideLeft = this._sideUp = 0;               //坐标参数
+        this._downLW = this._downTH = 0;                                                   //定位参数
+        this._scaleLeft = this._scaleTop = 0;                                               //定位坐标
 
-        this._styleWidth = this._styleHeight = this._styleLeft = this._styleTop = 0;//样式参数
-        this._sideRight = this._sideDown = this._sideLeft = this._sideUp = 0;//坐标参数
-        this._fixLeft = this._fixTop = 0;//定位参数
-        this._scaleLeft = this._scaleTop = 0;//定位坐标
+        this._mxSet = function(){};
+        this._mxRightWidth = this._mxDownHeight = this._mxUpHeight = this._mxLeftWidth = 0;
+        this._mxScaleWidth = this._mxScaleHeight = 0;                                       //比例范围参数
 
-        this._mxSet = function(){};//范围设置程序
-        this._mxRightWidth = this._mxDownHeight = this._mxUpHeight = this._mxLeftWidth = 0;//范围参数
-        this._mxScaleWidth = this._mxScaleHeight = 0;//比例范围参数
+        this._fun = function(){};
 
-        this._fun = function(){};//缩放执行程序
-
-        //获取边框宽度
         var _style = CurrentStyle(this._obj);
         this._borderX = (parseInt(_style.borderLeftWidth) || 0) + (parseInt(_style.borderRightWidth) || 0);
         this._borderY = (parseInt(_style.borderTopWidth) || 0) + (parseInt(_style.borderBottomWidth) || 0);
-        //事件对象(用于绑定移除事件)
         this._fR = BindAsEventListener(this, this.Resize);
         this._fS = Bind(this, this.Stop);
 
         this.SetOptions(options);
+        var opts=this.options;
         //范围限制
-        this.Max = !!this.options.Max;
-        this._mxContainer = getById(this.options.mxContainer) || null;
-        this.mxLeft = Math.round(this.options.mxLeft);
-        this.mxRight = Math.round(this.options.mxRight);
-        this.mxTop = Math.round(this.options.mxTop);
-        this.mxBottom = Math.round(this.options.mxBottom);
+        this.Max = !!opts.Max;
+        this._mxContainer = getById(opts.mxContainer) || null;
+        this.mxLeft = Math.round(opts.mxLeft);
+        this.mxRight = Math.round(opts.mxRight);
+        this.mxTop = Math.round(opts.mxTop);
+        this.mxBottom = Math.round(opts.mxBottom);
         //宽高限制
-        this.Min = !!this.options.Min;
-        this.minWidth = Math.round(this.options.minWidth);
+        this.Min = !!opts.Min;
+        this.minWidth = Math.round(opts.minWidth);
         this.minHeight = Math.round(this.options.minHeight);
         //按比例缩放
-        this.Scale = !!this.options.Scale;
-        this.Ratio = Math.max(this.options.Ratio, 0);
+        this.Scale = !!opts.Scale;
+        this.Ratio = Math.max(opts.Ratio, 0);
 
-        this.onResize = this.options.onResize;
+        this.onResize = opts.onResize;
 
         this._obj.style.position = "absolute";
         !this._mxContainer || CurrentStyle(this._mxContainer).position == "relative" || (this._mxContainer.style.position = "relative");
     },
-    //设置默认属性
     SetOptions: function(options) {
         this.options = {//默认值
             Max:		false,//是否设置范围限制(为true时下面mx参数有用)
@@ -422,37 +418,34 @@ Resize.prototype = {
         };
         Extend(this.options, options || {});
     },
-    //设置触发对象
     Set: function(resize, side) {
         var resize = getById(resize), fun;
         if(!resize) return;
-        //根据方向设置
         fun=this[{up:'Up',down:'Down',left:'Left',right:'Right','left up':'LeftUp','right up':'RightUp','left down':'LeftDown','right down':'RightDown'}[side.toLowerCase()]]||this.RightDown;
-        //设置触发对象
         addEventHandler(resize, "mousedown", BindAsEventListener(this, this.Start, fun));
     },
     //准备缩放
     Start: function(e, fun, touch) {
-        //防止冒泡(跟拖放配合时设置)
         e.stopPropagation ? e.stopPropagation() : (e.cancelBubble = true);
-        //设置执行程序
         this._fun = fun;
-        //样式参数值
+        
         this._styleWidth = this._obj.clientWidth;
         this._styleHeight = this._obj.clientHeight;
         this._styleLeft = this._obj.offsetLeft;
         this._styleTop = this._obj.offsetTop;
-        //四条边定位坐标
+       
+       //四条边定位坐标
         this._sideLeft = e.clientX - this._styleWidth;
         this._sideRight = e.clientX + this._styleWidth;
         this._sideUp = e.clientY - this._styleHeight;
         this._sideDown = e.clientY + this._styleHeight;
+        
         //top和left定位参数
-        this._fixLeft = this._styleLeft + this._styleWidth;
-        this._fixTop = this._styleTop + this._styleHeight;
+        this._downLW = this._styleLeft + this._styleWidth;
+        this._downTH = this._styleTop + this._styleHeight;
+       
         //缩放比例
         if(this.Scale){
-            //设置比例
             this.Ratio = Math.max(this.Ratio, 0) || this._styleWidth / this._styleHeight;
             //left和top的定位坐标
             this._scaleLeft = this._styleLeft + this._styleWidth / 2;
@@ -476,8 +469,8 @@ Resize.prototype = {
             this._mxSet = function(){
                 this._mxRightWidth = mxRight - this._styleLeft - this._borderX;
                 this._mxDownHeight = mxBottom - this._styleTop - this._borderY;
-                this._mxUpHeight = Math.max(this._fixTop - mxTop, this.Min ? this.minHeight : 0);
-                this._mxLeftWidth = Math.max(this._fixLeft - mxLeft, this.Min ? this.minWidth : 0);
+                this._mxUpHeight = Math.max(this._downTH - mxTop, this.Min ? this.minHeight : 0);
+                this._mxLeftWidth = Math.max(this._downLW - mxLeft, this.Min ? this.minWidth : 0);
             };
             this._mxSet();
             //有缩放比例下的范围限制
@@ -486,7 +479,7 @@ Resize.prototype = {
                 this._mxScaleHeight = Math.min(this._scaleTop - mxTop, mxBottom - this._scaleTop - this._borderY) * 2;
             };
         };
-        //mousemove时缩放 mouseup时停止
+
         addEventHandler(document, "mousemove", this._fR);
         addEventHandler(document, "mouseup", this._fS);
         if(isIE){
@@ -497,80 +490,29 @@ Resize.prototype = {
             e.preventDefault();
         };
     },
-    //缩放
-    Resize: function(e) {
-        //清除选择
-        window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
-        //执行缩放程序
-        this._fun(e);
-        //设置样式，变量必须大于等于0否则ie出错
-        with(this._obj.style){
-            width = this._styleWidth + "px"; height = this._styleHeight + "px";
-            top = this._styleTop + "px"; left = this._styleLeft + "px";
+    Stop: function() {
+        removeEventHandler(document, "mousemove", this._fR);
+        removeEventHandler(document, "mouseup", this._fS);
+        if(isIE){
+            removeEventHandler(this._obj, "losecapture", this._fS);
+            this._obj.releaseCapture();
+        }else{
+            removeEventHandler(window, "blur", this._fS);
         }
-        //附加程序
-        this.onResize();
     },
-    //缩放程序
-    //上
-    Up: function(e) {
-        this.RepairY(this._sideDown - e.clientY, this._mxUpHeight);
-        this.RepairTop();
-        this.TurnDown(this.Down);
+    Resize: function(e) {
+        //window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();  //  TODO  这有什麽必要吗?
+        
+        this._fun(e);
+        
+        //设置样式，变量必须大于等于0否则ie出错
+        var style=this._obj.style;
+        style.width = this._styleWidth + "px"; style.height = this._styleHeight + "px";
+        style.top = this._styleTop + "px"; style.left = this._styleLeft + "px";
+       
+        this.onResize();  //附加程序
     },
-    //下
-    Down: function(e) {
-        this.RepairY(e.clientY - this._sideUp, this._mxDownHeight);
-        this.TurnUp(this.Up);
-    },
-    //右
-    Right: function(e) {
-        this.RepairX(e.clientX - this._sideLeft, this._mxRightWidth);
-        this.TurnLeft(this.Left);
-    },
-    //左
-    Left: function(e) {
-        this.RepairX(this._sideRight - e.clientX, this._mxLeftWidth);
-        this.RepairLeft();
-        this.TurnRight(this.Right);
-    },
-    //右下
-    RightDown: function(e) {
-        this.RepairAngle(
-            e.clientX - this._sideLeft, this._mxRightWidth,
-            e.clientY - this._sideUp, this._mxDownHeight
-        );
-        this.TurnLeft(this.LeftDown) || this.Scale || this.TurnUp(this.RightUp);
-    },
-    //右上
-    RightUp: function(e) {
-        this.RepairAngle(
-            e.clientX - this._sideLeft, this._mxRightWidth,
-            this._sideDown - e.clientY, this._mxUpHeight
-        );
-        this.RepairTop();
-        this.TurnLeft(this.LeftUp) || this.Scale || this.TurnDown(this.RightDown);
-    },
-    //左下
-    LeftDown: function(e) {
-        this.RepairAngle(
-            this._sideRight - e.clientX, this._mxLeftWidth,
-            e.clientY - this._sideUp, this._mxDownHeight
-        );
-        this.RepairLeft();
-        this.TurnRight(this.RightDown) || this.Scale || this.TurnUp(this.LeftUp);
-    },
-    //左上
-    LeftUp: function(e) {
-        this.RepairAngle(
-            this._sideRight - e.clientX, this._mxLeftWidth,
-            this._sideDown - e.clientY, this._mxUpHeight
-        );
-        this.RepairTop(); this.RepairLeft();
-        this.TurnRight(this.RightUp) || this.Scale || this.TurnDown(this.LeftDown);
-    },
-    //修正程序
-    //水平方向
+    // 下面三个方法为主要方法 分别从x y 对角来控制 元素的伸缩  其中对我来说 难点在于 比例的时候 获取正确的相对应的 高 宽
     RepairX: function(iWidth, mxWidth) {
         iWidth = this.RepairWidth(iWidth, mxWidth);
         if(this.Scale){
@@ -587,7 +529,6 @@ Resize.prototype = {
         }
         this._styleWidth = iWidth;
     },
-    //垂直方向
     RepairY: function(iHeight, mxHeight) {
         iHeight = this.RepairHeight(iHeight, mxHeight);
         if(this.Scale){
@@ -604,7 +545,6 @@ Resize.prototype = {
         }
         this._styleHeight = iHeight;
     },
-    //对角方向
     RepairAngle: function(iWidth, mxWidth, iHeight, mxHeight) {
         iWidth = this.RepairWidth(iWidth, mxWidth);
         if(this.Scale){
@@ -622,36 +562,32 @@ Resize.prototype = {
         this._styleWidth = iWidth;
         this._styleHeight = iHeight;
     },
-    //top
+    // RepairTop  RepairLeft  主要用来 当拖动 top left的时候 因为时时刻刻涉及到 top left的重新设定 因此重新修改 this._obj的top left参数
     RepairTop: function() {
-        this._styleTop = this._fixTop - this._styleHeight;
+        this._styleTop = this._downTH - this._styleHeight;
     },
-    //left
     RepairLeft: function() {
-        this._styleLeft = this._fixLeft - this._styleWidth;
+        this._styleLeft = this._downLW - this._styleWidth;
     },
-    //height
+    // RepairHeight  && RepairWidth  主要是用来当设定范围的时候,重新修改高度 宽度用的 默认[0,iHeight||iWidth]
     RepairHeight: function(iHeight, mxHeight) {
         iHeight = Math.min(this.Max ? mxHeight : iHeight, iHeight);
         iHeight = Math.max(this.Min ? this.minHeight : iHeight, iHeight, 0);
         return iHeight;
     },
-    //width
     RepairWidth: function(iWidth, mxWidth) {
         iWidth = Math.min(this.Max ? mxWidth : iWidth, iWidth);
         iWidth = Math.max(this.Min ? this.minWidth : iWidth, iWidth, 0);
         return iWidth;
     },
-    //比例高度
+    //RepairScaleHeight  &&  RepairScaleWidth  主要用来当设定 比例的时候 进行高宽重新设定  默认比例为: w/h
     RepairScaleHeight: function(iWidth) {
         return Math.max(Math.round((iWidth + this._borderX) / this.Ratio - this._borderY), 0);
     },
-    //比例宽度
     RepairScaleWidth: function(iHeight) {
         return Math.max(Math.round((iHeight + this._borderY) * this.Ratio - this._borderX), 0);
     },
-    //转向程序
-    //转右
+    //Turn*  方法 主要用来控制 转向问题  eg: left 拖啊拖  拖到右边啦 这时候属于右边管 交给右边来关 左方法 暂时休息 等待再次回来
     TurnRight: function(fun) {
         if(!(this.Min || this._styleWidth)){
             this._fun = fun;
@@ -660,27 +596,24 @@ Resize.prototype = {
             return true;
         }
     },
-    //转左
     TurnLeft: function(fun) {
         if(!(this.Min || this._styleWidth)){
             this._fun = fun;
             this._sideRight = this._sideLeft;
-            this._fixLeft = this._styleLeft;
+            this._downLW = this._styleLeft;
             this.Max && this._mxSet();
             return true;
         }
     },
-    //转上
     TurnUp: function(fun) {
         if(!(this.Min || this._styleHeight)){
             this._fun = fun;
             this._sideDown = this._sideUp;
-            this._fixTop = this._styleTop;
+            this._downTH = this._styleTop;
             this.Max && this._mxSet();
             return true;
         }
     },
-    //转下
     TurnDown: function(fun) {
         if(!(this.Min || this._styleHeight)){
             this._fun = fun;
@@ -689,15 +622,54 @@ Resize.prototype = {
             return true;
         }
     },
-    //停止缩放
-    Stop: function() {
-        removeEventHandler(document, "mousemove", this._fR);
-        removeEventHandler(document, "mouseup", this._fS);
-        if(isIE){
-            removeEventHandler(this._obj, "losecapture", this._fS);
-            this._obj.releaseCapture();
-        }else{
-            removeEventHandler(window, "blur", this._fS);
-        }
+    //  每个方向方法的接口
+    Up: function(e) {
+        this.RepairY(this._sideDown - e.clientY, this._mxUpHeight);
+        this.RepairTop();
+        this.TurnDown(this.Down);
+    },
+    Down: function(e) {
+        this.RepairY(e.clientY - this._sideUp, this._mxDownHeight);
+        this.TurnUp(this.Up);
+    },
+    Right: function(e) {
+        this.RepairX(e.clientX - this._sideLeft, this._mxRightWidth);
+        this.TurnLeft(this.Left);
+    },
+    Left: function(e) {
+        this.RepairX(this._sideRight - e.clientX, this._mxLeftWidth);
+        this.RepairLeft();
+        this.TurnRight(this.Right);
+    },
+    RightDown: function(e) {
+        this.RepairAngle(
+            e.clientX - this._sideLeft, this._mxRightWidth,
+            e.clientY - this._sideUp, this._mxDownHeight
+        );
+        this.TurnLeft(this.LeftDown) || this.Scale || this.TurnUp(this.RightUp);
+    },
+    RightUp: function(e) {
+        this.RepairAngle(
+            e.clientX - this._sideLeft, this._mxRightWidth,
+            this._sideDown - e.clientY, this._mxUpHeight
+        );
+        this.RepairTop();
+        this.TurnLeft(this.LeftUp) || this.Scale || this.TurnDown(this.RightDown);
+    },
+    LeftDown: function(e) {
+        this.RepairAngle(
+            this._sideRight - e.clientX, this._mxLeftWidth,
+            e.clientY - this._sideUp, this._mxDownHeight
+        );
+        this.RepairLeft();
+        this.TurnRight(this.RightDown) || this.Scale || this.TurnUp(this.LeftUp);
+    },
+    LeftUp: function(e) {
+        this.RepairAngle(
+            this._sideRight - e.clientX, this._mxLeftWidth,
+            this._sideDown - e.clientY, this._mxUpHeight
+        );
+        this.RepairTop(); this.RepairLeft();
+        this.TurnRight(this.RightUp) || this.Scale || this.TurnDown(this.LeftDown);
     }
 };

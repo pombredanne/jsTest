@@ -396,7 +396,7 @@ var t=Math.max.apply(Math,Array);  var nm=Math.max.call(this,2,3,4,8,1222,5,10);
     //中文字符长度
     String.prototype.len=function(){                 
         return this.replace(/[^\x00-\xff]/g,"rr").length;          
-     };
+    };
      
 -----------获取href中某一项
 function getQueryString(name,url){
