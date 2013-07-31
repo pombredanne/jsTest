@@ -695,3 +695,23 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
 		}
 		或者date文件夹中 字符转换
     2:new Date(’2013-03-01′)不一定等于new Date(’2013/03/01′)        ----http://bbs.9ria.com/thread-175853-1-1.html
+
+---------    css强制换行
+		----http://hi.baidu.com/gxsboy/item/4df51312867f130ce75c3629
+		----http://www.cnblogs.com/mofish/archive/2011/02/16/1956263.html
+		强制不换行
+			div{
+		    	white-space:nowrap;
+			}
+		自动换行
+			div{ 
+				word-wrap: break-word; 
+				word-break: normal; 
+			}
+		强制英文单词断行
+			div{
+				word-break:break-all;
+			}
+		
+		
+           
