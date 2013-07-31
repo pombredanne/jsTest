@@ -1,164 +1,138 @@
-/*
-    使用:
-        var option={
-    
-            format: "yy-mm-dd w h-m-",
-            morning: "上午",
-            afterNoon: "下午",
-            //weekNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-            weekNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-    }
-    $("input").timer(option);
-    $("div").timer(option)
-    
-    注意:
-        当设置"h-m-s"格式的时候,为了代码的执行效率以及质量,weizhi:选项将不可使用
-    
-*/
+(function(window,undefined){
+    var _y4 = "([0-9]{4})",                     // yyyy
+        _y2 = "([0-9]{2})",                     //yy
+        _M2 = "(0[1-9]|1[0-2])",                //MM
+        _M1 = "([1-9]|1[0-2])",                 //M
+        _d2 = "(0[1-9]|[1-2][0-9]|30|31)",      //dd
+        _d1 = "([1-9]|[1-2][0-9]|30|31)",       //d
+        _H2 = "([0-1][0-9]|20|21|22|23)",       //HH
+        _H1 = "([0-9]|1[0-9]|20|21|22|23)",     //H
+        _m2 = "([0-5][0-9])",                   //mm
+        _m1 = "([0-9]|[1-5][0-9])",             //m
+        _s2 = "([0-5][0-9])",                   //ss
+        _s1 = "([0-9]|[1-5][0-9])";             //s
 
-(function($){
-    function Timer(){
-        this._defaults = {
-            format: "yy-mm-dd W hh:MM:ss",
-            morning: "上午",
-            afterNoon: "下午",
-            weekNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-            weekNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-            weizhi:false
-        };
-        $.extend(this._defaults);
-    }
-    $.extend(Timer.prototype, {
-        _settings: {},
-        _init: function(target, options){
-            this._settings["target"] = target;
-            if (!options) {
-                options = this._defaults;
-             }
-            this._settings["format"] = options["format"] ? options["format"] : this._defaults["format"];
-            this._settings["morning"] = options["morning"] ? options["morning"] : this._defaults["morning"];
-            this._settings["afterNoon"] = options["afterNoon"] ? options["afterNoon"] : this._defaults["afterNoon"];
-            this._settings["weekNames"] = options["weekNames"] ? options["weekNames"] : this._defaults["weekNames"];
-            this._settings["weekNamesShort"] = options["weekNamesShort"] ? options["weekNamesShort"] : this._defaults["weekNamesShort"];
-            this._settings["weizhi"]=options["weizhi"] ? options["weizhi"] : this._defaults["weizhi"];
-            if(this._settings["format"].split(" ")[2]){
-                var colok=setInterval('$.timer._setValue()', 1);
-             }
-               
+    var _yi=-1,     //  var _yi=_Mi=-1  只因为不这么写 _Mi会被当成全局变量来看待
+        _Mi=-1,
+        _di=-1,
+        _Hi=-1,
+        _mi=-1,
+        _si = -1;
+
+    var regexp;
+
+    var trim=function(str){
+            return str.replace(/(^\s*)|(\s*$)/g, "");
         },
-        /**
-         *yy: 四位年份,如:2009
-         *y : 两位年份,如:09
-         *mm: 两位月份,不足在前补0,如:02
-         *m : 一位月份,不补0,如:02
-         *dd: 月份中的日,两位表示,不足补0,如:02
-         *d : 月份中的日,不足补0,如:2
-         *W : 星期的全称,如:星期一
-         *w : 星期的略称,如:周一
-         *HH:24小时制小时,不足两位补0,如:08,13
-         *H:24小时制,不补0,如:8,13
-         *hh: 12小时制,不足两位补0并且会在加上am或pm进行区分,如01:12:20 am
-         *h : 12小时制,不补0并且会在加上am或pm进行区分,如1:12:20 am
-         *MM:分钟表示,不足两位补0,如:08
-         *M:分钟表示,不补0,如:8
-         *ss:秒表示,不足两位补0,如:08
-         *s:秒表示,不补0,如:8
-         *SSS:表示毫秒
-         */
-        _formatDate: function(date){
-            var format = this._settings["format"];
-            var dateStr = format;
-            var showHour = dateStr.indexOf('h') != -1;
-			//设置年
-            dateStr = dateStr.replace(/yy/, date.getFullYear());
-            dateStr = dateStr.replace(/y/, (date.getYear()).toString().substr(2));
-			//设置月
-            dateStr = dateStr.replace(/mm/, this._appendZero(date.getMonth(), 2));
-            dateStr = dateStr.replace(/m/, date.getMonth());
-			//设置天
-            dateStr = dateStr.replace(/dd/, this._appendZero(date.getDate(), 2));
-            dateStr = dateStr.replace(/d/, date.getDate());
-			//设置星期
-            dateStr = dateStr.replace(/W/, this._settings["weekNames"][date.getDay()]);
-            dateStr = dateStr.replace(/w/, this._settings["weekNamesShort"][date.getDay()]);
-            // 24小时制
-            dateStr = dateStr.replace(/HH/, this._appendZero(date.getHours(), 2));
-            dateStr = dateStr.replace(/H/, date.getHours());
-            // 12小时制
-            dateStr = dateStr.replace(/hh/, this._appendZero(date.getHours() > 12 ? (date.getHours() - 12) : date.getHours(), 2));
-            dateStr = dateStr.replace(/h/, date.getHours() > 12 ? (date.getHours() - 12) : date.getHours());
-			//设置分钟
-            dateStr = dateStr.replace(/MM/, this._appendZero(date.getMinutes(), 2));
-            dateStr = dateStr.replace(/M/, date.getMinutes());
-			//设置秒
-            dateStr = dateStr.replace(/ss/, this._appendZero(date.getSeconds(), 2));
-            dateStr = dateStr.replace(/s/, date.getSeconds());
-			//设置毫秒
-            dateStr = dateStr.replace(/SSS/, this._appendZero(date.getMilliseconds(), 3));
-            dateStr = dateStr.replace(/SS/, this._appendZero(date.getMilliseconds(), 2));
-            dateStr = dateStr.replace(/S/, date.getMilliseconds());
-			 //判断上下午
-            if (showHour) {
-                if (date.getHours() - 12 >= 0) {
-                    dateStr = dateStr + this._settings["afterNoon"];
-                }else {
-                    dateStr = dateStr + this._settings["morning"];
-                }
+        validateDate=function(dateString, formatString){
+            var dateString = trim(dateString);
+            if (dateString === "") {
+                return;
             }
-            return dateStr;
+            var reg = formatString;
+            reg = reg.replace(/yyyy/, _y4).replace(/yy/, _y2).replace(/MM/, _M2).replace(/M/, _M1).replace(/dd/, _d2).replace(/d/, _d1).replace(/HH/, _H2).replace(/H/, _H1).replace(/mm/, _m2).replace(/m/, _m1).replace(/ss/, _s2).replace(/s/, _s1);
+            reg = new RegExp("^" + reg + "$");
+            regexp = reg;
+            return reg.test(dateString);
         },
-        _appendZero: function(value, length){
-            if (value){
-                value = (value).toString();
-                if (value.length < length) {
-                    for (var i = 0; i < length - value.length; i++) {
-                        value = "0" + value;
+        validateIndex=function(formatString){
+            var ia = new Array(),
+                i = 0;
+
+            ((_yi = formatString.search(/yyyy/)) < 0) &&(_yi = formatString.search(/yy/));
+            if (_yi >= 0) {
+                ia[i] = _yi;
+                i++;
+            }
+
+            ((_Mi = formatString.search(/MM/))<0)&&(_Mi = formatString.search(/M/));
+            if (_Mi >= 0) {
+                ia[i] = _Mi;
+                i++;
+            }
+
+            ((_di = formatString.search(/dd/))<0)&&(_di = formatString.search(/d/));
+            if (_di >= 0) {
+                ia[i] = _di;
+                i++;
+            }
+
+            ((_Hi = formatString.search(/HH/))<0)&&(_Hi = formatString.search(/H/));
+            if (_Hi >= 0) {
+                ia[i] = _Hi;
+                i++;
+            }
+
+            ((_mi = formatString.search(/mm/))<0)&&(_mi = formatString.search(/m/));
+            if (_mi >= 0) {
+                ia[i] = _mi;
+                i++;
+            }
+
+            ((_si = formatString.search(/ss/))<0)&&(_si = formatString.search(/s/));
+            if (_si >= 0) {
+                ia[i] = _si;
+                i++;
+            }
+
+            var ia2 = new Array(_yi, _Mi, _di, _Hi, _mi, _si);
+            for (i = 0; i < ia.length - 1; i++) {
+                for (j = 0; j < ia.length - 1 - i; j++) {
+                    if (ia[j] > ia[j + 1]) {
+                        temp = ia[j];
+                        ia[j] = ia[j + 1];
+                        ia[j + 1] = temp;
                     }
                 }
             }
-            return value;
-        },
-        _setValue: function(){
-            var date = new Date();
-            var target = this._settings["target"];
-            date = this._formatDate(date);
-            var weizhi=this._settings["weizhi"];
-            
-            if(this._settings["format"].split(" ")[2]){
-                 if (target.nodeName==="INPUT") {
-                        $(target).val(date);                       
-                }else{
-                        $(target).text(date);                       
-                  }   
-              }else{
-                 if (target.nodeName==="INPUT") {
-                    if(weizhi==="hou"){
-                      $(target).val($(target).val()+date);
-                     }else if(weizhi==="qian"){
-                      $(target).val(date+$(target).val());
-                    }else{
-                        $(target).val(date)
-                       }
-                }else{
-                    if(weizhi==="hou"){
-                      $(target).append(date);
-                    }else if(weizhi==="qian"){
-                     $(target).prepend(date);
-                    }else{
-                        $(target).text(date);
-                       }                      
-                  } 
-                //clearInterval(colok)             
-              }
+            for (i = 0; i < ia.length; i++) {
+                for (j = 0; j < 6/*ia2.length*/; j++) {
+                    if (ia[i] == ia2[j]) {
+                        ia2[j] = i;
+                    }
+                }
             }
-            
-        
-    });
-    $.fn.timer = function(options){
-        return this.each(function(){
-            $.timer._init(this, options);
-        });
-    }
-    
-    $.timer = new Timer();
-})(jQuery);
+            return ia2;
+        };
+
+    Date.prototype._format = function(format){
+        var o = {
+            "M+" : this.getMonth()+1, //month
+            "d+" : this.getDate(),//day
+            "h+" : this.getHours(), //hour
+            "m+" : this.getMinutes(), //minute
+            "s+" : this.getSeconds(), //second
+            "q+" : Math.floor((this.getMonth()+3)/3), //quarter
+            "S" : this.getMilliseconds() //millisecond
+        }
+        if(/(y+)/.test(format)){
+            format = format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o){
+            if(new RegExp("("+ k +")").test(format)){
+                format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] :("00"+ o[k]).substr((""+ o[k]).length));
+            }
+        }
+        return format;
+    };
+
+    String.prototype._strToDate=function(dateString, formatString){
+        if (validateDate(dateString, formatString)) {
+            var now = new Date(),
+                vals = regexp.exec(dateString),
+                index = validateIndex(formatString),
+                year = index[0] >= 0 ? vals[index[0] + 1] : now.getFullYear(),
+                month = index[1] >= 0 ? (vals[index[1] + 1] - 1) : now.getMonth(),
+                day = index[2] >= 0 ? vals[index[2] + 1] : now.getDate(),
+                hour = index[3] >= 0 ? vals[index[3] + 1] : "",
+                minute = index[4] >= 0 ? vals[index[4] + 1] : "",
+                second = index[5] >= 0 ? vals[index[5] + 1] : "",
+                validate=hour=== ""?new Date(year, month, day):new Date(year, month, day, hour, minute, second);
+            if (validate.getDate() == day) {
+                return validate;
+            }
+        }
+        alert("wrong date");
+    };
+
+})(window,undefined);
