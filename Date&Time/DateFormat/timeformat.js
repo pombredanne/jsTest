@@ -1,4 +1,5 @@
 (function(window,undefined){
+    //----http://jackeysion.iteye.com/blog/513774
     var _y4 = "([0-9]{4})",                     // yyyy
         _y2 = "([0-9]{2})",                     //yy
         _M2 = "(0[1-9]|1[0-2])",                //MM
