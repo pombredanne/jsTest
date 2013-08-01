@@ -146,6 +146,15 @@
             alert(4);
         }
         k();  //会打印除2    不管var k在function k 前还是后 都会打印出2   原因function 权限比var权限重  因此在预编译的时候,肯定会先编译,然后var 将其 重写
+
+        var k={a:4};
+        var c=k;
+        c.b=4;   // c.b  k.b  都等于4
+        c={};    //  记住在 js中一切皆对象 只要是={}  即为重写(断开以前的所有联系) 上面的为赋值 因此k也会跟着有b属性 
+    
+        var a = {n:1};
+        a.x = a = {n:2};
+        console.log(a.x);     //  这个迷惑就迷在 上面重写上   a.x=a={n:2} ===>  a.x=(a={n:2})  即a已经被重写啦  a.x还会被赋值为 {n:2}  但是此时此刻 a.x是在未重写的a上面赋值的    而我们这里 再调用a.x  是调用的是 重写后的a.x  so  result:  undefined;
     </script>
 </body>
 </html>
