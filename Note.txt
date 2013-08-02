@@ -393,9 +393,11 @@ var t=Math.max.apply(Math,Array);  var nm=Math.max.call(this,2,3,4,8,1222,5,10);
 	    }
 	    return ret; 
     }
-    //中文字符长度
-    String.prototype.len=function(){                 
-        return this.replace(/[^\x00-\xff]/g,"rr").length;          
+    //中文[字符长度]  在js中使用length检测的时候 汉字也会被认为是1个字符
+    //但是在后台 服务器 数据库中汉字应该为2个.
+    //因此如果文档中有明确说明字符长度 那么使用此方法 是最标准的
+    String.prototype.len=function(){
+        return this.replace(/[^\x00-\xff]/g,"rr").length;
     };
      
 -----------获取href中某一项
@@ -614,7 +616,9 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
    1:jQuery.parseJSON
    2:var obj = (new Function("return " + json))();
    3:var objTEST=eval("("+strTEST+")");   
-   4:var data = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(source.replace(/"(\\.|[^"\\])*"/g, '')))&& eval('(' + source + ')');
+   4:var data = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u
+   \n\r\t]/.test(source.replace(/"(\\.|[^"\\])*"/g, '')))&& eval('(' + source
+   + ')');    // 安全的做法
        --http://stackoverflow.com/questions/921374/how-do-i-convert-a-json-string-to-a-javascript-object-in-jquery
          http://www.cnblogs.com/lishenglyx/archive/2009/04/02/1427727.html
 

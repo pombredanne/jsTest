@@ -1,0 +1,58 @@
+
+
+<html>
+    <head>
+         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+         <script>!window.jQuery && document.write('<script src="jquery-1.4.3.min.js"><\/script>');</script>
+         <meta charset='utf-8'>
+    </head>
+    <body>
+        <input type='file' />
+        <input type="button" id='upload'/>
+        <span><input id="urlbox" /></span>
+    </body>
+</html>
+<!--
+ <script type="text/javascript"> 
+ function replaceReg(reg,str){ 
+    var str=str.replace(reg,function(m){
+        alert(m);
+        return '<a href="'+m+'">'+m+'</a>';
+    }) 
+  return str
+ } 
+ var reg = new RegExp('(http:|https:)//[w-]*(.[w-]*)+', 'gi'); //ig; 
+ var str ='将一个用户输入的一段文字中的url替换成可以点击的link地址。测试一下：https://www.111cn.net紧接着中文，还有http://bbs.blueidea.com is very good!http://blueidea.com!最后在看看带.cn的：http://www.sina.com.cn呵呵。'; 
+ 
+ document.write(replaceReg(reg,str))
+ </script>-->
+  <script type="text/javascript"> 
+    // 取消ftp
+     function replaceReg(reg,str){ 
+      return str.replace(reg,function(m){return '<a href="'+m+'">'+m+'</a>';}) 
+     } 
+     //var reg = /(http|https):\/\/[\w-]*(\.[\w-]*)+(:[0-9]{1,4})?/ig; 
+     var strRegex = "^((https|http|ftp|rtsp|mms)?://)" +
+            "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+     +
+            "(([0-9]{1,3}.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+     +
+            "|" // 允许IP和DOMAIN（域名）
+     +
+            "([0-9a-z_!~*'()-]+.)*" // 域名- www.
+     +
+            "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]." // 二级域名
+     +
+            "[a-z]{2,6})" // first level domain- .com or .museum
+     +
+            "(:[0-9]{1,4})?" // 端口- :80
+     +
+            "((/?)|" // a slash isn't required if there is no file name
+     +
+            "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+
+    var reg = /(http|https):\/\/[\w-]*(\.[\w-]*)+(:[0-9]{1,4})?(\/|[a-z]|.htm)*/ig; 
+
+     var str = '将一个用户输入的一段文字中的url替换成可以点击的link地址。测试一下：http://www.sharejs.com紧接着中文，还有http://www.sharejs.com is very good!https://sharejs.com!最后在看看带.cn的：http://www.sina.com.cn呵呵。http://www.sina.com.cn/abc.html http://192.168.1.92:9998/static/js/demo/new.html'; 
+     document.write(replaceReg(reg,str)+'<br />'); 
+ </script> 

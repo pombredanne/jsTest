@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+    <meta charset="utf-8"/>
+    <TITLE> 常见字符串转换 ASCII to Unicode  and  全角 to 半角  </TITLE>
+</HEAD>
+<BODY>
+<script type="text/javascript">
+    var type;
+    //to Unicode with HTML
+    var toHTML = {
+        on : function (str) {
+            var a = [], i = 0;
+            for (; i < str.length ;) a[i] = str.charCodeAt(i ++);
+            return "&#" + a.join(";&#") + ";";
+        },
+        un : function (str) {
+            return str.replace(/&#(x)?([^&]{1,5});?/g, function (a, b, c) {
+                return String.fromCharCode(parseInt(c, b ? 16 : 10));
+            });
+        }
+    };
+    //to Unicode only
+    var toUN = {
+        on : function (str) {
+            var a = [], i = 0;
+            for (; i < str.length ;) a[i] = ("00" + str.charCodeAt(i ++).toString(16)).slice(-4);
+            return "\\u" + a.join("\\u");
+        },
+        un : function (str) {
+            return unescape(str.replace(/\\/g, "%"));
+        }
+    };
+    function covertFunc(type){
+        if(document.getElementById("input").value==""){
+            alert("Please input the word being coverted!");
+            return false;
+        }
+        if(type=='1'){//to HTML on
+            document.getElementById("output").value=toHTML.on(document.getElementById("input").value);
+        }
+        if(type=='2'){//to HTML un
+            document.getElementById("output").value=toHTML.un(document.getElementById("input").value);
+        }
+        if(type=='3'){//to UN on
+            document.getElementById("output").value=toUN.on(document.getElementById("input").value);
+        }
+        if(type=='4'){//to UN un
+            document.getElementById("output").value=toUN.un(document.getElementById("input").value);
+        }
+    }
+    /*
+        [全角举例]AabB1234@#$%＾&*；，。：
+        [半角举例]AabB1234@#$%^&*;,.:
+        半角被认为是一个字节
+        S全角半角判断   http://erisenzy.blog.163.com/blog/static/3323865120087751345866
+    */
+</script>
+    <textarea id="input" rows="7" cols="50" /></textarea><br /><br />
+    To Unicode :
+    <input type="button" value="HTML+Unicode" onclick="covertFunc('1')" />
+    <input type="button" value="Unicode" onclick="covertFunc('3')" /><br /><br />
+    From Unicode :
+    <input type="button" value=" HTML+Unicode" onclick="covertFunc('2')" />
+    <input type="button" value="Unicode" onclick="covertFunc('4')" /><br /><br />
+    <textarea id="output" rows="7" cols="50" />the result will be outputed here</textarea>
+</BODY>
+</HTML>
