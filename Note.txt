@@ -717,5 +717,30 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
 				word-break:break-all;
 			}
 		
-		
+---------   随机排序数组
+        var count = 3000;
+        var original = [];
+        for (var i = 0; i < count; i++) {
+            original[i] = i + 1;
+        }   
+        //1
+        original.sort(function() {
+            return 0.5 - Math.random();
+        });
+
+        //2
+        for (var num, i = 0; i < count; i++) {
+            do {
+                num = Math.floor(Math.random() * count);
+            } while (original[num] == null);
+            // do something
+            original[num] = null;
+        }
+
+        //3
+        for (i=0;i<count;i++){ 
+            var index=Math.floor(Math.random()*original.length); //随机取一个位置 
+            // do something
+            original.splice(index,1);
+        }
            

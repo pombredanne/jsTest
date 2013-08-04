@@ -32,12 +32,35 @@
                                     top: $(input).offset().top
                                 }
                             });
-
+//                    var ff=placejQ&&(placejQ.value);
+//                    var _options='<option>'+ff+'</option>';
+//                    var $label=$('<select>',{
+//                        'class':options.className+' label_'+index,
+//                        css:{
+//                            display:input.value?'none':'',
+//                            width: input.offsetWidth,
+//                            height: input.offsetHeight,
+//                            lineHeight:(options.textarea&&(self.nodeName.toUpperCase()=='TEXTAREA')?options.textarea:input.offsetHeight)+'px',
+//                            left: $(input).offset().left,
+//                            top: $(input).offset().top
+//                        }
+//                    }).append(_options);
+//                    if($('select'+'._sel'+options.className).length>0){
+//                        $('<select>',{
+//                            'class':'_sel'+options.className,
+//                            css:{
+//                                display:none
+//                            }
+//                        }).change(function(){
+//                                if(self.val){
+//                                    $(self).focus();
+//                                }
+//                        });
+//                    }
                     if (options.isFF){
                         $label.click(function(){
                             input.focus();
                         });
-
                         $(input).bind('keyup',function(e) {
                             this.value ? ($label.hide()) : ($label.show());
                         });
@@ -66,4 +89,99 @@
             
         });
     };
+})(jQuery);
+
+
+
+(function ($) {
+    $.event.special.textchange = {
+        //初始化事件处理器
+//        var args=this.id||this.className||this.name,
+//        self=this;
+//    if($('select.SelvalHelpChange'+args).length<0){
+//        $('<select>',{
+//            'class':'SelvalHelpChange'+args,
+//            css:{
+////                        display:'none'
+//            }
+//        }).change(function(){
+//                console.log(2);
+//            }).appendTo('body');
+//    }
+        _time:0,
+        getLasval:function(dom){
+            return dom.data('lastValue');
+        },
+        setup: function (data, namespaces) {
+            var self=this,
+                lastvalue=self.contentEditable === 'true' ? $(self).html() : $(self).val();
+
+            if(data&&data.valchange){
+                $.event.special.textchange._time=window.setInterval(function(){
+                    if(self.value!==$.event.special.textchange.getLasval($(self))){
+                        $.event.special.textchange.triggerIfChanged($(self));
+                    }
+                },data.valchange);
+            }
+            $(this).bind('keyup.textchange', $.event.special.textchange.handler);
+            $(this).bind('cut.textchange paste.textchange input.textchange', $.event.special.textchange.delayedHandler);
+        },
+        //卸载事件处理器
+        teardown: function (namespaces) {
+            $(this).unbind('.textchange');
+            window.clearInterval($.event.special.textchange._time);
+            $.event.special.textchange._time=null;
+        },
+        handler: function (event) {
+            $.event.special.textchange.triggerIfChanged($(this));
+        },
+        delayedHandler: function (event) {
+            var element = $(this);
+            setTimeout(function () {
+                $.event.special.textchange.triggerIfChanged(element);
+            }, 25);
+        },
+        triggerIfChanged: function (element) {
+            var current = element[0].contentEditable === 'true' ? element.html() : element.val();
+            if (current !== element.data('lastValue')) {
+                element.trigger('textchange',  [element.data('lastValue')]);
+                element.data('lastValue', current);
+            }
+        }
+    };
+
+    $.event.special.hastext = {
+
+        setup: function (data, namespaces) {
+            $(this).bind('textchange', $.event.special.hastext.handler);  //undefined==null
+        },
+
+        teardown: function (namespaces) {
+            $(this).unbind('textchange', $.event.special.hastext.handler);
+        },
+
+        handler: function (event, lastValue) {
+            if ((lastValue === '') && lastValue !== $(this).val()) {
+                $(this).trigger('hastext');
+            }
+        }
+    };
+
+    $.event.special.notext = {
+
+        setup: function (data, namespaces) {
+            $(this).bind('textchange', $.event.special.notext.handler);
+        },
+
+        teardown: function (namespaces) {
+            $(this).unbind('textchange', $.event.special.notext.handler);
+        },
+
+        handler: function (event, lastValue) {
+            if ($(this).val() === '' && $(this).val() !== lastValue) {
+                $(this).trigger('notext');
+            }
+        }
+    };
+
 })(jQuery);

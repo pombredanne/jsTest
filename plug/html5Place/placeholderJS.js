@@ -1,5 +1,4 @@
 (function ($) {
-  
     $.event.special.textchange = {
          //初始化事件处理器 
       setup: function (data, namespaces) {
