@@ -1,6 +1,7 @@
 <html>
     <head>
         <title> 可编辑 iframe </title>
+        <meta charset="utf-8"/>
     </head>
 	<script>
 		//初始化编辑器
@@ -10,7 +11,7 @@
 				doc.designMode = "on";
 				doc.contentEditable = true;
 				doc.write('<html><head><style>body{margin:3px; word-wrap:break-word; word-break: break-all; }</style></head><body>GoodNessEditor</body></html>');
-			alert(doc.body.innerHTML);
+			console.log(doc.body.innerHTML);
 		}
 		//设置选定的文本为粗体/正常
 		function setBold() {
@@ -22,6 +23,6 @@
 	<body>
 		<p><input type="button" id="bBtn" value="B" style="font-weight:bold" onclick="setBold();"/ ></p>
 		<p><iframe id="editor" width="600px" height="400px" style="border:solid 1px;"></iframe ></p>
-		<script>init();</script>	
+		<script>init();</script>
 	</body>
 </html>

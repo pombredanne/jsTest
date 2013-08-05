@@ -486,7 +486,14 @@ var timeid = setInterval(function() {
 // 验证插件
 /*
     1: html5插件 http://www.zhangxinxu.com/wordpress/2012/12/html5-number-input-step-invidate/
-        DBC2SBC
+        DBC2SBC:
+         将全角SBC字符转化为半角DBC字符
+          全角空格为12288，半角空格为32；其他字符半角(33-126)与全角(65281-65374)的对应关系是：均相差65248
+         * "我爱看３Ｄ阿凡达".sbc2dbc()->我爱看3D阿凡达
+            var sbc2dbc = function (){
+                  return this.replace(/[\uff01-\uff5e]/g,function(a){return String.fromCharCode(a.charCodeAt(0)-65248);}).replace(/\u3000/g," ");
+            }
+
         novalidate  -- 取消默认验证
     2: Valiform 优势    没发现什么优势 也就是 check处理丰富
 */

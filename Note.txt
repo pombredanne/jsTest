@@ -743,4 +743,3 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
             // do something
             original.splice(index,1);
         }
-           
