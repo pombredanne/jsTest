@@ -743,3 +743,27 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
             // do something
             original.splice(index,1);
         }
+
+--------    console.log 的问题
+        在ie10 以下的浏览器中  如果不打开f12 开发者工具  那么他们将会视为异常抛出 程序终止
+
+--------   脚本错误：600该操作无效的目标元素
+        在innerHTML=html;   html为table  tr这类数据格式的时候 直接使用  innerHTML ie9以下会出现 上述600错误
+        解决办法:
+            1:使用jquery的 $.fn.html
+            2:判断tr标签    ---http://stackoverflow.com/questions/7180072/script-600-error-invalid-target-element-for-this-operation 
+                var a=document.getElementById("dealdata");
+                while(a.firstChild!=null)
+                  a.removeChild(a.firstChild);
+
+                var b=document.getElementById("helper");
+                b.innerHTML="<table>"+this.responseText+"</table>";
+                while(b.tagName!="TR") {
+                  if(b.tagName==null)
+                    b=b.nextSibling;
+                  else
+                    b=b.firstChild;
+                }
+                for(;b!=null;b=b.nextSibling)
+                  a.appendChild(b);
+

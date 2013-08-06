@@ -2,51 +2,14 @@ $(function() {
     $('li').css('position', 'relative'); // 如果使用  必须加上offsetLeft  为了暂时测试 暂时这样
     $('.zns_box_foot a').click(function() {
 
-        //        $('.zns_box_head li').each(function(index,value){
-        //            var len=index<6?(index+1)*(-140):(-140*6);
-        //            Fun.push(function(){
-        //                $(value).animate({left:len+'px'},200,aniCB);
-        //            });
-        //        });
-
         if (this.calssName !== 'show') {
             var Fun = [],
-                _index = $(this).index() - 1 ? '531px' : '427px';
+                _index = $(this).index() - 1 ? '531px' : '427px',
+                aniCB = function() {
+                    $('#div1').dequeue("myAnimation");
+                };
 
-          /*  //TODO 这里尝试使用 for 循环
-            $('.zns_box_head li').each(function(index,value){
-                if(_index==='531px'){
-                    if(index<6){
-                        var len=(index+1)*(-140);
-                        Fun.push(function(){
-                            $(value).animate({left:len+'px'},200,aniCB);
-                        });
-                    }else{
-                        var len=(-140*6);
-                        Fun.push(function(){
-                            $(value).animate({left:len-80+'px'},200,aniCB);
-                            setTimeout(function(){
-                                $(value).animate({left:len+'px'},200,aniCB);
-                            },80);
-                        });
-                    }
-                }else{
-                    if(index<6){
-                        Fun.push(function(){
-                            $(value).animate({left:'80px'},200,aniCB);
-                            setTimeout(function(){
-                                $(value).animate({left:'0px'},200,aniCB);
-                            },80);
-                        });
-                    }else{
-                        Fun.push(function(){
-                            $(value).animate({left:'0px'},200,aniCB);
-                        });
-                    }
-                }
-            });*/
-
-            for (var index = 0; index < $('.zns_box_head li').length; index++) {
+            for (var index = 0,length=$('.zns_box_head li').length; index < length; index++) {
                 (function(index) {
                     var value = $('.zns_box_head li').eq(index)
                     if (_index === '531px') {
@@ -94,14 +57,10 @@ $(function() {
 
             }
 
-
-
             if (_index !== '531px') {
                 Fun.reverse();
             }
-            var aniCB = function() {
-                $('#div1').dequeue("myAnimation");
-            }
+           
             $('#div1').queue("myAnimation", Fun);
             aniCB();
             $('.show').removeClass('show');

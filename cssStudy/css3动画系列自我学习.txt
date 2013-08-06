@@ -86,3 +86,11 @@ animation:  http://css.doyoe.com/properties/animation/animation.htm
 	使用动画:
 	eg:
 		animation:animationName 2s ease-out 0s infinite alternate;
+    
+    Rotate&&transit的插件
+        http://www.cnblogs.com/moyiqing/archive/2012/01/11/2318952.html  另一个利用css来进行翻转的
+        http://www.zhangxinxu.com/wordpress/?p=552                       张新旭的
+        http://code.google.com/p/jqueryrotate/                           rotate.js 一个翻转插件
+        http://ricostacruz.com/jquery.transit                            transit 对浏览器要求较高
+ 
+

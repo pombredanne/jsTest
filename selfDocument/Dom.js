@@ -1,19 +1,5 @@
 									/****************事件******************/
 
-/*
-
-	兼容式 事件绑定	事件解除
-	IE：target.attachEvent(eventType,lister);	target.detachEvent(eventType,listenter);
-	FF:target.addEventLister(eventType,listener,useCapture); 
-	   target.removeEventListener(eventType,listener,useCapture)
-	   
-	@elementId:事件ID；
-	@eventType：事件类型；
-	@listener：事件；
-	
-	use:addEventListener("id","click",hello)
-	
-*/
 var _Dom={
     addEventListener:function(element, type,handler){
             if (element.addEventListener){
@@ -400,30 +386,3 @@ Object.prototype.equals = function(obj) {
     }
     return false;
 };
-
-var brower={
-    iE:function(){
-       return !-[1,]&&!!window.ActiveXObject;
-    },
-    iE6:function(){
-        return !-[1,]&&!window.XMLHttpRequest;
-    },
-    ie7:function(){
-        return navigator.userAgent.indexOf('MSIE') > 0 && navigator.userAgent.indexOf('7') > 0;
-    },
-    ie8:function(){
-        return isIE&&!!document.documentMode;
-    },
-    isOpera: function(){
-        return navigator.userAgent.indexOf('Opera') > -1;
-    },
-    isChrome: function(){
-        return navigator.userAgent.indexOf('Chromium') > -1;
-    },
-    isSafari: function(){
-        return navigator.userAgent.indexOf('Safari') > -1;
-    },
-    isMoz: function(){
-        return navigator.userAgent.indexOf('Mozilla/5.') > -1;
-    }
-}

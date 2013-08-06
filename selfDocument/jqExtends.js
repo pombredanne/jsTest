@@ -26,14 +26,6 @@ $.fn.extend({
             $(this).removeClass(className);
         });
     },
-    toggleClass: function(className){
-        className = className || "hover";
-        return this.toggle(function(){
-            $(this).addClass(className);
-        }, function(){
-            $(this).removeClass(className);
-        });
-    },
     parentN: function(n){
         n = n || 2;
         var t = this
@@ -59,7 +51,6 @@ $.fn.extend({
         }
         return this        
     }
-    
 });
 
 
@@ -78,7 +69,6 @@ $.fn.extend({
         tempEle.innerHTML = str;
         //return tempEle.childNodes[0].nodeValue;
         return tempEle.innerText||tempEle.textContent;//谷歌 textContent innerText都支持
-
         /*var t=$('<div>').html(str);
          return t.text()
          */
@@ -86,16 +76,14 @@ $.fn.extend({
    });
 
    function clearConObj(){
-     //(function(){
-            if(!window.console){
-                window.console = {};
-                var func = ['log','debug','info','warn','error','assert','dir','dirxml','trace',
-                    'group','groupEnd','time','timeEnd','profile','profileEnd','count','exception','table'];
-                for( var i = 0 , j = func.length ; i < j ; i++ ){
-                    window.console[func[i]] = function(){}
-                }
-             }
-       // })();
+        if(!window.console){
+            window.console = {};
+            var func = ['log','debug','info','warn','error','assert','dir','dirxml','trace',
+                'group','groupEnd','time','timeEnd','profile','profileEnd','count','exception','table'];
+            for( var i = 0 , j = func.length ; i < j ; i++ ){
+                window.console[func[i]] = function(){}
+            }
+        }
    }
 
    //查看鼠标从那个方向进入
@@ -145,15 +133,15 @@ $.fn.extend({
                 /*
                       --------------------------
                       -  -                   -  -    
-                      -     -     大       -     -    
+                      -     -     大       -     -  
                       -  大       -     -       -    
                       -          - -      小   -    
                       -         -       -      -    Y
                       -      -     小     -   -
-                      -   -                    --    
-                      ----------------------  ---                              
+                      -   -                    --   
+                      ----------------------  ---   
                             X
-                */           
+                */
                 var x = (event.pageX - self.offsetLeft - (w / 2)) * (w > h ? (h / w) : 1),
                     y = (event.pageY - self.offsetTop - (h / 2)) * (h > w ? (w / h) : 1),
                     dir=_getDir(x,y);

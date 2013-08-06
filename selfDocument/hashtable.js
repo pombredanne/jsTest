@@ -73,8 +73,13 @@ function hashtable_values(){
 
 /*存value*/
 function hashtable_put(key, value){
-    if (key === null || value === null) {
-        throw 'NullPointerException{' + key + '},{' + value + '}';        
+    if(argument.length===1 && Object.prototype.toString.call(argument[0])==="[object Array]"){
+        for(var i=-1,val;val=key[i++];){
+           this.hashtable[val[0]]=val[1];
+        }
+    }
+    if (!key || !value) {
+        throw 'NullPointerException{' + key + '},{' + value + '}';
     }else {
         this.hashtable[key] = value
     }
