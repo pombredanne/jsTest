@@ -185,9 +185,6 @@
                             }
                 }
 
-------------数组最大数目
-var t=Math.max.apply(Math,Array);  var nm=Math.max.call(this,2,3,4,8,1222,5,10);  //this Math一般都可以
-
 ------------IE BUG
     一:
         $('<div class="gouriie">') //不能用  必须闭合标签 才能使用
@@ -767,3 +764,5 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
                 for(;b!=null;b=b.nextSibling)
                   a.appendChild(b);
 
+--------   dom 属性选取一个有趣
+        在获取属性的val的时候, getAttribute('name')===getAttribute('Name') 不区分大小写

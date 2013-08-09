@@ -89,6 +89,9 @@ Array.prototype.isIn = function(value){
     }
     return false;
 };
+Array.prototype.Max=function(){
+   return Math.max.apply(Math,this);
+};
 //深度克隆
 Array.prototype.myClone = function(){
     var arrayTemp = [];

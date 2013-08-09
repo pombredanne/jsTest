@@ -386,3 +386,50 @@ Object.prototype.equals = function(obj) {
     }
     return false;
 };
+
+
+var addEventListener = (function() {
+    if (HTMLElement.prototype.addEventListener) {
+        return function(element, type, handler) {
+            element.addEventListener(type, handler, false);
+            elements['Listener_' + type] = handler;
+        }
+    } else if (HTMLElement.prototype.attachEvent) {
+        return function(element, type, handler) {
+            element.attachEvent("on" + type, handler);
+            elements['Listener_' + type] = handler; // use remove or check
+        }
+    } else {
+        return function() {
+            element["on" + type] = handler;
+        }
+    }
+})(),
+    getDomEvent = function(dom) {
+        var usejq = jQuery.fn.jquery ? jQuery.fn.jquery : false,
+            domEles = {},
+            cache = '',
+            elements = ["blur", "focus", "focusin", "focusout", "load", "resize", "scroll", "unload", "click", "dblclick", "mousedown", "mouseup", "mousemove", "mouseover", "mouseout", "mouseenter", "mouseleave", "change", "select", "submit", "keydown", "keypress", "keyup", "error", "contextmenu"];
+        dom = usejq ? dom[0] : dom;
+
+        for (var i = -1, val; val = elements[i++];) {
+            cache = dom['on' + val[i]] || dom["Listener_" + val[i]] || dom.getAttribute('on' + val[i])
+            if (cache) {
+                var type = (dom['on' + val[i]] ? 'on_' : 'Listener_') + val[i];
+                domEles[type] = cache;
+            };
+        }
+
+        if (usejq) {
+            var fnType = usejq > '1.8' ? '_data' : 'data';
+            cache = jQuery[fnType](dom, 'events');
+            for (prop in canche) {
+                domEles['jQ_' + prop] = cache[prop][0].handle
+            }
+        }
+    };
+
+/* 
+on: 只能调用一次  但 可以获取的到
+addEventListener||attachEvent:  多次调用 但 几乎不可使用正常js来获取.   解决方法: chrome F12 -- Event Listeners  or Visual Event(1.0) 
+*/
