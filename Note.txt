@@ -512,6 +512,7 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
         $.data(DOM,'events')   $(DOM).data('events')
         
 ----------- trim方法  
+    http://www.cnblogs.com/rubylouvre/archive/2009/09/18/1568794.html
     网上说处理大数据使用此方法:
         function trim(str){  
             str = str.replace(/^(\s|\u00A0)+/,'');  
