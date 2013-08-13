@@ -32,31 +32,6 @@
                                     top: $(input).offset().top
                                 }
                             });
-//                    var ff=placejQ&&(placejQ.value);
-//                    var _options='<option>'+ff+'</option>';
-//                    var $label=$('<select>',{
-//                        'class':options.className+' label_'+index,
-//                        css:{
-//                            display:input.value?'none':'',
-//                            width: input.offsetWidth,
-//                            height: input.offsetHeight,
-//                            lineHeight:(options.textarea&&(self.nodeName.toUpperCase()=='TEXTAREA')?options.textarea:input.offsetHeight)+'px',
-//                            left: $(input).offset().left,
-//                            top: $(input).offset().top
-//                        }
-//                    }).append(_options);
-//                    if($('select'+'._sel'+options.className).length>0){
-//                        $('<select>',{
-//                            'class':'_sel'+options.className,
-//                            css:{
-//                                display:none
-//                            }
-//                        }).change(function(){
-//                                if(self.val){
-//                                    $(self).focus();
-//                                }
-//                        });
-//                    }
                     if (options.isFF){
                         $label.click(function(){
                             input.focus();
@@ -96,18 +71,6 @@
 (function ($) {
     $.event.special.textchange = {
         //初始化事件处理器
-//        var args=this.id||this.className||this.name,
-//        self=this;
-//    if($('select.SelvalHelpChange'+args).length<0){
-//        $('<select>',{
-//            'class':'SelvalHelpChange'+args,
-//            css:{
-////                        display:'none'
-//            }
-//        }).change(function(){
-//                console.log(2);
-//            }).appendTo('body');
-//    }
         _time:0,
         getLasval:function(dom){
             return dom.data('lastValue');

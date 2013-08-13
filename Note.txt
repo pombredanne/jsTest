@@ -335,7 +335,6 @@
 		            $('#ffff').bind('mouseenter mouseleave',function(event){//换成mouseover mouseout 也行
 			            //alert("toElement:"+event.toElement.innerHTML)
 			            if(document.all){event.toElement.innerHTML;event.fromElement.innerHTML;}  //1 竖直方向 2 左右方向
-			
 			              //这就是解决重复的地方
 			            alert(4)
 		            })
@@ -397,16 +396,6 @@
         return this.replace(/[^\x00-\xff]/g,"rr").length;
     };
      
------------获取href中某一项
-function getQueryString(name,url){
-        var reg = new RegExp("(^|&|\\?)"+ name +"=([^&]*)(&|$)"), r;
-        url=url||location.href;
-        if (r=url.match(reg)){
-            return unescape(r[2]);
-        }
-        return null;
-}
-
 -----------Url编码
     URL编码 
         结论1:网址路径的编码，用的是utf-8编码
@@ -525,10 +514,7 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
             return str;  
         }  
     暂未测试  还使用正则trim
-    
------------  文本中的url转换为http 
-    http://www.zhihu.com/question/20339078
- 
+
 -----------  releaseCapture setCapture 的作用 优势  [未搞明白 回头再来] 
      if (self.setCapture) {
      	self.setCapture();
