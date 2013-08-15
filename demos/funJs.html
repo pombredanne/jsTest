@@ -155,6 +155,10 @@
         var a = {n:1};
         a.x = a = {n:2};
         console.log(a.x);     //  这个迷惑就迷在 上面重写上   a.x=a={n:2} ===>  a.x=(a={n:2})  即a已经被重写啦  a.x还会被赋值为 {n:2}  但是此时此刻 a.x是在未重写的a上面赋值的    而我们这里 再调用a.x  是调用的是 重写后的a.x  so  result:  undefined;
+
+        var k=9;
+        var k;
+        alert(k);   // 9  在第二个k只定义未赋值的情况下 当作没有
     </script>
 </body>
 </html>

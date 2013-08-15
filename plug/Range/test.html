@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>JavaScript 获取/设置光标位置,兼容Input&&TextArea。</title>
-        <script src="jquery-1.8.3.min.js"></script>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+        <script type="text/javascript" src="jquery-fieldselectionBak.js"></script>
+        <meta charset="utf-8" />
         <style>
             body {
                 margin: 32px;
@@ -70,12 +70,12 @@
                     ctrl.focus();
                     ctrl.setSelectionRange(pos, pos);
                 }else if (ctrl.createTextRange) {
-						var range = ctrl.createTextRange();
-						range.collapse(true);
-						range.moveEnd('character', pos);
-						range.moveStart('character', pos);
-						range.select();
-				  }
+                    var range = ctrl.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('character', pos);
+                    range.moveStart('character', pos);
+                    range.select();
+                }
             }
 
             //test
@@ -83,10 +83,6 @@
                 var no = document.getElementById(id).value;//设置
                 setCursorPosition(document.getElementById(targetId), no);//目标
             }
-
-             function d(){
-                 var t
-             }
         </script>
     </head>
     <body>
@@ -94,27 +90,42 @@
         <div class="title">
             JavaScript 获取/设置光标位置,兼容Input&&TextArea：
         </div>
+
         <div class="title">
             单行文本框
         </div>
+
         <p>
             <input class="input" id="textbox" name="textbox" value="Hi,www.jb51.net!!!" />
-        </p><input type="button" onclick="alert( getPositionForInput( document.getElementById('textbox') ) )" value="Get
- Position">
- 输入位置:<input type="text" id="no1" size="1" /><input type="button" onclick="process('no1','textbox');" value="Set
- Position">
-        <div class="title">
-            多行文本框
+        </p>
+
+        <input type="button" value="Get Position" id="getPos"> 
+        输入位置:<input type="text" id="no1" size="1" /><input type="button" id="setPos" value="Set Position">
+
+        <div class="title" id="zwhangdanNum" contenteditable=true>
+            <span id="hangdanNum">fdk<b>bbbb</b>fjdlskfjkl</span>
+            测试nodeType层多行文本框<b>fdf</b>
         </div>
-         <div class="title" id="zwhangdanNum" contenteditable=true>
-            多行文本框dddddddddddddd
-        </div>
-        <textarea id="zhangdanNum" name="zhangdanNum" style="height:66px;width:246px;overflow:hidden">
+
+        <input type="button" value="Get Position" id="getPosD">
+         输入位置:<input type="text" id="no2" size="1" /><input type="button" id="setPosD" value="Set Position">
+
+         <textarea id="zhangdanNum" name="zhangdanNum" style="height:66px;width:246px;overflow:hidden">
             Hi,CssRain!!!
         </textarea>
-        <input type="button" onclick="alert( getPositionForTextArea( document.getElementById('zhangdanNum') ) )" value="Get
- Position">
- 输入位置:<input type="text" id="no2" size="1" /><input type="button" onclick="process('no2','zhangdanNum');" value="Set Position">
+        <input type="button" value="Get Position" id="getPosT">
+         输入位置:<input type="text" id="no3" size="1" /><input type="button" id="setPosT" value="Set Position">
     </body>
 </html>
-
+<script>
+    $('#getPosD').click(function(e){
+        $('#textbox').setCursorPosition();
+        $('#zwhangdanNum').setCursorPosition(0,true,!true);
+        $('#zwhangdanNum').setCursorPosition($('#no2').val());
+        var t=$('#zwhangdanNum').getSelection({trim:true});
+        console.log(t)
+        var k=$('#textbox').val();
+        $('#textbox').val('');
+        $('#textbox').focus().val(k);
+    });
+</script>
