@@ -1,21 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>div编辑器</title>
 <link rel="stylesheet" href="default.css" />
-<script type="text/javascript" src="jquery-1.6.min.js"></script>
+<script type="text/javascript" src="../../jquery.1.8.3.min.js"></script>
 <script type="text/javascript" src="xfdeditor.js"></script>
 <script type="text/javascript">
 $(function(){
-	$("#editor").CommentEditor({
-		onInput:function(event, status){
-			//status.txtLen  --输入内容的长度
-			//status,txt --得到输入内容
-			console.log(status.txt)
-		}
-	});
-
+    $("#editor").CommentEditor({
+        onInput:function(event, status){
+            //status.txtLen  --输入内容的长度
+            //status,txt --得到输入内容
+            console.log(status.txt)
+        }
+    });
 });
 
 </script>
@@ -23,122 +22,20 @@ $(function(){
 
 <body>
 <div style="width:630px;" id="editor">
-	<div class="xf-editor-wrapper">
-    	<div class="xf-editor-overlay" style="display:none;">
-        	<span class="close"></span>
+    <div class="xf-editor-wrapper">
+        <div class="xf-editor-overlay" style="display:none;">
+            <span class="close"></span>
             <div class="overlay-content"></div>
         </div>
         <div class="xf-editor-toolbar">
-        	<span class="image">图片</span>
+            <span class="image">图片</span>
             <label></label>
             <span class="smiley">表情</span>
         </div>
         <div class="xf-editor-editarea-wrapper" id="xf">
-        	<div class="xf-editor-editarea"></div>
+            <div class="xf-editor-editarea"></div>
         </div>
     </div>
 </div>
-<!--<button id="jkl">发送</button>-->
-<!--<div id="mulu">-->
-
-<!--</div>-->
-<script type="text/javascript">
-    $('#jkl').click(function(){
-        var t=$('.xf-editor-editarea').html();
-        $('#mulu').append(t);
-        $('.xf-editor-editarea').html('')
-        $('.xf-editor-editarea')[0].focus();
-    })
-</script>
-<style type="text/css">
-    #mulu{
-        width: 600px;
-        height: 300px;
-        border: 1px solid #007000;
-    }
-</style>
-
-<input id="txt_autorssfeed" type="text" />
-<input type="button" value="Upload" id="sub_autoupload" />
-<input type="file" size=1 id="sub_hidefileupload" class="file"/>
-<img src="" id="imgcontains" alt="">
-<style type="text/css">
-    #sub_autoupload
-    {
-        padding: 0;
-        margin-left: 8px;
-        cursor: pointer;
-        vertical-align: middle;
-    }
-     .file{
-        height: 34px;
-        width: 78px;
-         filter: alpha(opacity = 0);
-         -moz-opacity:0;
-         opacity: 0;
-        cursor: pointer;
-        left: -60px;
-        margin-top: -32px;
-        position: relative;
-    }
-</style>
-<script type="text/javascript">
-    function el(o){return document.getElementById(o);}
-    //obj为input file对象，id为空的img标签的ID值
-    function setPath(obj,id)
-    {
-        var picPath;
-        if(obj)
-        {
-            //ie
-            if (window.navigator.userAgent.indexOf("MSIE")>=1)
-            {
-                obj.select();
-                // IE下取得图片的本地路径
-                picPath=document.selection.createRange().text;
-
-            }
-            //firefox
-            else{
-                if(obj.files)
-                {
-                    // Firefox下取得的是图片的数据
-                    picPath=obj.files.item(0).mozFullPath;
-                    //http://www.jsmix.com/blog/html5/file-reader.html  火狐也许这是最好的解决办法了
-                }
-                picPath= 'file:///'+obj.value;
-            }
-            //picPath= obj.value;
-            getFileSize(picPath)
-        }
-        el(id).src=picPath;
-    }
-    var t='ffff';
-    el("sub_hidefileupload").onchange=function(){
-        el("imgcontains").style.display="block";//imgcontains，即空的img标签的ID
-        setPath(this,"imgcontains");
-    }
-</script>
-<script type="text/javascript">
-
-    function getFileSize(filePath)
-    {
-        var image=new Image();
-        image.src=filePath;
-        alert(image.fileSize);
-    }
-
-//    function getFileSize(fileObj)
-//    {
-//        var image=new Image();
-//        image.src=fileObj.value;
-//        var size = image.fileSize || fileObj.files[0].fileSize;
-//        if(size > 100000){
-//            alert(size);
-//        }
-//
-//    }
-</script>
-
 </body>
 </html>

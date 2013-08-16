@@ -1,4 +1,22 @@
-// jquery-form 插件中的难点:
+/*
+     上传渐进方案:  http://kb.cnblogs.com/page/153741/
+     iframe上传: 上传中最难但针对跨域上传 最有效的一个方法 同时也是 jquery-form 插件中的难点:
+     关于获取文件路径一个小注意点:
+            js 取得的是图片的数据 不建议使用FireFox
+            if(IE){
+                obj.select();
+                picPath=document.selection.createRange().text;
+            }else if(FireFox){
+                if(obj.files){
+                    // Firefox下
+                    var reader = new FileReader();
+                    picPath=obj.files.item(0).mozFullPath;  // mozFullPath 需要特殊权限  见数字签名-http://tianmoboping.blog.163.com/blog/static/1573953220075279330978/
+                }
+                picPath= 'file:///'+obj.value;
+            }
+*/
+
+// --- iframe上传   http://malsup.com/jquery/form/#download
 var fileUploadIframe=function (a) {
         var form = $form[0], el, i, s, g, id, $io, io, xhr, sub, n, timedOut, timeoutHandle,
             deferred = $.Deferred();
@@ -413,7 +431,8 @@ var fileUploadIframe=function (a) {
         return deferred;
     };
 
-//我个人在跨欲 做的上传 原理同上:  --- http://www.58lou.com/separticle.php?artid=180
+    //我个人在跨欲 做的上传 原理同上:
+    //解决domain无法访问--- http://www.58lou.com/separticle.php?artid=180
 /* 
 ifrane 操作   --  http://www.58lou.com/separticle.php?artid=179
 chorme:使用 ownerDocument  _iframe.contentWindow.document? _iframe.contentWindow.document.body : _iframe.ownerDocument.body; 
@@ -482,6 +501,37 @@ var timeid = setInterval(function() {
     }
 
 }, 500);
+
+// 图片预览
+if (typeof FileReader === 'undefined') {
+    input.setAttribute('disabled', 'disabled');
+} else {
+    input.addEventListener('change', readFile, false);
+}
+
+function readFile() {
+
+    var file = this.files[0];
+
+    if (!/image\/\w+/.test(file.type)) {
+
+        alert("请确保文件为图像类型");
+
+        return false;
+
+    }
+
+    var reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = function(e) {
+
+        result.innerHTML = '<img src="' + this.result + '" alt=""/>'
+
+    }
+
+}
 
 // 验证插件
 /*

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <title>JavaScript 获取/设置光标位置,兼容Input&&TextArea。</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
@@ -103,8 +103,8 @@
         输入位置:<input type="text" id="no1" size="1" /><input type="button" id="setPos" value="Set Position">
 
         <div class="title" id="zwhangdanNum" contenteditable=true>
-            <span id="hangdanNum">fdk<b>bbbb</b>fjdlskfjkl</span>
-            测试nodeType层多行文本框<b>fdf</b>
+             begin<span id="hangdanNum">fdk<b>bbbb</b>&nbsp;&nbsp;fjdlskfjkl</span>
+            测                    试nodeType层多行文本框<b>fdf</b>
         </div>
 
         <input type="button" value="Get Position" id="getPosD">
@@ -115,17 +115,16 @@
         </textarea>
         <input type="button" value="Get Position" id="getPosT">
          输入位置:<input type="text" id="no3" size="1" /><input type="button" id="setPosT" value="Set Position">
+
+         <br>
+         <div>ffffffffff</div>
+         <div> ffffffffff</div>
     </body>
 </html>
 <script>
+    var div=$('#zwhangdanNum')[0],
+        str=div.innerHTML;
     $('#getPosD').click(function(e){
-        $('#textbox').setCursorPosition();
-        $('#zwhangdanNum').setCursorPosition(0,true,!true);
-        $('#zwhangdanNum').setCursorPosition($('#no2').val());
-        var t=$('#zwhangdanNum').getSelection({trim:true});
-        console.log(t)
-        var k=$('#textbox').val();
-        $('#textbox').val('');
-        $('#textbox').focus().val(k);
+        $('#zwhangdanNum').replaceSelection('1111');
     });
 </script>

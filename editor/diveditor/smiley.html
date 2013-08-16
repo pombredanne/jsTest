@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html >
+<html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>表情</title>
-<script type="text/javascript" src="jquery-1.6.min.js"></script>
+<script type="text/javascript" src="../../jquery.1.8.3.min.js"></script>
 <style type="text/css">
 *{margin:0px; padding:0px;}
 ul li{list-style:none;}
@@ -12,18 +12,18 @@ ul li{list-style:none;}
 .tab ul li{float:left;margin-right:5px;width:40px;text-align:center; cursor:pointer;}
 .tab-focus{background-color:#E8E8FD;}
 .df{
-	border-right:1px solid #999;
-	border-bottom:1px solid #999;
-	margin:0 auto;
-	font-size:12px;
+    border-right:1px solid #999;
+    border-bottom:1px solid #999;
+    margin:0 auto;
+    font-size:12px;
 }
 .df td{
-	width:30px;
-	height:30px;
-	border-left:1px solid #999;
-	border-top:1px solid #999;
-	text-align:center;
-	vertical-align:middle;
+    width:30px;
+    height:30px;
+    border-left:1px solid #999;
+    border-top:1px solid #999;
+    text-align:center;
+    vertical-align:middle;
 }
 .img-on{background-color:#E8E8FD; cursor:pointer;}
 
@@ -31,9 +31,9 @@ ul li{list-style:none;}
 </head>
 
 <body style="">
-	<div class="tab">
-    	<ul>
-        	<li class="tab-focus">默认</li>
+    <div class="tab">
+        <ul>
+            <li class="tab-focus">默认</li>
         </ul>
     </div>
     <div id="tab0" style="display:block; overflow:auto; height:180px;">
@@ -169,15 +169,15 @@ ul li{list-style:none;}
 <script type="text/javascript">
 $(".df tr td").hover(function(){$(this).addClass("img-on");},function(){$(this).removeClass("img-on");});
 $(".df img").click(function(){
-	var imgUrl=$(this).attr("src");
-	var s=location.search;
-	var targetid='';
-	if(s!=''){
-		s=s.substring(1);
-		var arr=s.split("=");
-		targetid=arr[1];
-	}
-	self.parent.parentInsertFace(targetid,imgUrl);
+    var imgUrl=$(this).attr("src");
+    var s=location.search;
+    var targetid='';
+    if(s!=''){
+        s=s.substring(1);
+        var arr=s.split("=");
+        targetid=arr[1];
+    }
+    self.parent.parentInsertFace(targetid,imgUrl);
 });
 </script>
 </body>

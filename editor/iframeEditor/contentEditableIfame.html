@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <title> 可编辑 iframe </title>
+        <meta charset="utf-8"/>
+        <script type="text/javascript" src="../../jquery.1.8.3.min.js"></script>
+    </head>
+
+    <body>
+        <p><input type="button" id="bBtn" value="B" style="font-weight:bold" onclick="setBold();"></p>
+        <p><iframe id="editor" width="600px" height="400px" style="border:solid 1px;"></iframe ></p>
+         <script>
+            //初始化编辑器
+            function init() {
+             /*
+                【contentDocument】
+
+                W3C的标准告诉我们，可以通过Dom对象的contentDocument属性来返回文档对象。
+                doc= document.getElementById('J_mainframe' ).contentDocument
+                IE6，IE7都不支持，IE8开始支持,需要如此访问 document.frames['J_mainframe'].document;
+
+                【contentWindow】
+                contentWindow属性，这是个只读属性，返回指定的iframe的窗口对象。
+                它虽然不是标准的一部分，但各个主流浏览器都支持。
+            */
+               var ifr = document.getElementById("editor"),
+                    doc = ifr.contentDocument || ifr.contentWindow.document;
+                doc.designMode = "on";
+                doc.contentEditable = true;
+                doc.write('<html><head><style>body{margin:3px; word-wrap:break-word; word-break: break-all; }</style></head><body>GoodNessEditor</body></html>');
+                console.log(doc.body.innerHTML);
+            }
+            //设置选定的文本为粗体/正常
+            function setBold() {
+                var win = document.getElementById("editor").contentWindow;
+                win.document.execCommand("Bold", false, null);
+                win.focus();
+            }
+            init();
+            function add(dom,text){
+                 var win=document.getElementById("editor").contentWindow;
+                 var selection = win.getSelection ? win.getSelection() : document.selection,
+                     range = selection.createRange ? selection.createRange() : selection.getRangeAt(0);
+                 if(win.getSelection) { //W3C
+                     try{
+                         dom.focus();
+                     }catch(e){
+                         // $(dom).focus();
+                     }
+                     range.collapse(false); //将插入点移动到当前范围的开始或结尾。
+                     var hasR = range.createContextualFragment(text);
+                     var hasR_lastChild = hasR.lastChild;
+                     while(hasR_lastChild && hasR_lastChild.nodeName.toLowerCase() == "br" && hasR_lastChild.previousSibling && hasR_lastChild.previousSibling.nodeName.toLowerCase() == "br") {
+                         var dom = hasR_lastChild;
+                         hasR_lastChild = hasR_lastChild.previousSibling;
+                         hasR.removeChild(dom);
+                     }
+                     range.insertNode(hasR);
+                     if(hasR_lastChild) {
+                         range.setEndAfter(hasR_lastChild);
+                         range.setStartAfter(hasR_lastChild);
+                     }
+                 }else{
+                     dom.focus();
+                     range.pasteHTML(text);
+                     range.collapse(false);
+                     range.select();
+                 }
+                 selection.removeAllRanges();
+                 selection.addRange(range);
+                 range.detach&&range.detach();
+                 range=null;
+             }
+
+             $('#bBtn').click(function(){
+                 add($('#editor')[0],'<img src="http://bbsimg.gamersky.com/month_0908/0908082113867fe4ba3ff04c3a.jpg"/>');     //测试 光标插入
+             });
+        </script>
+    </body>
+</html>
