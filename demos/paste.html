@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="../jquery.1.8.3.min.js"></script>
-  <meta charset=utf-8 />
-  <title>复制事件</title>
+    <script src="../jquery.1.8.3.min.js"></script>
+    <meta charset=utf-8 />
+    <title>复制事件</title>
 </head>
 <body>
 <style>
-    /*  div 重叠: http://www.divcss5.com/shili/s587.shtml */
+        /*  div 重叠: http://www.divcss5.com/shili/s587.shtml */
     #divTest {
         cursor: pointer;
         display: block;
@@ -30,50 +30,50 @@
         border: 1px solid ;
     }
 </style>
-  <!-- 可以将可编辑div透明度设置为0 -->
-  <input type="text" id="m3ent">  
-  <div id="divTest" contenteditable='true'>fdfd</div>
-  <div id="click">点击我</div>
-  <div id="cache" style="display:none;"></div>
+<!-- 可以将可编辑div透明度设置为0 -->
+<input type="text" id="m3ent">
+<div id="divTest" contenteditable='true'>fdfd</div>
+<div id="click">点击我</div>
+<div id="cache" style="display:none;"></div>
 </body>
-  <script>
+<script>
+    /*
+     复制图片   http://codebits.glennjones.net/copypaste/pasteimagedata.htm
+     另一种实现 不支持ie  暂时发现非chrome是使用 $('[contenteditable]') div#upload-global-FF-paste-box  跟我想的一样 --  http://imgur.com/gallery
+     非chrome中 对于document.body 绑定paste事件 只会在input contenteditable中起作用（顺序是先paste 再 默认的input事件）  而 chrome 在页面任意处都管用
+     */
+    document.body.onpaste = function(e) {
+        console.log(e)
+        var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有  items目前只支持chrome
+        /*
+            对于ie ff 可以尝试使用 可编辑div来模拟实现
+         */
+        for (var i = 0; i < items.length; ++i) {
+            var item = e.clipboardData.items[i];
+            if (items[i].kind == 'file') {
+                var fileReader = new FileReader();
+                fileReader.onloadend = function () {
+                    var d = this.result.substr( this.result.indexOf(',')+1);
+                    var img = document.createElement("img");
+                    img.src= "data:image/jpeg;base64,"+d;
+                    document.body.appendChild(img);
+                };
+                fileReader.readAsDataURL(item.getAsFile());
+                break;
+            }
+        }
+    };
 
- // 复制图片   http://codebits.glennjones.net/copypaste/pasteimagedata.htm    
- // 另一种实现 暂未发现方法原理  暂时发现是使用 $('[contenteditable]') div#upload-global-FF-paste-box  跟我想的一样 --  http://imgur.com/gallery 
+    $('#click').click(function(){
+        $('#divTest')[0].focus();
+        $('#divTest').html('');
+    });
 
- document.body.onpaste = function(e) { 
-      console.log(e)
-      var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有  items目前只支持chrome
-      /*
-        对于ie10+ ff 可以尝试使用 可编辑div来模拟实现
-      */
-      for (var i = 0; i < items.length; ++i) {
-        debugger
-          var item = e.clipboardData.items[i];
-          if (items[i].kind == 'file') {
-              var fileReader = new FileReader(); 
-              fileReader.onloadend = function () {
-                  var d = this.result.substr( this.result.indexOf(',')+1);
-                  var img = document.createElement("img");
-                  img.src= "data:image/jpeg;base64,"+d;
-                  document.body.appendChild(img);
-              };
-              fileReader.readAsDataURL(item.getAsFile());
-              break; 
-          }
-      }
-  };
-
-  $('#click').click(function(){
-  	 $('#divTest')[0].focus();
-  	 $('#divTest').html('');
-  });
-
-  $('#divTest').bind('click keyup keydown keypress',function(){
-  		$('#cache').html($('#divTest').html()); //在这里面判断是否为图片啊 是的话 取src 可以在这里将其利用web上传 或者 转换为imageDate
-  		setTimeout(function(){
-  			$('#divTest').html('');
-		},400);
-  });
+    $('#divTest').bind('click keyup keydown keypress',function(){
+        $('#cache').html($('#divTest').html()); //在这里面判断是否为图片啊 是的话 取src 可以在这里将其利用web上传 或者 转换为imageDate
+        setTimeout(function(){
+            $('#divTest').html('');
+        },400);
+    });
 </script>
 </html>
