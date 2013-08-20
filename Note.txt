@@ -1,42 +1,11 @@
-----------思想
-
-    Class方法----core.js
-        对其最大的感触就是 不错的继承 以及this之间的转换 很好的达到了jQuery的$.proxy的效果
-        要求:彻底掌握这种思想
-
-     大型项目命名规范
-        第一次使用命名空间,虽然感觉上有那么点不是真正的命名空间(即直接使用对象定义的).真正见识到大型项目的'复杂',也真正意识到老师说的--"真正的锻炼,真正的思想成熟,真正的良好的代  码结构,在你经历过一个优良的大型项目的时候".
-        要求:一定要掌握 大型项目的代码格式以及 整理思想
-
-----------拖动层
-
-    zIndex 界限的处理
-        zIndex
-            总结:最好将其设定一个全局变量或者封装在全局对象中
-            疑问:什麽时候将全局zIndex归0?   ----初步答案 隔断时间判断页面上是否有弹出层?0:"";  (zIndex自我感觉没有必要归0操作)
-
-         界限问题:
-            总结:document.body.clientWidth  获取页面可视的高度---ＦＦ不兼容(document.documentElement.clientHeight)
-                 获取ｄｉｖ的高度宽度Div.scrollHeight
-
-    释放焦点:
-        $(self).releaseCapture && $(self).releaseCapture(); //IE下释放焦点
-
-    规范拖动层基本标准
-            总结:跟黄哥一起讨论 总结如下:
-                1:要实现 拖动 内容div的分别实现(内容div不能拖动)
-                2:界限
-              3:zIndex
-                4:拖动点的位置设置(拖动的时候鼠标位置 是指在鼠标位置 还是指在拖动右上角)
 
 ----------回收
     回收:
         主要代码:  destroy-----ui.js
-         this[i] = undefined;//这种写法 不推荐
-         this[i] = null;// 推荐这种写法
          if (CollectGarbage) CollectGarbage(); ie回收
-          总结:
-          想了解一下:http://www.cnblogs.com/xiaohui108/archive/2011/08/31/2160488.html  仅限了解 深入的话就有点钻牛角尖啦
+         总结:
+             null和undefined的区别:
+                http://www.cnblogs.com/xiaohui108/archive/2011/08/31/2160488.html  仅限了解 深入的话就有点钻牛角尖啦
 
 ----------可编辑div操作
     http://hi.baidu.com/louve01/item/efb14e1add258f6b3f87cedb  -------------DIV(contenteditable="true")鼠标光标处插入图片
@@ -44,16 +13,10 @@
     http://www.jb51.net/article/31795.htm                      --------------兼容包括div
     http://hi.baidu.com/alimyself/item/0ce9d8f76e441dbe30c19939  ---------selection() range方法讲解
     当有焦点的时候,里面默认的<br>就取消了  没有焦点的时候 里面会自带一个<br>
-    目标:
-        把编译器搞定就OK
 
 ----------this.src $(this).src
-    获取图片src:
         this.src:获取Dom处理后的结构 比如:files://rambo/work/rambo.jpg
         this.getAttribute('src')===$(this).attr('src'): 获取属性上真是的结构   eg: ../work/rambo.jpg
-
-----------滚动到底部
-    document.getElementById('div1').scrollHeight
 
 ----------<img>浏览器中表现差异
     <img alt="fdfsd" src="faceimg/2.gif">   在火狐上如果这张图片不存在 那么就是空白 并不出现其他浏览器的那种默认找不到图片
@@ -63,6 +26,7 @@
     window.onbeforeunload=function(e){
             return '确定离开?'
     }
+
     $(document).keydown(function(e){
        if(e.keyCode===116||(e.keyCode===116&&e.ctrlKey)){    //116=F5键 ctrl+f5
            window.onbeforeunload=function(){};
@@ -74,18 +38,7 @@
       e.preventDefault();
     }
 
-    //检测鼠标是否在页面内
-    $(document).bind('click',function(event){
-        var height=$(window).height(),
-             width=$(window).width(),
-             mouseX=event.clientX,
-             mouseY=event.clientY;
-        if(!(0<mouseY&& mouseY<height && 0<mouseX&&mouseX< width)){
-             console.log('你们是没有能力点到我的 我是在窗体外面的')
-        }
-    })
-
-    //onbeforeunload触发条件
+    onbeforeunload触发条件
         http://www.cnblogs.com/meteoric_cry/archive/2012/08/21/2649104.html
          防止空a链接影响,并且不影响自定义事件(click)解决办法:
              1:
@@ -97,7 +50,7 @@
             });
             2:
             <a href="javascript:;" onclick='return false'>test</a>
-              =>ie8||正常浏览器 可以给a动态添加 onclick
+              >ie9||正常浏览器 可以给a动态添加 onclick
                    $('a').attr('onclick','return false')
             3:
             <a href='###'>test</a>
@@ -121,7 +74,7 @@
             <a>发动机就</a>
             <style>
                 a{
-                    cursor:pointer;/*去掉href 利用样式来模拟  ie8 ie7可以*/
+                    cursor:pointer;/*去掉href 利用样式来模拟 >ie6可以*/
                 }
             </style>
 
@@ -155,41 +108,11 @@
                 </script>
             </html>
          第2解决代码:
-                /*
-                    使用:
-                        toggle2(element, function(e) {
-                            alert(e.type)
-                            alert("这是回调函数一")
-                        }, function(e) {
-                            alert("切换到回调函数二")
-                        });
-                */
-                var toggle2 = function(el) {
-                        var fns = [].slice.call(arguments, 1),
-                            backup = fns.concat(); //相当于备份克隆一下
-                        addEvent(el, 'click', function(e) {
-                            if(!fns.length) {
-                                fns = backup.concat()
-                            }
-                            fns[0].call(this, e);
-                            fns.shift();
-                        });
-                };
-                function addEvent(element, type,handler){
-                            if (element.addEventListener){
-                                element.addEventListener(type, handler, false);
-                            } else if (element.attachEvent){
-                                element.attachEvent("on" + type, handler);
-                            } else {
-                                element["on" + type] = handler;
-                            }
-                }
+               使用demos/jQ-toggle.html 里的方法
 
 ------------IE BUG
     一:
         $('<div class="gouriie">') //不能用  必须闭合标签 才能使用
-    二:
-        class为关键字 不能使用class为变量名   eg:$('<div>').attr({class:'ui'}); 禁止使用这种方法
     三:
         可编辑div无法自动添加br标签
         解决办法:
@@ -204,11 +127,6 @@
         ie8下  聊天窗口丢失焦点事件
          解决办法:
             有时候html('')或者empty()这两个都不行的话,考虑html(' '); 具体为什么?还在探索中
-         附加bug:
-            当修正后竟然 连问题三 也解决了 这是百思不得其解啊!!!!!
-
-----------jquery append 原理
-    A.append(B);   将B剪切到A中(clone也是如此)   如果在for循环中使用  不考虑这一点的话 很可能造成 闭包 导致 B只在最后一个A中有 别的都没有
 
 ----------jquery获取元素小细节
     if (id==='keer3@163.com'){     //一个email
@@ -220,13 +138,6 @@
 ----------jquery hide意外
     $('div.box').hide(e);   //意外的惊喜 哈哈 效果为 slide上下缓慢卷动
 
-----------var 小细节
-    var b={};
-    var t='rambo',
-        age=19,
-        b=b||{},
-        b.k=b.k||{};/*这一行 错误的  因为b是一个Object 不能这样对Object的子属性进行分配*/
-
 -----------判断ie
     --http://blog.csdn.net/satans18/article/details/5502129
     var isIE=!!window.ActiveXObject,
@@ -234,18 +145,11 @@
         isIE8=isIE&&!!document.documentMode,
         isIE7=isIE&&!isIE6&&!isIE8;
 
-    然后是一个稍微短的js判断是否ie的方法：
-    2010年1月一位俄国人利用了IE与标准浏览器在处理数组的toString方法的差异，仅仅6bytes就完美完成了是否IE浏览器的检测：
     var var ie = 0
-    一个最短的js判断ie或非ie的代码，大小仅仅7bytes：
     var ie = !+'\v1';
-    2010年1月，一位俄国人利用了IE与标准浏览器在处理数组的toString方法的差异，仅6bytes就完美完成了是否IE浏览器的检测：
     var ie = !-[1,];
-
     var IE = eval('"v"=="\v"');
-    利用这些发现，我们可以使代码写的更短。如今检测是否为IE6其实可以写成：
     var ie6=!-[1,]&&!window.XMLHttpRequest;
-
 
     [注意----注意]  !-[-1,]  !+[1,]    !+"v1"   这些无法判断ie9,10 因此如果需要判断9,10不要使用它们
 
@@ -259,13 +163,12 @@
     一:,
      var tempEle = document.createElement("div");
      tempEle.innerHTML = str;   //yes
-
-      var tempEle = document.createElement("div").innerHTML = str;   //no
+     var tempEle = document.createElement("div").innerHTML = str;   //no
     二:
       <script type="text/javascript">
         function sub(){
-                   document.getElementById("textarea").innerHTML=editor.html();  //如果不写清楚 <script type="text/javascript">  则将会在IE中报无权限错误
-            }
+               document.getElementById("textarea").innerHTML=editor.html();  //如果不写清楚 <script type="text/javascript">  则将会在IE中报无权限错误
+        }
     </script>
 
 -----------mouseout mouseover mouseenter mouseleave
@@ -403,10 +306,6 @@
         结论3:就是，GET和POST方法的编码，用的是网页的编码<meta http-equiv="Content-Type" content="text/html;charset=xxxx">
         结论4:在Ajax调用中，IE总是采用GB2312编码（操作系统的默认编码），而Firefox总是采用utf-8编码。
 
------------unbind onclick
-unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert('eeee')">dfdfjksdfk</a>
-
-
 -----------IE高级安全测略
     在ie中的input file中,必须是鼠标点击才管用,否则会报无权限
 
@@ -460,22 +359,6 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
         $('#t1')[0].click();//火狐ie可以
     }
 
------------  div 跟着屏幕的滑动 而改变
-    <script language="JavaScript">
-        function scall(){
-            var layer1=document.getElementById("ShowBottom"),
-                documentElement=document.documentElement,
-                documentBody=document.body,
-                scrollTop=documentElement.scrollTop+documentBody.scrollTop, //主要兼容谷歌  documentBody.scrollTop
-                scrollLeft=documentElement.scrollLeft+documentBody.scrollLeft;
-
-            layer1.style.top=(scrollTop+(documentElement.clientHeight-layer1.offsetHeight)/4)+"px";
-            layer1.style.left=(scrollLeft+(documentElement.clientWidth-layer1.offsetWidth)/2+59.5)+"px";
-         }
-
-        window.onscroll=window.onresize=window.onload=scall;
-    </script>
-
 -----------  jquery jsonp跨域请求
     jsonp  jsonpCallback的区别:
         jsonp:传输地址上的参数名  默认  ?callback=jsonCallbacl
@@ -483,7 +366,6 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
         http://www.jb51.net/article/28502.htm   --摘自
 
      跨欲服务器上的设置:
-
         http://www.cnblogs.com/cfanseal/archive/2009/05/19/1460382.html          --简单讲解
 
 ----------- 添加 focus
@@ -501,19 +383,7 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
         $.data(DOM,'events')   $(DOM).data('events')
 
 ----------- trim方法
-    http://www.cnblogs.com/rubylouvre/archive/2009/09/18/1568794.html
-    网上说处理大数据使用此方法:
-        function trim(str){
-            str = str.replace(/^(\s|\u00A0)+/,'');
-            for(var i=str.length-1; i>=0; i--){
-                if(/\S/.test(str.charAt(i))){
-                    str = str.substring(0, i+1);
-                    break;
-                }
-            }
-            return str;
-        }
-    暂未测试  还使用正则trim
+    网上说处理大数据使用此方法:  http://www.cnblogs.com/rubylouvre/archive/2009/09/18/1568794.html
 
 -----------  releaseCapture setCapture 的作用 优势  [未搞明白 回头再来]
      if (self.setCapture) {
@@ -521,7 +391,6 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
      } else if (window.captureEvents) {
         window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
      }
-
 
      if ($(Domid)[0].releaseCapture) {
         $(Domid)[0].releaseCapture();
@@ -532,9 +401,8 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
      比较纳闷的是:
         我完全可以用document.mouseover   document.unbind('mouseover')来代替 但是加上这个有什麽好处呢?
 
------------  不会被刷新干掉的 window对象
-    //TODO  此方法仅使用于window自有属性
-    if(!window.name){
+-----------  不会因为uri改变而被干掉的 window.name
+    if(!window.name){   //此方法仅适用于window.name属性  因此可以用在跨域处理上 兼容all 浏览器
           alert("第一次开这个窗口！name值"+ window.name);
           window.name = 'lijia';
     }else{
@@ -555,90 +423,31 @@ unbind("click")   去不了元素自带的  onclick   <a href="" onclick="alert(
   -----------alert
    火狐中:
    1:
-     alert(); //空的alert  火狐中会报错
+     alert(); //FF: ''   other:undefined
    2:
      window.onunload=function(){
         alert(23);   //TODO  ff chrome 不能弹出alert    在卸载期间封锁。
      }
 
 -----------   火狐中 _moz resizing
-    img.setAttribute('contenteditable','false');
-    document.designMode = "on";
-    document.execCommand('enableObjectResizing', false, 'false');
-
------------  字符转换
-    function report(){
-        var str=document.getElementById("hidden").innerHTML;
-        str=str.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
-        document.getElementById("content_re").innerHTML=str
-    }
+    火狐中textarea可以自由拖动:http://www.w3schools.com/css3/css3_user_interface.asp
+    编译器中:http://www.frontendcodes.com/?p=185
+    在使用resize的时候, style="height:50px;resize: none;"   height:必须放到resize前面
+    style="height:50px;" style="resize: none;"    两个style的时候  只认  第一个
 
 -----------   javascript: 防止在新页面打开
-<a href="javascript:$('div.register_content').hide();void(0)">
-ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  认为是一段注释的没有结束
-
------------ resize: none
-        在使用resize的时候, style="height:50px;resize: none;"   height:必须放到resize前面
-        style="height:50px;" style="resize: none;"    两个style的时候  只认  第一个
+    <a href="javascript:$('div.register_content').hide();void(0)">   ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  认为是一段注释的没有结束
 
 ----------- document.write
- document.write('<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"><'+'\/script>')  //在//处自动添加添加前缀
-
- -----------   each
-    var _li,
-         onclick='fn';   //1 使用字符串拼接 onclic
-    for(var i = 0,length=result.length;i<length;i++){
-        _li+='<li class="province" val="'+result[i].val+'">'+result[i].name+'</li>';
-    }
-    $(self).append('<li class="province" val="">全部</li>',$(_li).each(function(){  //2 each连接 使用  ,
-        $(this).click(function(){
-            $("#div_government_fri").children().hide();
-        });
-   }));
+     document.write('<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"><'+'\/script>')  //在//处自动添加添加http前缀
 
 ----------- 解析json字符串
    1:jQuery.parseJSON
    2:var obj = (new Function("return " + json))();
    3:var objTEST=eval("("+strTEST+")");
-   4:var data = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u
-   \n\r\t]/.test(source.replace(/"(\\.|[^"\\])*"/g, '')))&& eval('(' + source
-   + ')');    // 安全的做法
+   4:var data = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u\n\r\t]/.test(source.replace(/"(\\.|[^"\\])*"/g, '')))&& eval('(' + source+ ')');    // 安全的做法
        --http://stackoverflow.com/questions/921374/how-do-i-convert-a-json-string-to-a-javascript-object-in-jquery
          http://www.cnblogs.com/lishenglyx/archive/2009/04/02/1427727.html
-
------------  addEventListener 注意事项:
-    1: 判断
-        if(window.addEventListener){
-
-        }else if(window.attachEvent){
-            // 这里有必要进行判断一下
-        }
-    2: 阻止默认事件
-        ps: onselectstart  -- http://www.58lou.com/separticle.php?artid=181
-
-        <div id="ftmp" onselectstart="return false">flondon</div>    // ok
-        <div id="tmp">flondon</div>
-        <script>
-          //ok 无兼容性
-         document.getElementById("tmp").onselectstart =function(){
-            return false;
-         };
-
-        if(document.addEventListener){
-            document.getElementById("tmp").addEventListener("selectstart",
-            function(evt){
-                // TODO 阻止默认事件 return false 没作用
-                evt.preventDefault();
-                return false;
-            }, true);
-        }else if(window.attachEvent){
-            document.getElementById("tmp").attachEvent("onselectstart",
-            function(){
-            // ie下 只需要return false 即可
-            //window.event.returnValue= false
-            return false;});
-         }
-        </script>
 
 ----------   jquery 插件缺憾 以及 碎点知识补足
     1: jquery 无法给对象添加 私有属性
@@ -675,13 +484,12 @@ ps:   <!-- fjdkfjlj  --!>   谷歌 火狐中 正确注释    但是  ie8以下  
             判断方法:  见(1)
 
 ---------    javascript Date对象的特殊点
-    1:new Date('2013-03-4');   // 非ie浏览器无法正常换算成Date对象
+    1:new Date('2013-03-4');   // 非chrome浏览器[sarfa opera未测试]无法正常换算成Date对象
        解决办法:
         function strToData(a){
             //return new Date(a.replace(/-/g,"/"));  //适用于
             return new Date(Date.parse(a.replace(/-/g,"/")));  //  效果同上 只为更严谨来
         }
-        或者date文件夹中 字符转换
     2:new Date(’2013-03-01′)不一定等于new Date(’2013/03/01′)        ----http://bbs.9ria.com/thread-175853-1-1.html
 
 ---------    css强制换行

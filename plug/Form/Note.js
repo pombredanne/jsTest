@@ -509,28 +509,16 @@ if (typeof FileReader === 'undefined') {
     input.addEventListener('change', readFile, false);
 }
 
-function readFile() {
-
-    var file = this.files[0];
-
+function readFile(file) {
+    file = file||this.files[0];
     if (!/image\/\w+/.test(file.type)) {
-
-        alert("请确保文件为图像类型");
-
-        return false;
-
+       throw "请确保文件为图像类型";
     }
-
     var reader = new FileReader();
-
     reader.readAsDataURL(file);
-
     reader.onload = function(e) {
-
         result.innerHTML = '<img src="' + this.result + '" alt=""/>'
-
     }
-
 }
 
 // 验证插件

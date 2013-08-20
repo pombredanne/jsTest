@@ -49,30 +49,25 @@ $.fn.extend({
         for(var i=0,length=argument.length;i<length;i++){
             this.removeAttr(argument[i])
         }
-        return this        
+        return this
     }
 });
 
 
    $.extend({
-        escapeHtmlEntities:function (str) { //> 转换为 &gb
-        var tempEle = document.createElement("textarea");
-        tempText = document.createTextNode(str);
-        tempEle.appendChild(tempText);
-        var result = tempEle.innerHTML;
-        return result;
-        /*var t=$('<textarea>').html(str);
-         return t.html()*/
-    },
-    unescapeHtmlEntities:function(str){
-        var tempEle = document.createElement("div");
-        tempEle.innerHTML = str;
-        //return tempEle.childNodes[0].nodeValue;
-        return tempEle.innerText||tempEle.textContent;//谷歌 textContent innerText都支持
-        /*var t=$('<div>').html(str);
-         return t.text()
-         */
-    }
+        escapeHtmlEntities:function (str) { //> 转换为 &gb  TODO 另外见 demos/Str.proto.js String.prototype.stripHTML方法
+            var tempEle = document.createElement("textarea");
+            tempText = document.createTextNode(str);
+            tempEle.appendChild(tempText);
+            var result = tempEle.innerHTML;
+            return result;
+        },
+        unescapeHtmlEntities:function(str){
+            var tempEle = document.createElement("div");
+            tempEle.innerHTML = str;
+            //return tempEle.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
+            return tempEle.textContent||tempEle.innerText;
+        }
    });
 
    function clearConObj(){

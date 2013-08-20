@@ -1,80 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <script src="../jquery.1.8.3.min.js"></script>
   <meta charset=utf-8 />
   <title>复制事件</title>
 </head>
 <body>
+<style>
+    /*  div 重叠: http://www.divcss5.com/shili/s587.shtml */
+    #ff {
+        cursor: pointer;
+        display: block;
+        opacity: 0.9;
+        background: none repeat scroll 0 0 #444442;
+        height: 100%;
+        position: fixed;
+        padding: 0;
+        margin: 0;
+        top:0;
+        left:0;
+        width: 100%;
+    }
+    #fff{
+        z-index: 19999;
+        position: fixed;
+        color: red;
+        width: 100px;
+        height: 100px;
+        border: 1px solid ;
+    }
+</style>
   <input type="text" id="m3ent">  
-  <div contentEditable='true' id="ment">fsdfsd</div>
+  <div id="divTest" contenteditable='true'>fdfd</div>
+  <div id="click">点击我</div>
+  <div id="cache" style="display:none;"></div>
 </body>
   <script>
-  function addLoadEvent(func) {
-    var oldonload = window.onload;
-    if (typeof oldonload != "function") {
-      window.onload = func;
-    }else {
-      window.onload = function() { //原理很简单 利用多次修改 onload 函数 使其最后都将其添加进去   这个原理 同样使用于 document window的其他方法 document.onmouseove
-        oldonload();
-        func();
+
+ // 复制图片   http://codebits.glennjones.net/copypaste/pasteimagedata.htm    
+ // 另一种实现 暂未发现方法原理(ie下不行) --  http://imgur.com/gallery 
+
+ document.body.onpaste = function(e) { 
+      console.log(e)
+      var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有  items目前只支持chrome
+      /*
+        对于ie10+ ff 可以尝试使用 可编辑div来模拟实现
+      */
+      for (var i = 0; i < items.length; ++i) {
+        debugger
+          var item = e.clipboardData.items[i];
+          if (items[i].kind == 'file') {
+              var fileReader = new FileReader(); 
+              fileReader.onloadend = function () {
+                  var d = this.result.substr( this.result.indexOf(',')+1);
+                  var img = document.createElement("img");
+                  img.src= "data:image/jpeg;base64,"+d;
+                  document.body.appendChild(img);
+              };
+              fileReader.readAsDataURL(item.getAsFile());
+              break; 
+          }
       }
-    }
-  }
+  };
 
-  //原生js 实现函数
+  $('#click').click(function(){
+  	 $('#divTest')[0].focus();
+  	 $('#divTest').html('');
+  });
 
-/*document.getElementById('ment').onpaste=function(event,value){
-    console.dir(event)
-    console.log(value)
-    console.log(argument)
-  }
-
-  function fn(event){
-    console.log(event)
-  }
-  document.addEventListener('paste',fn,false);
- */
-
- 
- // jquery 扩展paste方法
-
-   $.fn.pasteEvents = function( delay ) {
-     if (delay == undefined) delay = 20;
-     return $(this).each(function() {
-         var $el = $(this);
-         $el.bind("paste", function(event) {
-           console.log(event.clipboardData)
-             //$el.trigger("prepaste");
-             setTimeout(function() { $el.trigger("postpaste"); }, delay);
-         });
-     });
-   };
-
-  // $("#ment").on("postpaste", function(event) {
-  //    // console.log(event);  //TODO  这里返回的event 跟上面原生js返回的event并不一样 因此不建议使用(至少在用到监听img的时候 不要使用) 以后使用jquery 要注意这一点啊
-  // }).pasteEvents();
-
-
-  // 上传图片   http://www.lzlu.com/blog/?p=810    另一种实现 暂未发现方法原理(ie下不行) --  http://imgur.com/gallery           http://nio127.blogspot.nl/2010/10/domcopy-paste-oncopy-onpaste-event.html
-  // document.body.onpaste = function(e) {   //因为安全原因，浏览器为我们提供了onpaste事件，读取剪贴板数据仅能在该事件发生时在事件处理程序中进行。
-  //     console.log(e)
-  //     var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有
-  //     for (var i = 0; i < items.length; ++i) {
-  //         var item = e.clipboardData.items[i];
-  //         if (items[i].kind == 'file' && items[i].type == 'image/png') {
-  //             var fileReader = new FileReader();   //FileReader可以参考API
-  //             fileReader.onloadend = function () {    //readAsDataURL是一个异步过程，这里提供回调方法
-  //                 var d = this.result.substr( this.result.indexOf(',')+1);
-  //                 var img = document.createElement("img");
-  //                 img.src= "data:image/jpeg;base64,"+d;
-  //                 document.body.appendChild(img);
-  //             };
-  //             fileReader.readAsDataURL(item.getAsFile());   //DataURL，不清楚了可以去看下资料
-  //             break; 
-  //             // Just get one
-  //         }
-  //     }
-  // };
+  $('#divTest').bind('click keyup keydown keypress',function(){
+  		$('#cache').html($('#divTest').html()); //在这里面判断是否为图片啊 是的话 取src 可以在这里将其利用web上传 或者 转换为imageDate
+  		setTimeout(function(){
+  			$('#divTest').html('');
+		},400);
+  });
 </script>
 </html>

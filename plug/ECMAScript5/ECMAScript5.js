@@ -1,6 +1,13 @@
 (function(undefined){
 
         /*
+             修改自:https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js
+             ECMAScript 5.0 兼容图:http://kangax.github.io/es5-compat-table/
+             ECMAScript 5.0 介绍网站:http://es5.github.io/
+             让ie兼容html5标签的js库:https://github.com/aFarkas/html5shiv
+        */
+
+        /*
             Function.bind(element,argument)  element: 事件对象, argument:函数所用参数(可选)
             eg:
             eleBtn.onclick = function(color) {
@@ -139,7 +146,7 @@
                 var self = toObject(this),
                     length = self.length >>> 0,
                     thisp = arguments[1];
-                
+
                 if (_toString(fun) != "[object Function]") {
                     throw new TypeError(fun + " is not a function");
                 }
@@ -481,9 +488,6 @@
             };
         }
 
-        /*
-         vare
-         */
         if (!Object.defineProperties) {
             Object.defineProperties = function defineProperties(object, properties) {
                 for (var property in properties) {
@@ -546,7 +550,7 @@
                 return false;
             };
         }
-        
+
         if (!Object.isFrozen) {
             Object.isFrozen = function isFrozen(object) {
                 return false;
@@ -626,7 +630,7 @@
                 if (!isFinite(this)) {
                     throw new RangeError("Date.prototype.toISOString called on non-finite value.");
                 }
-                
+
                 result = [this.getUTCMonth() + 1, this.getUTCDate(),
                     this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds()];
                 year = this.getUTCFullYear();
@@ -766,7 +770,6 @@
             };
         }
 
-        //
         // Util
 
         var toInteger = function (n) {
