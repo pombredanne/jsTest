@@ -8,7 +8,7 @@
 <body>
 <style>
     /*  div 重叠: http://www.divcss5.com/shili/s587.shtml */
-    #ff {
+    #divTest {
         cursor: pointer;
         display: block;
         opacity: 0.9;
@@ -21,7 +21,7 @@
         left:0;
         width: 100%;
     }
-    #fff{
+    #click{
         z-index: 19999;
         position: fixed;
         color: red;
@@ -30,6 +30,7 @@
         border: 1px solid ;
     }
 </style>
+  <!-- 可以将可编辑div透明度设置为0 -->
   <input type="text" id="m3ent">  
   <div id="divTest" contenteditable='true'>fdfd</div>
   <div id="click">点击我</div>
@@ -38,7 +39,7 @@
   <script>
 
  // 复制图片   http://codebits.glennjones.net/copypaste/pasteimagedata.htm    
- // 另一种实现 暂未发现方法原理(ie下不行) --  http://imgur.com/gallery 
+ // 另一种实现 暂未发现方法原理  暂时发现是使用 $('[contenteditable]') div#upload-global-FF-paste-box  跟我想的一样 --  http://imgur.com/gallery 
 
  document.body.onpaste = function(e) { 
       console.log(e)
