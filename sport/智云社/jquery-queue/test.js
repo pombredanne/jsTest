@@ -60,7 +60,7 @@ $(function() {
             if (_index !== '531px') {
                 Fun.reverse();
             }
-           
+
             $('#div1').queue("myAnimation", Fun);
             aniCB();
             $('.show').removeClass('show');
@@ -119,7 +119,7 @@ $(function() {
 
         //这时可以取到存入的callbacks
         var k=$.queue(el, 'xm', arr);  // k:[cb1,cb2]
-        
+
          //取出来 开始用他
          $.dequeue(el, 'mx')
 
@@ -135,13 +135,13 @@ $(function() {
 
     promise 方法在queue上的应用
          function ff1() {
-             alert(1)
+            alert(1)
          }
          function ff2() {
-             alert(2)
+            alert(2)
          }
          function succ() {
-             alert('done')
+            alert('done')
          }
          $body = $('body')
          $body.queue('mx', ff1);
@@ -151,7 +151,7 @@ $(function() {
          promise.done(succ);
           
          setInterval(function() {
-             $body.dequeue('mx') // 先弹出1,2，最后是"done"
+            $body.dequeue('mx') // 先弹出1,2，最后是"done"
          }, 1500)
 
 */

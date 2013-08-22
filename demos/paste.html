@@ -9,9 +9,9 @@
 <style>
         /*  div 重叠: http://www.divcss5.com/shili/s587.shtml */
     #divTest {
+        /*opacity: 0;
         cursor: pointer;
         display: block;
-        opacity: 0.9;
         background: none repeat scroll 0 0 #444442;
         height: 100%;
         position: fixed;
@@ -19,7 +19,7 @@
         margin: 0;
         top:0;
         left:0;
-        width: 100%;
+        width: 100%;*/
     }
     #click{
         z-index: 19999;
@@ -31,49 +31,41 @@
     }
 </style>
 <!-- 可以将可编辑div透明度设置为0 -->
-<input type="text" id="m3ent">
-<div id="divTest" contenteditable='true'>fdfd</div>
-<div id="click">点击我</div>
-<div id="cache" style="display:none;"></div>
+<div id="divTest" contenteditable='true'>可编辑div</div>
 </body>
 <script>
     /*
-     复制图片   http://codebits.glennjones.net/copypaste/pasteimagedata.htm
-     另一种实现 不支持ie  暂时发现非chrome是使用 $('[contenteditable]') div#upload-global-FF-paste-box  跟我想的一样 --  http://imgur.com/gallery
-     非chrome中 对于document.body 绑定paste事件 只会在input contenteditable中起作用（顺序是先paste 再 默认的input事件）  而 chrome 在页面任意处都管用
+         复制图片   http://codebits.glennjones.net/copypaste/pasteimagedata.htm
+         另一种实现 不支持ie  暂时发现非chrome是使用 $('[contenteditable]') div#upload-global-FF-paste-box  跟我想的一样 --  http://imgur.com/gallery
+         对于document.body 顺序是先paste 再 默认的input事件 
+         chrome:可以复制qq截图  就是因为他支持 e.clipboardData.items
      */
     document.body.onpaste = function(e) {
-        console.log(e)
-        var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有  items目前只支持chrome
-        /*
-            对于ie ff 可以尝试使用 可编辑div来模拟实现
-         */
-        for (var i = 0; i < items.length; ++i) {
-            var item = e.clipboardData.items[i];
-            if (items[i].kind == 'file') {
-                var fileReader = new FileReader();
-                fileReader.onloadend = function () {
-                    var d = this.result.substr( this.result.indexOf(',')+1);
-                    var img = document.createElement("img");
-                    img.src= "data:image/jpeg;base64,"+d;
-                    document.body.appendChild(img);
-                };
-                fileReader.readAsDataURL(item.getAsFile());
-                break;
-            }
-        }
+           if(e.clipboardData.items){  //chrome
+                var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有  items目前只支持chrome
+                for (var i = 0; i < items.length; ++i) {
+                    var item = e.clipboardData.items[i];
+                    if (items[i].kind == 'file') {
+                        var fileReader = new FileReader();
+                        fileReader.onloadend = function () {
+                            var d = this.result.substr( this.result.indexOf(',')+1);
+                            var img = document.createElement("img");
+                            img.src= "data:image/jpeg;base64,"+d;
+                            document.body.appendChild(img);
+                        };
+                        fileReader.readAsDataURL(item.getAsFile());
+                        break;
+                    }
+                }
+           }else{
+                $('#divTest').focus();
+                setTimeout(function(){
+                    var img=$('#divTest').find('img');
+                    img=img.length?img[0].src:'';
+                    $('#divTest').html('');
+                    //use img'src do sometings
+                },800);  
+           }
     };
-
-    $('#click').click(function(){
-        $('#divTest')[0].focus();
-        $('#divTest').html('');
-    });
-
-    $('#divTest').bind('click keyup keydown keypress',function(){
-        $('#cache').html($('#divTest').html()); //在这里面判断是否为图片啊 是的话 取src 可以在这里将其利用web上传 或者 转换为imageDate
-        setTimeout(function(){
-            $('#divTest').html('');
-        },400);
-    });
 </script>
 </html>

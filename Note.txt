@@ -432,7 +432,7 @@
 -----------   火狐中 _moz resizing
     火狐中textarea可以自由拖动:http://www.w3schools.com/css3/css3_user_interface.asp
     编译器中:http://www.frontendcodes.com/?p=185
-    在使用resize的时候, style="height:50px;resize: none;"   height:必须放到resize前面
+    在使用resize的时候, style="resize: none;height:50px;"   height:必须放到resize前面
     style="height:50px;" style="resize: none;"    两个style的时候  只认  第一个
 
 -----------   javascript: 防止在新页面打开
@@ -580,3 +580,9 @@
 
                      // 顺便说以下 new function    这简直就是一个错误 禁止使用 --http://www.jb51.net/article/13895.htm
              }
+
+---------  判断来源网站
+      window.document.referrer   --http://www.zhihu.com/question/21116446
+
+--------   同步 异步原理
+    http://www.cnblogs.com/ustbwuyi/archive/2007/02/08/645061.html   ----水管说

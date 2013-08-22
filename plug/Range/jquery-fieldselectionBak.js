@@ -27,7 +27,7 @@
                 }
             };
 
-            return ((dom.selectionStart && function() { // dom 3.0
+            return (('selectionStart' in dom && function() { // dom 3.0
                 var length = dom.selectionEnd - dom.selectionStart,
                     first = opts.trim ? getFirstStr(dom): 0;
                 return {
@@ -162,7 +162,7 @@
             }) ||
 
             /* exploder */
-            (document.selection && function() {
+            ('selection' in document && function() {
                 dom.focus();
                 document.selection.createRange().text = text;
                 return this;

@@ -139,6 +139,9 @@ sudo nohup mongod &
     dp: 参照体为a
     do: 参照体为b
 
+13: vim javascript 格式化插件
+    ,gg
+
 history
     history | grep cd
     history -c   --删除
