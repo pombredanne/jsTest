@@ -89,9 +89,199 @@
         .rate-list li.last, .rate-list li:last-child {
             border-bottom: medium none;
         }
+
+
+
+        .top-block{
+            float: left;
+        }
+        a {
+            color: #2965B1;
+            text-decoration: none;
+        }
+        .bigDiv{
+            float: right;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 5px 5px 0 0;/*圆角*/
+            width: 200px;
+        }
+        .bigDiv h2 {
+            background-color: #F0F0F0;
+            padding-left: 10px;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;/*h2居中显示*/
+            margin: 0;/*清除h2自带的上浮动*/
+        }
+        .block-content {
+            margin: 0 10px 10px;/*top left&&right bottm*/
+        }
+        ul, li, ol {
+            list-style: none outside none;/*总体来讲是为了浏览器兼容 http://blog.sina.com.cn/s/blog_818a1e5b0100vjll.html*/
+            margin: 0;
+            padding: 0;/*清除元素自有的内浮动*/
+        }
+        .bigDiv li {
+            line-height: 30px;
+            text-align: right;/*从这个案例以及第一个 可以看出 对文本控制float效果 可以采用text-align(只控制他孩子里的文本)*/
+        }
+        .bigDiv .title-link {
+            width: 120px;
+            float: left;
+            text-align: left;/*控制他自己内部的文本方式*/
+            overflow: hidden;/*超出宽度后 如何处理*/
+            text-overflow: ellipsis;/*文本超出后的部分如何处理 elipsis:....*/
+            white-space: nowrap;/*超出限制宽度的文本 是否换行处理*/
+        }
+        span {
+            color: #999999;
+        }
+
+        img {
+            margin-right: 5px;
+            border: 0 none;
+            vertical-align: middle;/*图片相对文本的对齐方式*/
+        }
+
+
+        /*顶部*/
+        .border-box {
+            padding: 10px;/*设定内边距 以便显示的更为美观 上下留有缝隙*/
+            background-color: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 5px 5px 5px 5px;
+        }
+        .clearfix {
+            line-height: 30px;/*设置行高(不允许负数) 可以设置负数 自己认为在某些时候可以达到padding效果*/
+            text-align: right;/*文本对齐方式 right|left|center 在这里的作用 达到float：left效果*/
+        }
+        .clearfix h2 {
+            float: left;
+        }
+        h2{
+            font-size: 14px;
+            font-family: '微软雅黑';
+        }
+        h2{
+            margin: 0;/*据说这是一个习惯 具体页面效果：有时候上下空距会随着父类变大*/
+        }
+        .clearfix span a.active, .clearfix span a:hover {
+            background-color: #9AD2F6;
+            color: #FFFFFF;/*字体颜色*/
+        }
+        .clearfix span a {
+            color: #444444;
+            margin: 0 2px;/*margin：top left bottom right || margin:top&&bottom left&&right 页面效果：两个a标签之间的距离*/
+            padding: 2px 5px;/*控制每个a总内部的大小 */
+            /*
+                一群胖子在排队，队之间的距离就是margin  胖子腰围就是padding
+            */
+        }
+
+
+
+        .border-box {
+            padding: 10px;
+            width: 560px;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 5px 5px 5px 5px;
+            margin:10px auto;
+        }
+        .filter-form .tags-filter {
+            padding-left: 40px;
+        }
+        .tags-filter {
+            border-bottom: 1px dashed #E5E5E5;
+            line-height: 22px;
+            padding: 5px 0 5px 60px;
+        }
+        h1, h2, h3, h4, h5, h6, p, figure, form {
+            margin: 0;
+        }
+        .filter-form .tag-label:after {
+            border: medium none;
+        }
+        /*
+            TODO  这里还是不太完全明白 有时间在此搞定 在控制箭头边框那一部分 不明白
+        */
+        .tags-filter .tag-label:after {/*:after 伪元素在元素之后添加内容。   这里用来添加箭头*/
+            /*控制箭头边框 这点很重要 箭头的颜色来自这里*/
+            border-bottom: 4px solid #FFFFFF;
+            border-left: 4px solid #BDE4FF;
+            border-top: 4px solid #FFFFFF;
+            content: "";/*告诉浏览器往后面添加什么玩意*/
+            margin-top: -4px;/*控制整个箭头的上下位置*/
+            position: absolute;/*这是实现箭头效果的必须*/
+            /*控制箭头变化的方向*/
+            right: -4px;
+            top: 50%;/*控制在中间*/
+        }
+        .filter-form .tag-label {
+            background: none repeat scroll 0 0 transparent;
+            font-weight: bold;
+            margin-left: -40px;
+            margin-right: 0;
+        }
+        .tags-filter .tag-label {
+            background-color: #BDE4FF;
+            border-radius: 3px 3px 3px 3px;
+            display: inline;
+            float: left;
+            font-weight: normal;
+            margin-right: 15px;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        .filter-form .tags-filter span {
+            padding-left: 10px;
+        }
+        .filter-form .tags-filter span.active {
+            background-color: #9A0015;
+            color: #FFFFFF;
+            padding-left: 0px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
+    <div class="border-box">
+        <div class="clearfix">
+            <h2>生活</h2>
+              <span>
+                <a class="active" href="/apptype/1">全部</a>|
+                <a href="/apptype/1/twotype/101">日程</a>|
+                <a href="/apptype/1/twotype/102">购物</a>|
+                <a href="/apptype/1/twotype/103">天气</a>|
+                <a href="/apptype/1/twotype/104">旅游</a>|
+                <a href="/apptype/1/twotype/105">美食</a>|
+                <a href="/apptype/1/twotype/106">健康</a>|
+                <a href="/apptype/1/twotype/107">学习</a>
+              </span>
+        </div>
+    </div>
+    <br><br><br>
+    <form method="get" action="#" class="filter-form border-box">
+        <div class="tags-filter clearfix">
+            <strong class="tag-label">区域：</strong>
+            <p><span class="active">不限</span><span>海口（17）</span></p>
+        </div>
+        <div class="tags-filter clearfix">
+            <strong class="tag-label">月租：</strong><p>
+            <span>不限</span><span class="active">80-100万</span><span>100-120万</span><span>120-150万</span><span>150-200万</span><span>200-300万</span></p>
+        </div>
+        <div class="tags-filter clearfix">
+            <strong class="tag-label">户型：</strong><p>
+            <span>不限</span><span class="active">二居</span><span>三居</span><span>四居</span><span>五居</span></p>
+        </div>
+        <div class="tags-filter clearfix">
+            <strong class="tag-label">面积：</strong><p>
+            <span>不限</span><span>70-90平米</span><span class="active">90-110平米</span><span>110-130平米</span><span>130-150平米</span><span>150-200平米</span></p>
+        </div>
+    </form>
+    <br><br><br>
     <div class="top-block aside-block">
         <h2>小游戏前十榜</h2>
         <div class="block-content">
@@ -146,6 +336,21 @@
                     <a href="" class="title-link" title="梦幻飞仙传奇">梦幻飞仙传奇梦幻飞仙传奇</a>
                     <span class="grey">2515632</span>
                 </li>
+            </ul>
+        </div>
+    </div>
+
+     <div class="bigDiv">
+        <h2>最新上线</h2>
+        <div class="block-content">
+            <ul class="title-list">
+                <li><a class="title-link" href="#"><img src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色11111111彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="#"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="#"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="#"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="#"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="#"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
+                <li><a class="title-link" href="#"><img  src="http://www.w3cplus.com/framework/titlelist/images/img15.jpg">性格色彩</a><span>04-20</span></li>
             </ul>
         </div>
     </div>

@@ -6,31 +6,7 @@
     <title>复制事件</title>
 </head>
 <body>
-<style>
-        /*  div 重叠: http://www.divcss5.com/shili/s587.shtml */
-    #divTest {
-        /*opacity: 0;
-        cursor: pointer;
-        display: block;
-        background: none repeat scroll 0 0 #444442;
-        height: 100%;
-        position: fixed;
-        padding: 0;
-        margin: 0;
-        top:0;
-        left:0;
-        width: 100%;*/
-    }
-    #click{
-        z-index: 19999;
-        position: fixed;
-        color: red;
-        width: 100px;
-        height: 100px;
-        border: 1px solid ;
-    }
-</style>
-<!-- 可以将可编辑div透明度设置为0 -->
+<!-- 可以将可编辑div透明度设置为0 或者将其left设置成-2000 哈哈 -->
 <div id="divTest" contenteditable='true'>可编辑div</div>
 </body>
 <script>
@@ -64,7 +40,7 @@
                     img=img.length?img[0].src:'';
                     $('#divTest').html('');
                     //use img'src do sometings
-                },800);  
+                },800);
            }
     };
 </script>
