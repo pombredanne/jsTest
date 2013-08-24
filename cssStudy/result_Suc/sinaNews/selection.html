@@ -2,11 +2,50 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
+    <title>sina 新闻的模仿 主要学习其css 哈</title>
 </head>
-<link rel="stylesheet" href="test.css">
+<style type="text/css">
+    .page_margins {
+        TEXT-ALIGN: left; MARGIN: 0px auto; WIDTH: 1000px; BACKGROUND: #fff
+    }
+
+    BODY {
+        TEXT-ALIGN: center; BACKGROUND: url(/news/assets/v5/images/common/bg-page.png) #d8dcdf no-repeat 50% 30px; FONT-SIZE: 75%
+    }
+
+    BODY {
+        FONT-FAMILY: Verdana,"Lucida Grande","Bitstream Vera Sans",Helvetica,Arial,sans-serif
+    }
+
+    H2 {
+        PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT-FAMILY: Arial,Helvetica,sans-serif; FONT-SIZE: 1em; PADDING-TOP: 0px
+    }
+    H2 {
+        FONT-SIZE: 1.5em
+    }
+    #beforeafter .section {
+        POSITION: relative; MARGIN-TOP: 2em
+    }
+    #beforeafter .section P.source {
+        POSITION: absolute; COLOR: #999; FONT-SIZE: 7pt; TOP: 0.5em; RIGHT: 0px
+    }
+    .beforeafter {
+        POSITION: relative; OVERFLOW: hidden
+    }
+    .before {
+        POSITION: absolute; TOP: 0px; LEFT: 0px
+    }
+    .after {
+        POSITION: absolute; TOP: 0px; LEFT: 0px
+    }
+    .before {
+        BORDER-RIGHT: #000 5px solid; -moz-box-shadow: 1px 0 20px #222; -webkit-box-shadow: 1px 0 20px #222; box-shadow: 1px 0 20px #222
+    }
+    .help {
+        POSITION: absolute; BOTTOM: 20px; FONT: bold 20px/1em Helvetica, Arial, sans-serif; COLOR: #fff; RIGHT: 70px; opacity: 0.7
+    }
+</style>
 <!--<LINK rel=stylesheet type=text/css href="http://news.sohu.com/upload/2011ribendizhenqianhou/screen.min.css" media="screen, projection">-->
-<script type=text/javascript src="../../jquery.1.8.3.min.js"></script>
-<script type="text/javascript" src="test.js" charset="utf-8"></script>
 <body>
 <div class=page_margins>
     <div id=main class=page>
@@ -22,4 +61,46 @@
     </div>
 </div>
 </body>
+<script type=text/javascript src="../../../../jquery-1.8.3.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".beforeafter").each(function(){
+
+            /*
+             项目不直接使用图片的宽和高来进行控制的原因  图片的样式不容易控制
+             */
+            // 将div的宽、高设置成图片的宽高
+            $(this).width($(this).find("img[rel=before]").attr("width"))
+                    .height($(this).find("img[rel=before]").attr("height"));
+
+            // Convert the images into background images on layered divs
+            $(this).append("<div class='after'></div>").find(".after").css({"background": "url(" + $(this).find("img[rel=after]").attr("src") + ")", "width": $(this).find("img[rel=after]").attr("width") + "px", "height": $(this).find("img[rel=after]").attr("height") + "px"});
+            $(this).append("<div class='before'></div>").find(".before").css({"background": "url(" + $(this).find("img[rel=before]").attr("src") + ")", "width": $(this).find("img[rel=before]").attr("width") - 40 + "px", "height": $(this).find("img[rel=before]").attr("height") + "px"});
+
+            // Add a helpful message
+            $(this).append("<div class='help'>悬停切换图像</div>");
+
+            // Remove the original images
+            $(this).find("img").remove();
+
+            // Event handler for the mouse moving over the image
+            $(this).mousemove(function(event){
+
+                var offset = $(this).offset().left;
+
+                if ((event.clientX - offset) < ($(this).find(".after").width() -50) && (event.clientX - offset) > 50) {
+                    $(this).find(".before").width(event.clientX - offset);
+                }
+
+            });
+
+            $(this).hover(function(){
+                $(this).find(".help").animate({"opacity": 0}, 400, function(){ $(this).remove();  });
+                $(this).unbind('hover')
+            });
+        });
+
+    });
+
+</script>
 </html>

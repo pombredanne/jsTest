@@ -146,4 +146,4 @@ $.fn.extend({
                 }
             });
         }
-    })(jQuery,window,undefined)
+    })(jQuery,window,undefined);
