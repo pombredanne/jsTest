@@ -142,6 +142,14 @@ sudo nohup mongod &
 13: vim javascript 格式化插件
     ,gg
 
+14: 在终端启动vim
+    vim  file
+    vim -o file1  file2  水平
+    vim -O file1  file2  垂直
+
+    Ctrl + a  锁住vim
+    Ctrl + q  回复vim
+
 history
     history | grep cd
     history -c   --删除

@@ -565,10 +565,10 @@
 -------   循环中绑定事件
             var k=function(i){console.log(i)};
              for(var i=0;i<20;i++){
-                     // 点击时候 出现 1,2,3,4....19
+                     // 点击时候 出现 20,20,20,20.........20   20个20
                      $('#bBtn')[0].addEventListener('click',function(){k(i)},false);
 
-                     // 正确执行 在click的时候 打印1,2,.......19
+                     // 正确执行 在click的时候 打印0,1,2,.......19 
                      (function(i){
                          $('#bBtn')[0].addEventListener('click',function(){k(i)},false);
                      })(i);

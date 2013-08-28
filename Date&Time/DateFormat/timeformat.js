@@ -37,7 +37,7 @@
             return reg.test(dateString);
         },
         validateIndex=function(formatString){
-            var ia = new Array(),
+            var ia = [],
                 i = 0;
 
             ((_yi = formatString.search(/yyyy/)) < 0) &&(_yi = formatString.search(/yy/));
@@ -76,7 +76,7 @@
                 i++;
             }
 
-            var ia2 = new Array(_yi, _Mi, _di, _Hi, _mi, _si);
+            var ia2 = [_yi, _Mi, _di, _Hi, _mi, _si];
             for (i = 0; i < ia.length - 1; i++) {
                 for (j = 0; j < ia.length - 1 - i; j++) {
                     if (ia[j] > ia[j + 1]) {
@@ -117,10 +117,10 @@
         return format;
     };
 
-    String.prototype._strToDate=function(dateString, formatString){
-        if (validateDate(dateString, formatString)) {
+    String.prototype._strToDate=function(formatString){
+        if (validateDate(this, formatString)) {
             var now = new Date(),
-                vals = regexp.exec(dateString),
+                vals = regexp.exec(this),
                 index = validateIndex(formatString),
                 year = index[0] >= 0 ? vals[index[0] + 1] : now.getFullYear(),
                 month = index[1] >= 0 ? (vals[index[1] + 1] - 1) : now.getMonth(),
@@ -132,8 +132,9 @@
             if (validate.getDate() == day) {
                 return validate;
             }
+        }else{
+            throw 'wrong date';
         }
-        alert("wrong date");
     };
 
 })(window,undefined);

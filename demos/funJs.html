@@ -162,6 +162,11 @@
 
         var push=[];
         var _push=push.push(};      //0  除了不填写之外 都返回push的次数 从1开始
+
+        var bar = function foo() {
+            foo(); // 正常运行
+        };
+        foo(); // 出错：ReferenceError
     </script>
 </body>
 </html>
