@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+	    #client{
+	    	width: 600px;
+	    	height:400px;
+	    	margin: 120px 420px;
+	    	padding: 20px;
+	    	border: 25px solid;
+	    	overflow: scroll;
+	    }
+	    #qian{
+	    	width: 300px;
+	    	height: 200px;
+	    	margin: 15px 10px;
+	    	padding: 10px;
+	    	border: 5px solid;
+	    	overflow: scroll;
+	    }
+	</style>
+</head>
+<body>
+	<div id="client">
+		this is a test<br>this is a test<br>this ddddddddddddddddddddddddddddddddddddddddddddddddddis a test<br>this <br><br><br><br>this is a test<br>this is a test<br>this is a test<br>this <div id="qian">fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</div> <br><br><br><br>ddddddddddddddddddddddddddddddthis is a test<br>this is a test<br>this is a test<br>this <br><br><br><br>is a test<br>this is a test<br><br><br><br><br>this is a test<br>this is a test<br>this is a test<br>this is a test<br>this is a test<br>
+	</div> 
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+			var $div=$('#client'),
+				div=$div[0],
+				$div1=$('#qian'),
+				div1=$div1[0];
+
+		/*
+			div:
+				clientHeight=可见区域的高度+paddingTop+paddingBottom
+				$div.outerHeight()=offsetHeight=width+borderTop+borderBottom+paddingTop+paddingBottom	
+				scrollHeight=scrollTop+clientHeight+剩下的(marginBottom+还没卷出来的部分)
+
+				offsetTop=不管div怎么动  就是div到(body)页面顶端的距离   
+				$.fn.position  = div1.offsetTop-div1.marginTop-div.scrollTop
+		*/
+	</script>
+</body>
+</html>
