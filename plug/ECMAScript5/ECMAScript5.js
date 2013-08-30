@@ -1,5 +1,5 @@
 (function(undefined){
-
+        "use strict";
         /*
              修改自:https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js
              ECMAScript 5.0 兼容图:http://kangax.github.io/es5-compat-table/
@@ -15,8 +15,8 @@
                  this.style.color = color;
              }.bind(eleText, "#cd0000");
          */
-        if (!Function.prototype.bind) {
-            Function.prototype.bind = function bind(that) {
+        if (!(bind in Function.prototype)) {                    //  虽然Function.prototype.bind 这种写法简便 但是 据说 效率不好 详见谷歌去
+            Function.prototype.bind = function bind(that) {     // TODO 这里在function 加函数名 仅仅是为了以后复制方便 真正写的时候 不能这么写 鸡肋
                 var target = this;
                 if (typeof target != "function") {
                     throw new TypeError("Function.prototype.bind called on incompatible " + target);
@@ -33,16 +33,13 @@
         }
 
 
-
         var call = Function.prototype.call,
-                    prototypeOfArray = Array.prototype,
-                    prototypeOfObject = Object.prototype,
-                    slice = prototypeOfArray.slice;
-
-        var _toString = call.bind(prototypeOfObject.toString),
-            owns = call.bind(prototypeOfObject.hasOwnProperty);
-
-        var defineGetter,defineSetter,lookupGetter,lookupSetter,supportsAccessors;
+            prototypeOfArray = Array.prototype,
+            prototypeOfObject = Object.prototype,
+            slice = prototypeOfArray.slice,
+            _toString = call.bind(prototypeOfObject.toString),
+            owns = call.bind(prototypeOfObject.hasOwnProperty),
+            defineGetter,defineSetter,lookupGetter,lookupSetter,supportsAccessors;
 
         if ((supportsAccessors = owns(prototypeOfObject, "__defineGetter__"))) {    // 检测浏览器是否支持快捷键访问 直接使用对象内部defineGetter 在某些浏览器中不允许
             defineGetter = call.bind(prototypeOfObject.__defineGetter__);
@@ -54,7 +51,7 @@
         /*
             Array
         */
-        if (!Array.isArray) {
+        if (!(isArray in Array)) {
             Array.isArray = function isArray(obj) {     // isArray:  检测是否为一数组 return boolean
                 return _toString(obj) == "[object Array]";
             };

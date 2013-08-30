@@ -1,9 +1,9 @@
-									/****************事件******************/
+                                    /****************事件******************/
 
 var _Dom={
     addEventListener:function(element, type,handler){
             if (element.addEventListener){
-                element.addEventListener(type, handler,	false);
+                element.addEventListener(type, handler, false);
             } else if (element.attachEvent){
                 element.attachEvent("on" + type, handler);
             } else {
@@ -41,13 +41,13 @@ var _Dom={
 
          use:可以直接使用 innerText
          */
-        if(!window.navigator.userAgent.toLowerCase().indexOf("msie") >=	1) { //firefox innerText define
+        if(!window.navigator.userAgent.toLowerCase().indexOf("msie") >= 1) { //firefox innerText define
             HTMLElement.prototype.__defineGetter__("innerText", function() {
-                var	anyString =	"";
-                var	childS = this.childNodes;
-                for(var	i =	0; i < childS.length; i++) {
-                    if(childS[i].nodeType	== 1) anyString	+= childS[i].tagName ==	"BR" ? '\n'	: childS[i].innerText;
-                    else if(childS[i].nodeType ==	3) anyString +=	childS[i].nodeValue;
+                var anyString = "";
+                var childS = this.childNodes;
+                for(var i = 0; i < childS.length; i++) {
+                    if(childS[i].nodeType   == 1) anyString += childS[i].tagName == "BR" ? '\n' : childS[i].innerText;
+                    else if(childS[i].nodeType ==   3) anyString += childS[i].nodeValue;
                 }
                 return anyString;
             });
@@ -57,17 +57,17 @@ var _Dom={
             });
         }
     },
-    getByClass:function getClass(tagname, className) {	//tagname指元素，className指class的值
+    getByClass:function getClass(tagname, className) {  //tagname指元素，className指class的值
 
         //判断浏览器是否支持getElementsByClassName，如果支持就直接的用
         if (document.getElementsByClassName) {
             return document.getElementsByClassName(className);
-        }else	{	 //当浏览器不支持getElementsByClassName的时候用下面的方法
-            var	tagname	= document.getElementsByTagName(tagname);  //获取指定元素
-            var	tagnameAll = [];   //这个数组用于存储所有符合条件的元素
-            for	(var i = 0;	i <	tagname.length;	i++) {	   //遍历获得的元素
-                if (tagname[i].className == className) {	 //如果获得的元素中的class的值等于指定的类名，就赋值给tagnameAll
-                    tagnameAll[tagnameAll.length] =	tagname[i];
+        }else   {    //当浏览器不支持getElementsByClassName的时候用下面的方法
+            var tagname = document.getElementsByTagName(tagname);  //获取指定元素
+            var tagnameAll = [];   //这个数组用于存储所有符合条件的元素
+            for (var i = 0; i < tagname.length; i++) {     //遍历获得的元素
+                if (tagname[i].className == className) {     //如果获得的元素中的class的值等于指定的类名，就赋值给tagnameAll
+                    tagnameAll[tagnameAll.length] = tagname[i];
                 }
             }
             return tagnameAll;
@@ -123,7 +123,7 @@ var _Dom={
         return event ? event : window.event;
     },
     getTarget: function(event){
-        return event.target	|| event.srcElement;
+        return event.target || event.srcElement;
     },
     getRelatedTarget: function(event){
         //对于 mouseover 事件来说，该属性是鼠标指针移到目标节点上时所离开的那个节点。
@@ -144,16 +144,16 @@ var _Dom={
         */
         //滚轮操作
         if (event.wheelDelta){
-            return (client.engine.opera	&& client.engine.opera < 9.5 ? -event.wheelDelta : event.wheelDelta);
+            return (client.engine.opera && client.engine.opera < 9.5 ? -event.wheelDelta : event.wheelDelta);
         } else {
             return -event.detail * 40;
         }
     },
-    preventDefault:	function(event){
+    preventDefault: function(event){
         if (event.preventDefault){
             event.preventDefault();
         } else {
-            event.returnValue =	false;
+            event.returnValue = false;
         }
     },
     /*
@@ -166,7 +166,7 @@ var _Dom={
      }
      },
      getClipboardText: function(event){ //获取剪贴板数据
-     var	clipboardData =	 (event.clipboardData || window.clipboardData);
+     var    clipboardData =  (event.clipboardData || window.clipboardData);
      return clipboardData.getData("text");
      },
      */
@@ -200,8 +200,8 @@ var _Dom={
     },
     select:{
         checkItem: function(objSelect, objItemValue) {
-            var	isExit = false;
-            for(var	i =	0; i < objSelect.options.length; i++) {
+            var isExit = false;
+            for(var i = 0; i < objSelect.options.length; i++) {
                 if(objSelect.options[i].value == objItemValue) {
                     isExit = true;
                     break;
@@ -209,20 +209,20 @@ var _Dom={
             }
             return isExit;
         },
-        addItem: function(objSelect, objItemText, objItemValue)	{
+        addItem: function(objSelect, objItemText, objItemValue) {
             //判断是否存在
-            if(this.checkItem(objSelect, objItemValue))	{
+            if(this.checkItem(objSelect, objItemValue)) {
                 alert("该Item的Value值已经存在");
             } else {
-                var	varItem	= new Option(objItemText, objItemValue);
+                var varItem = new Option(objItemText, objItemValue);
                 objSelect.options.add(varItem);
                 alert("成功加入");
             }
         },
-        removeItem:	function(objSelect,	objItemValue) {
+        removeItem: function(objSelect, objItemValue) {
             //判断是否存在
-            if(this.checkItem(objSelect, objItemValue))	{
-                for(var	i =	0; i < objSelect.options.length; i++) {
+            if(this.checkItem(objSelect, objItemValue)) {
+                for(var i = 0; i < objSelect.options.length; i++) {
                     if(objSelect.options[i].value == objItemValue) {
                         objSelect.options.remove(i);
                         break;
@@ -233,20 +233,20 @@ var _Dom={
                 alert("该select中 不存在该项");
             }
         },
-        removeSelectedItem:	function(objSelect)	{
-            var	length = objSelect.options.length -	1;
-            for(var	i =	length;	i >= 0;	i--) {
-                if(objSelect[i].selected ==	true) {
+        removeSelectedItem: function(objSelect) {
+            var length = objSelect.options.length - 1;
+            for(var i = length; i >= 0; i--) {
+                if(objSelect[i].selected == true) {
                     objSelect.options[i] = null;
                 }
             }
         },
-        updateItem:	function(objSelect,	objItemText, objItemValue) {
+        updateItem: function(objSelect, objItemText, objItemValue) {
             //判断是否存在
-            if(this.checkItem(objSelect, objItemValue))	{
-                for(var	i =	0; i < objSelect.options.length; i++) {
+            if(this.checkItem(objSelect, objItemValue)) {
+                for(var i = 0; i < objSelect.options.length; i++) {
                     if(objSelect.options[i].value == objItemValue) {
-                        objSelect.options[i].text =	objItemText;
+                        objSelect.options[i].text = objItemText;
                         break;
                     }
                 }
@@ -257,11 +257,11 @@ var _Dom={
         },
         selectItemByText: function(objSelect, objItemText) {
             //判断是否存在
-            if(this.checkItem(objSelect, objItemValue))	{
-                var	isExit = false;
-                for(var	i =	0; i < objSelect.options.length; i++) {
-                    if(objSelect.options[i].text ==	objItemText) {
-                        objSelect.options[i].selected =	true;
+            if(this.checkItem(objSelect, objItemValue)) {
+                var isExit = false;
+                for(var i = 0; i < objSelect.options.length; i++) {
+                    if(objSelect.options[i].text == objItemText) {
+                        objSelect.options[i].selected = true;
                         isExit = true;
                         break;
                     }
@@ -275,30 +275,30 @@ var _Dom={
             }
         },
         selectItemByValue: function(objSelect, objItemValue) {
-            if(this.checkItem(objSelect, objItemValue))	{
+            if(this.checkItem(objSelect, objItemValue)) {
                 document.all.objSelect.value = objItemValue;
             }
         },
         selectValue: function(objSelect) {
-            var b =	document.all.objSelect.value;
+            var b = document.all.objSelect.value;
             return b;
         },
-        selectText:	function(objSelect)	{
-            var k =	objSelect.options[objSelect.selectedIndex].text;
+        selectText:function(objSelect)  {
+            var k =objSelect.options[objSelect.selectedIndex].text;
             return k
         },
-        selectInde:	function(objSelect)	{
-            var	k =	objSelect.selectedIndex;
+        selectInde: function(objSelect) {
+            var k =objSelect.selectedIndex;
             return k
         },
         clear: function(objSelect) {
-            var	k =	objSelect.options.length = 0
+            var k = objSelect.options.length = 0
             return k
         }
     }
 }
 
-									/*********************DOM*************************/
+                                    /*********************DOM*************************/
 
 var load = {
   load: function(type, src, code,callback) {

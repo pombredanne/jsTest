@@ -586,3 +586,12 @@
 
 --------   同步 异步原理
     http://www.cnblogs.com/ustbwuyi/archive/2007/02/08/645061.html   ----水管说
+
+--------  jQuery  on 方法
+        1:
+            $(document).on('keyup', $input, function(event) {
+                // this == document;  因为 $input  是一个 jquery的dom结构 而不是一个单纯的选择器   并且 该方法并没有在 $input上委托 而是直接给document绑定的事件
+            });
+        2:
+            jquery on 不能直接绑定hover toggle事件
+ 

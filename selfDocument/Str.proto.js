@@ -39,7 +39,8 @@ String.prototype.Remove = function(start, end) {
 };
 //去除字符串中的标签  直接替换 不影响光标
 String.prototype.stripHTML = function() {
-    var reTag = /<(?:.|\s)*?>/g;
+    //var reTag = /<(?:.|\s)*?>/g;  // 这种会把<>这种也给去掉
+    var reTag=/<[^>].*?>/g;
     return this.replace(reTag, "");
 }
 

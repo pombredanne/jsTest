@@ -91,8 +91,3 @@ Strict mode and relative URLs
         var url = purl(true); // parse the current page URL in strict mode
         var url = purl('http://allmarkedup.com',true); // pass in a URI as a string and parse that in strict mode
     ```
-
-
-
-
-

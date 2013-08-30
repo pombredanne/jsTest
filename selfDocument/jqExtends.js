@@ -55,12 +55,17 @@ $.fn.extend({
 
 
    $.extend({
-        escapeHtmlEntities:function (str) { //> 转换为 &gb  TODO 另外见 demos/Str.proto.js String.prototype.stripHTML方法
+        escapeHtmlEntities:function (str,bool) { //> 转换为 &gb  TODO 另外见 demos/Str.proto.js String.prototype.stripHTML方法
+            if(bool){   // 将html tag 代码直接去掉  但会保留<>这种
+                var reTag = /<[^>].*?>/g;
+                return str.replace(reTag, "");
+            }
             var tempEle = document.createElement("textarea");
             tempText = document.createTextNode(str);
             tempEle.appendChild(tempText);
             var result = tempEle.innerHTML;
             return result;
+            
         },
         unescapeHtmlEntities:function(str){
             var tempEle = document.createElement("div");
