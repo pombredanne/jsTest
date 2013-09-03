@@ -184,7 +184,7 @@
         <canvas id="bezierCurveTo3" width="400" height="300"></canvas>
 
         <script type="text/javascript">
-            //http://lblovesnow-163-com.iteye.com/blog/1447918
+            //http://lblovesnow-163-com.iteye.com/blog/1447918    http://cubic-bezier.com/
             // 贝塞尔曲线 必须有一个moveTo   作为起点 否则 则 使用第一控制点为起点 二次曲线也一样
             function bezierCurveTo3(id) {
                 var canvas = document.getElementById(id);
@@ -327,6 +327,9 @@
                 /*
                     transform: 在你使用scale 放大2倍后, 再使用transform 会继续放大2倍  如果想避免 可以使用setTransform();
                     transform(scaleX,rotateX,rotateY,scaleY,translateX,translateY);
+                    矩阵原理:
+                        http://www.alloyteam.com/2012/06/js-simple-geometric-transformation-the-package/#prettyPhoto
+                        有道云笔记--css常用技能
                  */
                 context.transform(1,0,0,1,100,0);
                 //循环绘制圆弧
@@ -606,6 +609,7 @@
             }
         </script>
     </section>
+    本问摘自:<a href="http://www.cnblogs.com/tim-li/archive/2012/08/06/2580252.html#top">玩转html5画图</a>
 </body>
 
 </html>

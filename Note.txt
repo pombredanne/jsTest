@@ -338,10 +338,14 @@
             <![endif]–>
 
     特殊:
+        1:
         <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″ />
         IE=edge  使用你系统中最高版本的ie
         chrome   如果你ie中安装chrome内嵌框架,那么将会使用chrome引擎来渲染页面
             网络:http://choizhang.com/wordpress/x-ua-compatible.html
+        2:
+        360双核浏览器 模式切换
+            <meta name="renderer" content="webkit|ie-comp|ie-stand"> 极速模式|兼容模式|IE模式
     额外:
         document.compatMode:ie特有的检测ie对盒子模型的支持   --http://www.cnblogs.com/Optimal/archive/2013/04/28/3049500.html
 -----------resizeTo
@@ -594,4 +598,9 @@
             });
         2:
             jquery on 不能直接绑定hover toggle事件
- 
+
+--------  link shortcut icon
+    <link rel="icon" href="http://cdn.iplaysoft.com/ipc/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="http://cdn.iplaysoft.com/ipc/favicon.ico" type="image/x-icon" />
+    1: 相对路径不管用 尝试使用绝对路径
+    2: 名称必须为 favicon.ico  位置最好放在 网站根目录下

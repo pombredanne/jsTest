@@ -9,7 +9,140 @@
     <a href="http://gsgd.co.uk/sandbox/jquery/easing/" target='_blank'>官网</a>
     <a href="http://code.ciaoca.com/jquery/easing/" target='_blank'>中文讲解</a>
     <a href="http://easings.net/zh-cn" target='_blank'>中文讲解1</a>
-    <a href="http://cubic-bezier.com/" target='_blank'>中文讲解1</a>
+    <!-- 另外可参考 canvas中的 矩阵讲解 以及canvas中的数学  -->
     如果是在canvas中使用 该曲线 可以尝试使用 ps中的钢笔进行测绘
+
+                                            必要数学知识补习
+        平方根的转换:
+            Math.pow(2,3)=8
+            3===Math(8)/Math.log(2);
+
+        Math中所有跟几何计算方法相关(sin cos)都说的是[弧度]
+
+        弧度的计算公式为：
+            1rad=2*PI/360*ang
+            Math.PI是180度的弧度
+
+            function radToang(ang,rad){
+                rad=rad||'ang';
+                var cache=Math.PI/180;
+                ang=rad==='ang'?cache*(ang-0):1/cache*(ang-0);
+                return ang;
+            }
+
+        parseInt parseFloat  eg:parseInt('023',8);   //先将8进制的 023 转换为2进制  然后转换为10进制的数字19
+
+        如何得到圆上每个点的坐标？
+
+            解决思路：根据三角形的正玄、余弦来得值；
+
+            圆心坐标(a,b)，半径:r，度数:ang
+
+            var angXY={
+                    x:b + Math.cos((Math.PI / 180)*ang) * r,
+                    y:a + Math.sin((Math.PI / 180)*ang) * r
+                }
+
+            一段圆弧中间的度数
+                var midRad=(radStart+radEnd)/2,
+                    midAng=radToang(midRad,'rad');
+
+        ps:  css和canvas中 默认旋转度 都是水平 即180度 因此我们计算钟表的时候 必须加上90度. 
+
+
+
+                                                css3自我学习
+
+        transform
+            详细参见  https://developer.mozilla.org/zh-CN/docs/CSS/transform
+
+            重点讲解 perspctive   http://www.webjx.com/css/divcss-33347.html   http://ecd.tencent.com/css3/html/animation/perspective.html
+                 1: 他们都只是将2D图形 "扭曲"成一个仿立方体  并非真正的3D  真正3D目前只有 webkit支持
+                 2:只能选择透视方式，也就是近大远小的显示方式。
+
+                eg1: rotateX/Y 一起使用
+                   transform: perspective(400px) rotateY(40deg); /*Y轴扭曲旋转*/
+                eg2: 与perspective-origin(镜面)一起使用 打造平面"3D"[动画]效果
+                    transform-origin:0 0;transform:rotate(45deg);
+
+                perspective-origin: 镜面位置 perspective 扭曲参照点 
+                                    见: http://ecd.tencent.com/css3/html/animation/perspective-origin.html   http://css.doyoe.com/properties/transform/transform-origin.htm
+
+
+        transition：
+
+            transition：[ transition-property:参与过渡的属性(比如我要改变背景-:border-color) ] || [ transition-duration在这个时间内把这个变换搞定 ] || [ transition-timing-function 以哪种方式执行 ] || [ transition-delay 当变换条件到了,几秒后我再执行变换 ]
+
+            ps: 目前火狐已经执行标准方式 无需加前缀
+
+            eg1:
+                .test li{
+                    .......
+                    transition:background-color 4s ease-in 8s;
+                }
+
+                .test li:nth-child(1):hover{background-color:#bbb;}
+
+            eg2:与transform一起使用
+                .box {
+                    .......
+                    transition:width 2s, height 2s, background-color 2s, transform 2s;  /*以此执行每个变换*/
+                }
+                .box:hover {
+                    .......
+                    background-color: #FFCCCC;
+                    transform:rotate(180deg);
+                }
+
+            eg3:与js一起连用
+                css:
+                    p{padding-left:60px;}
+                    #foo{
+                        border-radius:50px;
+                        width:50px;
+                        height:50px;
+                        background:#c00;
+                        position:absolute;
+                        top:0;
+                        left:0;
+                        -moz-transition: all 1s; 
+                        -webkit-transition: all 0.2s;  
+                        -ms-transition: all 1s;  
+                        -o-transition: all 1s;
+                        transition: all 1s;
+                    }
+                js:
+                    var f = document.getElementById('foo');
+                    document.addEventListener('click', function(ev){
+                        f.style.left = (ev.clientX-25)+'px';
+                        f.style.top = (ev.clientY-25)+'px';
+                    },false);
+
+        animation:
+
+            animation：[[ animation-name (动画名称) ] || [ animation-duration(多长时间执行完) ] || [ animation-timing-function(以什麽方式执行动画) ] || [ animation-delay(调节具备后,何时开始动画) ] || [ animation-iteration-count (是否循环) ] || [ animation-direction(是否来回交替) ]||[ animation-fill-mode(结束后呈现什麽姿态 开始?还是结束状态?) ]] ;
+            animation-play-state  一般单独使用  作为另一种条件使用  用于是否中途暂停 或者启动
+
+            ps: 火狐支持正规写法
+
+            创建动画:
+            eg:
+                @keyframes animationName{
+                    0%{-ms-transform:translate(0);opacity:0;}
+                    50%{-ms-transform:translate(30px);opacity:1;}
+                    70%{-ms-transform:translate(35px);opacity:1;}
+                    100%{-ms-transform:translate(60px);opacity:0;}
+                }
+
+            使用动画:
+            eg:
+                animation:animationName 2s ease-out 0s infinite alternate;
+
+        相关网站/插件
+            http://www.cnblogs.com/moyiqing/archive/2012/01/11/2318952.html          另一个利用css来进行翻转的
+            http://www.zhangxinxu.com/wordpress/?p=552                               张新旭的
+            http://code.google.com/p/jqueryrotate/                                   rotate.js 一个翻转插件
+            http://ricostacruz.com/jquery.transit                                    transit 对浏览器要求较高
+            http://fredhq.com/projects/roundabout                                    3D 插件
 </body>
 </html>

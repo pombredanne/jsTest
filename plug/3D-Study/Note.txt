@@ -1,2 +1,0 @@
-http://fredhq.com/projects/roundabout   ----3D 插件
-http://blog.stableflow.com/jquery-plugins/360-degrees-product-view/   ---3D展示插件 j360  依靠图片 实现
