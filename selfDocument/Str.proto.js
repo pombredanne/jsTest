@@ -69,28 +69,20 @@ Array.prototype.removeByKey = function(key) { //按指定key 移除
 Array.prototype.indexOf = function(value) { //计算 value 在数组的 index
     var i = this.length;
     while (i > - 1) {
-        if (this[i] === value) {
-            return i;
-        }
+        if (this[i] === value) { return i; }
         i--;
     }
-    return null;
+    return -1;
 };
 
 Array.prototype.randomSort = function() { //数组元素随机排列  Note 里进行比较
-    return this.sort(Math.random() > .5 ? - 1: 1);
+    return this.sort(function(){Math.random() >0.5});
 };
 
 Array.prototype.isIn = function(value) {
-    if (this.length > 0) {
-        for (var i = - 1, val; val = this[i++];) { // 使用中括号[]存取时，JS引擎内部隐式的将数字转成了字符串。纯数字不能作为变量命名以及对象属性名。
-            if (value === val) {
-                return true;
-            }
-        }
-    }
-    return false;
+    return RegExp(value).test(this);
 };
+
 Array.prototype.Max = function() {
     return Math.max.apply(Math, this);
 };

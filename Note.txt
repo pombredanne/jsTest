@@ -172,76 +172,13 @@
     </script>
 
 -----------mouseout mouseover mouseenter mouseleave
-        mouseenter mouseleave -----禁止冒泡 这种冒泡有时候你使用return false 是难以阻止 不知道在那冒泡
-        mouseover:从子元素中出来到(事件元素)父元素还会触发一次 不仅仅在子元素冒泡 父元素也会冒泡
-         说明案例:http://blog.csdn.net/ocean1010/article/details/7394599
-
-            网上看到的 解决冒泡 兼容方法
-
-            /*
-               mouseover mouseout      mouseenter mouseleave
-               作用: mouseover mouseout 去掉冒泡 达到mouseenter mouseleave 效果
-               使用:
-                  jquery:
-                    $('#parentDiv').mouseover(function(){
-                      if(fixedMouse(event, this)){//使用
-                          logs.innerHTML+="MouseOver<br />";
-                      }
-                    });
-                 js:
-                    addListener(target,'mouseover',function(e){
-                    e=e||window.event;
-                    if(fixedMouse(e, target)){
-                        //do something
-                    }
-                },false);
-            */
-            function fixedMouse(e, target) {
-                var related, type = e.type.toLowerCase();
-                if(type === 'mouseover') {
-                  related = e.relatedTarget || e.fromElement;
-                } else if(type === 'mouseout') {
-                  related = e.relatedTarget || e.toElement;
-                } else {
-                  return true;
-                }
-                return related && related.prefix != 'xul' && !contains(target, related) && related !== target;
-
-            }
-
-            function contains(parent, child) { //检测child节点是否存在于parent节点中
-                // FF:parent.contains(child)
-                return parent.contains ? parent != child && parent.contains(child) : !! (parent.compareDocumentPosition(child) & 16);
-            }
-
-
-            //自我总结的方法  解决另一种[重复(这种重复还不知道是不是冒泡造成的,因此不敢下评论)]的办法 这种情况对mouseover mouseout      mouseenter mouseleave  都有用[mouseenter mouseleave 这两个有时候也会存在冒泡]
-            <!DOCTYP>
-            <html>
-             <head>
-                  <title> New Document </title>
-                  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-                  <script>!window.jQuery && document.write('<script src="jquery-1.4.3.min.js"><\/script>');</script>
-             </head>
-             <body>
-                <div id='ffff' >fdfdsfds</div>
-                <style type="text/css">
-                    #ffff{
-                        border:1px solid red;
-                        width:100px;
-                        height:100px;
-                      }
-                </style>
-             </body>
-            </html>
-            <script type="text/javascript">
-                    $('#ffff').bind('mouseenter mouseleave',function(event){//换成mouseover mouseout 也行
-                        //alert("toElement:"+event.toElement.innerHTML)
-                        if(document.all){event.toElement.innerHTML;event.fromElement.innerHTML;}  //1 竖直方向 2 左右方向
-                          //这就是解决重复的地方
-                        alert(4)
-                    })
-              </script>
+        mouseout mouseenter:
+            1:表现形式都一样, 绑定的事件都是只执行一次
+            2:不同点就在于 mouseenter 不会发生冒泡.  案例:http://www.css88.com/archives/2297 http://www.w3cschool.cn/t5420.html?f=jquery_event_mouseenter_mouseover
+                解决:
+                检查节点并加以判断: http://xiebiji.com/2010/02/js_mouseenter_mouseleave/
+                道理同上 只不过是在事件中加以判断: http://www.qiqiboy.com/2011/01/19/javascript-mouseover-and-mouseout.html
+                ps:判断节点关系 可以参考 Dom.js中的 contains函数
 
 -----------setTimout setInterval
     必须养成习惯
@@ -604,3 +541,4 @@
     <link rel="shortcut icon" href="http://cdn.iplaysoft.com/ipc/favicon.ico" type="image/x-icon" />
     1: 相对路径不管用 尝试使用绝对路径
     2: 名称必须为 favicon.ico  位置最好放在 网站根目录下
+

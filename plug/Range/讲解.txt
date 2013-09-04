@@ -50,3 +50,19 @@
 
 定义document rang对象
     ff: document.createRange() < IE9: document.body.createTextRange();
+
+window.find 
+    感觉这玩意挺好玩的  哈 https://developer.mozilla.org/zh-CN/docs/DOM/window.find
+    window.find=function(){
+        if('find' in window){
+            window.find.apply(window,argument);
+        }else{      //ie
+            var range = document.body.createTextRange();
+            if (range.findText(text, -1)){
+                range.scrollIntoView();
+                range.select();
+                return true;
+            }
+            return false;
+        }
+    }

@@ -57,23 +57,21 @@ var _Dom={
             });
         }
     },
-    getByClass:function getClass(tagname, className) {  //tagname指元素，className指class的值
-
-        //判断浏览器是否支持getElementsByClassName，如果支持就直接的用
+    getByClass:function getClass(tagname, className) {
         if (document.getElementsByClassName) {
             return document.getElementsByClassName(className);
-        }else   {    //当浏览器不支持getElementsByClassName的时候用下面的方法
-            var tagname = document.getElementsByTagName(tagname);  //获取指定元素
-            var tagnameAll = [];   //这个数组用于存储所有符合条件的元素
-            for (var i = 0; i < tagname.length; i++) {     //遍历获得的元素
-                if (tagname[i].className == className) {     //如果获得的元素中的class的值等于指定的类名，就赋值给tagnameAll
+        }else   {
+            var tagname = document.getElementsByTagName(tagname);
+            var tagnameAll = [];
+            for (var i = 0; i < tagname.length; i++) {
+                if (tagname[i].className == className) {
                     tagnameAll[tagnameAll.length] = tagname[i];
                 }
             }
             return tagnameAll;
         }
     },
-    getStyle: function attrStyle(elem/*Dom*/,attr/*要查找的属性*/){
+    getStyle: function attrStyle(elem,attr){
 
         //一个讲解:http://www.zhangxinxu.com/wordpress/2012/05/getcomputedstyle-js-getpropertyvalue-currentstyle/
         /*
@@ -177,7 +175,7 @@ var _Dom={
             event.cancelBubble = true;
         }
     },
-    contains:function(){  // 判断a是否包含b itself 是否包括a===b
+    contains:function(a,b,itself){  // http://www.cnblogs.com/rubylouvre/archive/2011/05/30/1583523.html
          if (itself && a == b) {
             return true
          }
@@ -193,10 +191,8 @@ var _Dom={
              if (a === b) return true;
          }
          return false;
-        /*
-            jquery:
-                return ($a.closest(b).length>0);//$a 必须是jquery对象
-        */
+
+         return $(a).closest(b).length>0;  //jquery
     },
     select:{
         checkItem: function(objSelect, objItemValue) {
@@ -312,9 +308,7 @@ var load = {
         script.src = src;
         if (script.readyState){ //IE
           script.onreadystatechange = function(){
-             if (script.readyState == "loaded" ||
-                script.readyState == "complete"){
-                script.onreadystatechange = null;
+             if (script.readyState == "loaded" || script.readyState == "complete"){ script.onreadystatechange = null;
                 callback();
              }
           };
