@@ -5,161 +5,112 @@
     <title>JS Bin</title>
 </head>
 <body>
-   <script language="javascript" type="text/javascript">
-       var log = function() {  // 关于这个函数的讲解  http://user.qzone.qq.com/623431595/blog/1346594970
+
+    <script type="text/javascript">
+        var log = function() {  // 关于这个函数的讲解  http://user.qzone.qq.com/623431595/blog/1346594970
             if(window.console && console.log){
-               Function.prototype.apply.call(console.log, console, arguments);
+                Function.prototype.apply.call(console.log, console, arguments);
             }
         };
-   </script> 
-    <script type="text/javascript">
-        //考察js对象
-        var obj = obj1 = {};
-        obj1['y'] = 3;      //obj{y:3} 
-        obj['x'] = obj1;  //obj{x:{y:3},y=3}
-        obj1['y'] = 4;      //obj{x:{y:4},y=4};
-        log(obj['x']['y']); //obj.x.y
-    </script>
 
-    <script type="text/javascript">
-        var tmp = 'a';
-        if([] == false) tmp += 'b';
-        if([] === false) tmp += 'rambo';
-        if(![]) tmp += 'c';
-        log(tmp); //tmp 值为 ？   http://www.dewen.org/q/3848/%E4%B8%BA%E4%BB%80%E4%B9%88%22null%26gt%3B%3D0%22%E4%B8%BAtrue%EF%BC%8C%E4%BD%86%E6%98%AF%22null%3D%3D0%22%E4%B8%BAfalse%3F
-    </script>
-    <script>
+        //js中隐式bool转换   http://www.dewen.org/q/3848/%E4%B8%BA%E4%BB%80%E4%B9%88%22null%26gt%3B%3D0%22%E4%B8%BAtrue%EF%BC%8C%E4%BD%86%E6%98%AF%22null%3D%3D0%22%E4%B8%BAfalse%3F
+            var tmp = 'a';
+            if([] == false) tmp += 'b';
+            if([] === false) tmp += 'rambo';
+            if(![]) tmp += 'c';
+            [+true, +false];  // 隐式转换为 [+1,+0]
+            log(tmp); //tmp 值为 ？
 
-        //http://james.padolsey.com/javascript/A3another-javascript-quiz    原题
-        //http://www.zhangxinxu.com/wordpress/2013/05/%E7%90%86%E8%A7%A3another-javascript-quiz-%E9%A2%98%E7%9B%AE/    答案
+            jdkfjdklsfd://jfkdjfkdjklf 
+            console.log('上面的情况并不会影响我的执行 因为js会把 : 字段看成一个语句 执行 因此不会产生影响');
 
-        // 优先级  ！ > 算术运算符 > 关系运算符 > && > || > 赋值运算符  -- http://www.slyar.com/blog/c-operator-priority.html 
-        1 || "foo" && 0 ;
+            /*
+                几个来自网上的操蛋问题
+                http://julying.com/blog/so-you-think-you-know-javascript/comment-page-3/#comment-58459
+                http://james.padolsey.com/javascript/A3another-javascript-quiz    原题
+                http://www.zhangxinxu.com/wordpress/2013/05/%E7%90%86%E8%A7%A3another-javascript-quiz-%E9%A2%98%E7%9B%AE/    答案
+            */
 
-        (1,2,3);   // 好比 var i=1,ii=2,iii=3;  因此 按照优先原则 return 3    同理还有  a:b;  //假设 a b (var a=4,b=2;  a:b) 都已经定义  将会返回 最后一个b  2:3  不行
-        { foo : 123 ,ff:33232} // error   {a:2}==> 2  yes   {a:2,b:2} no
+            //1: 优先级  ！ > 算术运算符 > 关系运算符 > && > || > 赋值运算符  -- http://www.slyar.com/blog/c-operator-priority.html
+            1 || "foo" && 0 ;
 
-        [+true, +false];  // 隐式转换为 [+1,+0]
-        ++'52';  // ++ -- 操作符只能使用于变量 eg:var t=3; t++ or ++t
-
-        /*
-            false.toString.length  0
-            单独写的时候:
-            0.toString()    --error
-            0..toString()   --yes
-            (0).toString()  --yes    
-            当调用function下length时，他返回的是arguments.length，
-        */
-        [1,2,3,4,5][0..toString.length];
-
-        /*
-            {} + 'b'   ==>  NaN
-            ({}+'b')     ==>  "[Object Object]b"
-            ({})         ==>   Object {}
-            {}       ==>   undefined
-            {}+5  //5  会进行自动转换
-            var t={};
-            t+5     ==> "[object Object]5" 
-        */
-        ({} + 'b' > {} + 'a'); 
-
-        0.1+0.2;   // 0.30000000000000004    -- http://mzhou.me/article/45001/
-
-        Number.prototype.x = function(){ 
-            console.log(typeof this);  //object
-            console.log(this);        //Number {x: function}
-            return this === 123;          //但是在计算中/应用中 会将this转换为string的 number  别的原型也是如此
-        };
-
-        [undefined,undefined].join();   //  ","
-
-        'foo' == new function(){ return String('foo'); }; 
-        /*
-            return Object{}     
-            new function 立刻执行
-            new Function 只是构造出一个函数
-            new function(){ return String('foo'); }()   //yes  单独使用加不加() 都会执行
-            var y=new function(){}  
-            y()  //no 不能用()  其实y 已经没有意义了   始终返回 Object{}
-        */
-
-        log([1,2,3,4][1,2,3])   // console.log([1,2,3,4][3]);
-
-        /* label 标签的使用
-            1:continue 只能用于循环当中 不能使用在条件语句中!  在使用label时候,不允许使用{} 包围
-            2:break 可以配合label 使用与任何语句(条件语句 循环语句)中. 对于{} 个人建议 在非循环语句中,应该加上{} 以示范围
-        */
-        //对于break 在非循环结构中使用   仅限于了解即可 不能深究
-        label:{
-            if(true){
-                //break; 错误
-                break label;
+            try{
+                { foo : 123 ,ff:33232}  // error   {a:2}==> 2  yes   {a:2,b:2} no
+            }catch(e){
             }
-        }
-        if(true){
-            break label;  //找不到 label 因此报错
-            }else{
-            break;        // 不能在未使用label前提下,在循环之外使用break
-        }
+
+            /*
+                 {} + 'b'   ==>  NaN
+                 ({}+'b')     ==>  "[Object Object]b"
+                 ({})         ==>   Object {}
+                 {}       ==>   undefined
+                 {}+5  // Number 5   var k={}+5; 则k='[object Object]5'
+                 var t={};
+                 t+5  === "[object Object]5" ===!!({})+5
+             */
+            ({} + 'b' > {} + 'a');      //实质比的是 字符 b 和 a的Unicode
+
+            // 原型转换
+            Number.prototype.x = function(){
+                console.log(typeof this);  //object
+                console.log(this);        //Number {x: function}
+                delete Number.prototype;
+                return this === 123;          //但是在计算中/应用中 会将this转换为string的 number  别的原型也是如此
+            };
+
+            [undefined,null,''].join();   //  ",,"
+
+             /*
+                 new function(){ return String('foo'); }()   //yes  单独使用加不加() 都会执行  只能return 对象类型  无法return 基本类型 
+                 关于 new String  String  我也没太懂 可以google
+             */
+            'foo' == new function(){ return String('foo'); };
+
+            //计算
+            try{
+                ++'52';         // ++ -- 操作符只能使用于变量 eg:var t=3; t++ or ++t
+            }catch(e){
+                var t='43';
+                t=t++;          // t++ 先赋值再运算  ++t先运算再赋值
+                log(t);
+            }
+
+            /*
+                 0.toString()    --error
+                 0..toString() === (0).toString() === !! 0['toString()']() //true
+                 NumberObject.toString(radix)  // 有一个形参 进制
+                 Bool.toString()
+             */
+            [1,2,3,4,5][0..toString.length];
+
+            0.1+0.2;   // 0.30000000000000004    -- http://mzhou.me/article/45001/
+
+            log([1,2,3,4][1,2,3])   // console.log([1,2,3,4][3]);  last
+
+            true === undefined in window;    // 不要忽视 
+
+            var b=3;
+            var b;      // 只定义未赋值 如果上面已经有了 则重写不了人家  对于{} [] 唯一的重写方式就是 ={}  这将切断与上面的指向关系,指向新指针
+            var a = {n:1};
+            a.x = a = {n:2};
+            console.log(a.x);     //  这个迷惑就迷在 上面重写上   a.x=a={n:2} ===>  a.x=(a={n:2})  即a已经被重写啦  a.x还会被赋值为 {n:2}  但是此时此刻 a.x是在未重写的a上面赋值的    而我们这里 再调用a.x  是调用的是 重写后的a.x  so  result:  undefined;
+
+            "use strict";    // TODO 为什么在linux下将函数内部的 严格模式 注释就不管用呢?  难道也是严格模式的作用域>?  http://ishouldbeageek.me/2013/06/09/strict-mode/
+            function c(x, y, a) {
+                "use strict";
+                arguments[2] = 10;
+                log(a);
+            }
+            c(1, 2, 3);
+
+            var bar = function foo() {
+                foo(); // 正常运行
+            };
+            foo(); // 出错：ReferenceError
+
+            var ajaxLocation = document.createElement( "a" );       //http://www.cnblogs.com/jkisjk/archive/2013/05/30/change_document_domain.html
+            ajaxLocation.href = ""; // 创建a的时候 默认为 '' 但是如果把他给人为设置为'' 则他的href将会变成 document.URL
+            ajaxLocation = ajaxLocation.href;
+            log(ajaxLocation===document.URL);
     </script>
-
-    <script>
-        //  --  http://julying.com/blog/so-you-think-you-know-javascript/comment-page-3/#comment-58459
-        if (!("a" in window)) {
-            var a = 1;
-        }
-        log(a);  //作用域  undefined in window
-
-        function b(x) {
-            return x * 2;
-        }
-        var b;  //  想想 如果是 var b=1;????
-        log(b);
-
-        "use strict";    // TODO 为什么在linux下将函数内部的 严格模式 注释就不管用呢?  难道也是严格模式的作用域>?  http://ishouldbeageek.me/2013/06/09/strict-mode/
-        function c(x, y, a) {
-            "use strict";
-            arguments[2] = 10;
-            log(a);
-        }
-        c(1, 2, 3);
-        
-        function d() {
-            log(this);    // this 在js中有一个隐式的等式  this= x||window;  x: 调用者
-        }
-        d.call(null); 
-
-        var k=function (){
-            log(2);
-        };
-        function k(){
-            log(4);
-        }
-        k();  //会打印除2    不管var k在function k 前还是后 都会打印出2   原因function 权限比var权限重  因此在预编译的时候,肯定会先编译,然后var 将其 重写
-
-        var k={a:4};
-        var c=k;
-        c.b=4;   // c.b  k.b  都等于4
-        c={};    //  记住在 js中一切皆对象 只要是={}|| []  即为重写(断开以前的所有联系) 上面的为赋值 因此k也会跟着有b属性 
-    
-        var a = {n:1};
-        a.x = a = {n:2};
-        console.log(a.x);     //  这个迷惑就迷在 上面重写上   a.x=a={n:2} ===>  a.x=(a={n:2})  即a已经被重写啦  a.x还会被赋值为 {n:2}  但是此时此刻 a.x是在未重写的a上面赋值的    而我们这里 再调用a.x  是调用的是 重写后的a.x  so  result:  undefined;
-
-        var k=9;
-        var k;
-        log(k);   // 9  在第二个k只定义未赋值的情况下 当作没有
-
-        var push=[];
-        var _push=push.push(};      //0  除了不填写之外 都返回push的次数 从1开始
-
-        var bar = function foo() {
-            foo(); // 正常运行
-        };
-        foo(); // 出错：ReferenceError
-        
-        jdkfjdklsfd://jfkdjfkdjklf 
-        console.log('上面的情况并不会影响我的执行 因为js会把 : 字段看成一个语句 执行 因此不会产生影响');
-    </script>
-</body>
 </html>

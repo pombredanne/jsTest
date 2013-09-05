@@ -542,3 +542,5 @@
     1: 相对路径不管用 尝试使用绝对路径
     2: 名称必须为 favicon.ico  位置最好放在 网站根目录下
 
+-------   array push 
+    Array.push   // return  Array.length
