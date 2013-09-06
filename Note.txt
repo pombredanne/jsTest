@@ -139,7 +139,6 @@
     $('div.box').hide(e);   //意外的惊喜 哈哈 效果为 slide上下缓慢卷动
 
 -----------判断ie
-    --http://blog.csdn.net/satans18/article/details/5502129
     var isIE=!!window.ActiveXObject,
         isIE6=isIE&&!window.XMLHttpRequest,
         isIE8=isIE&&!!document.documentMode,
@@ -150,6 +149,13 @@
     var ie = !-[1,];
     var IE = eval('"v"=="\v"');
     var ie6=!-[1,]&&!window.XMLHttpRequest;
+
+    var _IE = (function(){
+            var v = 3, div = document.createElement('div'), all =
+            div.getElementsByTagName('i');
+            while ( div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->', all[0]);
+            return v > 4 ? v : false ;
+    }());
 
     [注意----注意]  !-[-1,]  !+[1,]    !+"v1"   这些无法判断ie9,10 因此如果需要判断9,10不要使用它们
 
@@ -544,3 +550,14 @@
 
 -------   array push 
     Array.push   // return  Array.length
+
+------   do{}while()  缩写形式
+    var i = 0;
+    do {
+        document.write(i + " ");
+        i++;
+    } while (i < 10);
+
+    //上面的缩写形式
+    i=0;
+    while(console.log(i),i++,i<10);
