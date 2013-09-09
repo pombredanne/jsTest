@@ -161,3 +161,12 @@ history
 vim 帮助操作:
  Ctrl+]  进入某项
  Ctrl+o  返回  也可用于vim中按G回到页尾的时候,返回刚才的地方
+
+linux 多任务管理:
+    eg:
+    ./run.py &
+    ./prun.py &
+
+    输入命令:
+     jobs   查看都是开启啦那些服务
+     fg + Ctrl+c  关闭命令

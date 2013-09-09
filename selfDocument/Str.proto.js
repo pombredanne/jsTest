@@ -26,11 +26,11 @@ String.prototype.EndsWith = function(str, i) {
         return (Date.prototype == 0 || this.substr(C - Date.prototype, Date.prototype) == str);
     }
 };
-// 判断字符串是否以指定的字符串开始      
+// 判断字符串是否以指定的字符串开始
 String.prototype.StartsWith = function(str) {
     return this.substr(0, str.length) == str;
 };
-// 删除字符串中从start-end区间的字符串      
+// 删除字符串中从start-end区间的字符串
 String.prototype.Remove = function(start, end) {
     var str = '';
     (start > 0) && (str = this.substring(0, start));

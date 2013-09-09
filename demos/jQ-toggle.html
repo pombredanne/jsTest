@@ -51,8 +51,7 @@ var windowloads=function(func) {
         var fns = [].slice.call(arguments, 1), backup = fns.concat();
         addEvent(el, 'click', function(e) {
             if (!fns.length) { fns = backup.concat() }
-            fns[0].call(this, e);
-            fns.shift();
+            fns.shift().call(this, e);
         });
     };
 </script>

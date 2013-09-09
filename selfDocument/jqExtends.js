@@ -65,9 +65,9 @@ $.fn.extend({
             tempEle.appendChild(tempText);
             var result = tempEle.innerHTML;
             return result;
-            
         },
         unescapeHtmlEntities:function(str){
+            //也可以考虑 xmp标签  但是要防止代码攻击 加上 return this.replace(/<\\?xmp>/g,'');   //pre 标签区别是 pre仅仅是保留空格 tab格式
             var tempEle = document.createElement("div");
             tempEle.innerHTML = str;
             //return tempEle.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
