@@ -30,11 +30,11 @@
 }(function () {
 
     var WatchJS = {
-        noMore: false
-    },
-    lengthsubjects = [];
-
-    var isFunction = function (functionToCheck) {
+            noMore: false
+        },
+        lengthsubjects = [],
+        IntervalArr={},
+        isFunction = function (functionToCheck) {
             var getType = {};
             return functionToCheck && getType.toString.call(functionToCheck) == '[object Function]';
         },
@@ -47,19 +47,19 @@
 
     var getObjDiff = function(a, b){
         var aplus = [],
-        bplus = [];
+            bplus = [];
 
-        if(!(typeof a == "string") && !(typeof b == "string") && !isArray(a) && !isArray(b)){
-
-            for(var i in a){
+        if(!(typeof a === "string" || !isArray(a)) && !(typeof b === "string" || isArray(b))){
+            var i;
+            for(i in a){
                 if(!b[i]){
                     aplus.push(i);
                 }
             }
 
-            for(var j in b){
-                if(!a[j]){
-                    bplus.push(j);
+            for(i in b){
+                if(!a[i]){
+                    bplus.push(i);
                 }
             }
         }
@@ -72,36 +72,37 @@
 
     var clone = function(obj){
 
-        if (null == obj || "object" != typeof obj) {
+        if (null === obj || "object" !== typeof obj) {
             return obj;
         }
 
-        var copy = obj.constructor();
+        var copy = obj.constructor(),
+            attr;
 
-        for (var attr in obj) {
+        for (attr in obj) {
             copy[attr] = obj[attr];
         }
 
         return copy;
 
-    }
+    };
 
     var defineGetAndSet = function (obj, propName, getter, setter) {
         try {
 
             Object.observe(obj[propName], function(data){
                 setter(data); //TODO: adapt our callback data to match Object.observe data spec
-            }); 
+            });
 
         } catch(e) {
 
             try {
-                    Object.defineProperty(obj, propName, {
-                            get: getter,
-                            set: setter,
-                            enumerable: true,
-                            configurable: true
-                    });
+                Object.defineProperty(obj, propName, {
+                    get: getter,
+                    set: setter,
+                    enumerable: true,
+                    configurable: true
+                });
             } catch(e2) {
                 try{
                     Object.prototype.__defineGetter__.call(obj, propName, getter);
@@ -142,34 +143,36 @@
 
     var watchAll = function (obj, watcher, level, addNRemove) {
 
-        if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) { //accepts only objects and array (not string)
+        if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) { //只接受{} or []
             return;
         }
 
-        var props = [];
+        var props = [],prop;
 
-
-        if(isArray(obj)) {
-            for (var prop = 0; prop < obj.length; prop++) { //for each item if obj is an array
-                props.push(prop); //put in the props
-            }
-        } else {
-            for (var prop2 in obj) { //for each attribute if obj is an object
-                props.push(prop2); //put in the props
-            }
+        for(var prop in obj){
+            props.push(prop);
         }
+        /* if(isArray(obj)) {
+         for (var prop = 0,length=obj.length; prop < length; prop++) {
+         props.push(prop);
+         }
+         } else {
+         for (var prop2 in obj) {
+         props.push(prop2);
+         }
+         }*/
 
-        watchMany(obj, props, watcher, level, addNRemove); //watch all itens of the props
+        watchMany(obj, props, watcher, level, addNRemove);
     };
 
 
     var watchMany = function (obj, props, watcher, level, addNRemove) {
 
-        if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) { //accepts only objects and array (not string)
+        if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) {
             return;
         }
 
-        for (var prop in props) { //watch each attribute of "props" if is an object
+        for (var prop in props) {
             watchOne(obj, props[prop], watcher, level, addNRemove);
         }
 
@@ -177,19 +180,24 @@
 
     var watchOne = function (obj, prop, watcher, level, addNRemove) {
 
-        if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) { //accepts only objects and array (not string)
+        if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) {
             return;
         }
 
-        if(isFunction(obj[prop])) { //dont watch if it is a function
+        var _prop=obj[prop];
+        if(isFunction(_prop) && !(/"use watch";/ig.test(_prop.toString()))) { //TODO  排出是函数情况 我们就在这里下手
             return;
+        }else if((/"use watch";/ig.test(_prop.toString()))){
+            IntervalArr[obj][prop]=setInterval(function(){
+                _prop();
+            },800)
         }
 
-        if(obj[prop] != null && (level === undefined || level > 0)){
+        if(_prop != null && (level === undefined || level > 0)){
             if(level !== undefined){
                 level--;
             }
-            watchAll(obj[prop], watcher, level); //recursively watch all attributes of this
+            watchAll(_prop, watcher, level); //recursively watch all attributes of this
         }
 
         defineWatcher(obj, prop, watcher);
@@ -294,6 +302,7 @@
     };
 
     var callWatchers = function (obj, prop, action, newval, oldval) {
+        debugger;  //  TODO  查找这个 callWatchers函数
         if (prop) {
             for (var wr in obj.watchers[prop]) {
                 if (isInt(wr)) {
@@ -336,8 +345,7 @@
     var unwatchOne = function (obj, prop, watcher) {
         for(var i in obj.watchers[prop]){
             var w = obj.watchers[prop][i];
-
-            if(w == watcher) {
+            if(w === watcher) {
                 obj.watchers[prop].splice(i, 1);
             }
         }
@@ -350,8 +358,9 @@
         for(var i in lengthsubjects){
 
             var subj = lengthsubjects[i];
+
             var difference = getObjDiff(subj.obj[subj.prop], subj.actual);
-            
+
             if(difference.added.length || difference.removed.length){
                 if(difference.added.length){
                     for(var j in subj.obj.watchers[subj.prop]){
@@ -383,7 +392,10 @@
         for (var i in lengthsubjects) {
             var subj = lengthsubjects[i];
 
-            if (subj.obj == obj && subj.prop == prop && subj.watcher == watcher) {
+            if (subj.obj === obj && subj.prop === prop && subj.watcher === watcher) {
+                if(isFunction(prop)){
+                    window.clearInterval(IntervalArr[obj][prop]);
+                }
                 lengthsubjects.splice(i, 1);
             }
         }
