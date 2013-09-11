@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script language="javascript" type="text/javascript" src="src/watch.js"> </script>
+</head>
+<body>
+    <input type="text" id="aim">
+    <span id="target"></span>
+    <!-- TODO 增加检测dom属性 观察者模式 -->
+    <script language="javascript" type="text/javascript">
+        var _globalEval={
+                t:''
+            };
+
+       $(function(){
+            watch(_globalEval,'t',function(prop, action, newvalue, oldvalue){
+                console.log(prop+" - action: "+action+" - new: "+newvalue+", old: "+oldvalue+"... and the context: "+JSON.stringify(this));
+            });
+       }); 
+    </script>
+</body>
+</html>

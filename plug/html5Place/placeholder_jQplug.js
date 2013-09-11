@@ -1,7 +1,7 @@
 (function($) {
     $.fn.placeholder = function(options) {
         return this.each(function(index, element) {
-             
+
              var defaultOpt = {
                 isFF: false,
                 className: 'placeholder',
@@ -61,7 +61,6 @@
                 options.normal && (options.isFF=false); //如果 正常模式 但是该浏览器不支持 placeholder 让其支持ie10模式
                 init(self);
             }
-            
         });
     };
 })(jQuery);
@@ -86,9 +85,9 @@
                     }
                 },data.valchange);
             }
-            $(this).bind('keyup.textchange', $.event.special.textchange.handler);
+            $(this).bind('keyup.textchange change.textchange', $.event.special.textchange.handler);
             $(this).bind('cut.textchange paste.textchange input.textchange', $.event.special.textchange.delayedHandler);
-        },
+        }
         //卸载事件处理器
         teardown: function (namespaces) {
             $(this).unbind('.textchange');

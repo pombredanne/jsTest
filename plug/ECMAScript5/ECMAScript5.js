@@ -420,8 +420,7 @@
          */
         if (Object.defineProperty) {
             var definePropertyWorksOnObject = doesDefinePropertyWork({});
-            var definePropertyWorksOnDom = typeof document == "undefined" ||
-                doesDefinePropertyWork(document.createElement("div"));
+            var definePropertyWorksOnDom = typeof document == "undefined" || doesDefinePropertyWork(document.createElement("div"));
             if (!definePropertyWorksOnObject || !definePropertyWorksOnDom) {
                 var definePropertyFallback = Object.defineProperty;
             }
