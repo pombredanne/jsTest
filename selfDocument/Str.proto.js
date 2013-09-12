@@ -8,6 +8,9 @@ String.prototype.LTrim = function() {
 String.prototype.RTrim = function() {
     return this.replace(/[\t\n\r]*$/g, '');
 };
+String.prototype.mm = function(){
+    return this.replace(/\s/g,'');
+}
 String.prototype.ChineseLength = function() {
     return this.replace(/[^\x00-\xff]/g, "**").length;
 };

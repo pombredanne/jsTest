@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Document</title>
-    <script language="javascript" type="text/javascript" src="src/watch.js"> </script>
+    <script type="text/javascript" src="watch.js"> </script>
 </head>
 <body>
     <input type="text" id="aim">
@@ -14,15 +14,18 @@
         //defining our object however we like
         var ex6 = {
             attr1: function(){
-                "use watch";
                 alert(2);
             },
-            attr2: 1
+            attr2: 1,
+            'ex6-atttVal':function(){
+                "use watch";
+                return $('#aim').val();
+            }
         };
 
         watch(ex6,function(){
-            console.log('change!!!!');
-        })
+            console.log(3);
+        });
     </script>
 </body>
 </html>
