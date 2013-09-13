@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="VerbalExpressions.js"></script>
+</head>
+<body>
+    <script>
+        var tester = VerEx()
+            .startOfLine()
+            .then( "http" )
+            .maybe( "s" )
+            .then( "://" )
+            .maybe( "www." )
+            .anythingBut( " " )
+            .endOfLine();
+
+        var testMe = "https://www.google.com";
+        if( tester.test( testMe ) ){
+            console.log( "We have a correct URL ");
+        }else{
+            console.log( "The URL is incorrect" );
+        }
+        console.log(tester); // RegExp 对象
+
+        // Create a test string
+        var replaceMe = "Replace bird with a duck";
+
+        // Create an expression that seeks for word "bird"
+        var expression = VerEx().find( "bird" );
+
+        // Execute the expression like a normal RegExp object
+        var result = expression.replace( replaceMe, "duck" );
+
+        console.log( result ); // Outputs "Replace duck with a duck"
+
+        var result = VerEx().find( "red" ).replace( "We have a red house", "blue" );
+        alert( result ); // Outputs "We have a blue house"
+    </script>
+</body>
+</html>

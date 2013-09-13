@@ -75,7 +75,7 @@ sudo nohup mongod &
         gd   --全文查找当前单词
     替换:
         :% s/well/good/      后面可以接正则算法  全部替换
-        :% s/well /good/    中间空开 则是单次替换 
+        :% s/well /good/    中间空开 则是单次替换
     技巧:
         http://a280606790.iteye.com/blog/770314
         去掉所有的行尾空格：   %s/\s\+$//
