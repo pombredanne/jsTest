@@ -41,31 +41,33 @@
         _suffixes : "",
         _modifiers : "gm",
 
-        // Sanitation function for adding
-        // anything safely to the expression
         sanitize : function( value ) {
-            if(value.source) return value.source;
-            return value.replace(/[^\w]/g, function(character) { return "\\" + character; });
+            if(value.source){return value.source}
+            return (value+'').replace(/[^\w]/g, function(character) { return "\\" + character; });
         },
-
-        // Function to add stuff to the
-        // expression. Also compiles the
-        // new expression so it's ready to
-        // be used.
         add: function( value ) {
-            this._source += value || "";
-            this.compile(this._prefixes + this._source + this._suffixes, this._modifiers);
+            value=value.source?/[*|+]{1}/.test(value.source.substr(-1))?'':'+':value?value+'':'';                   // 这里也可以用+= 太TM神奇了
+            this._source+=value;
+            this.compile(this._prefixes + this._source + this._suffixes, this._modifiers);  //重新编译正则表达式
             return( this );
         },
+        or : function( value ) {
 
-        // Start and end of line functions
+            this._prefixes += "(?:";
+            this._suffixes = ")" + this._suffixes;
+
+            this.add( ")|(?:" );
+            if(value) this.then( value );
+
+            return( this );
+        },
+        // 一段完整的正则语句的开始/结束 比如案例中的 url
         startOfLine: function( enable ) {
             enable = ( enable != false );
             this._prefixes = enable ? "^" : "";
             this.add( "" );
             return( this );
         },
-
         endOfLine : function( enable ) {
             enable = ( enable != false );
             this._suffixes = enable ? "$" : "";
@@ -73,180 +75,140 @@
             return( this );
         },
 
-        // We try to keep the syntax as
-        // user-friendly as possible.
-        // So we can use the "normal"
-        // behaviour to split the "sentences"
-        // naturally.
-        then : function( value ) {
+        then : function( value ) {          //开始了 然后。。。
             value = this.sanitize( value );
             this.add( "(?:" + value + ")" );
             return( this );
         },
-
-        // And because we can't start with
-        // "then" function, we create an alias
-        // to be used as the first function
-        // of the chain.
-        find : function( value ) {
-            return( this.then( value ) );
-        },
-
-        // Maybe is used to add values with ?
-        maybe : function( value ) {
+        maybe : function( value ) {         //正则中也许会含有
             value = this.sanitize(value);
             this.add( "(?:" + value + ")?" );
             return( this );
         },
-
-        // Any character any number of times
+        anyOf : function( value ) {             //任何给定的字符 /[rambo\,panda\,yui]/gm
+            value = this.sanitize(value);
+            this.add( "["+ value +"]" );
+            return( this );
+        },
+        any : function( value ) {               // any（[hio456]）/[rambo\,panda\,yui][hio456]/gm
+            return( this.anyOf( value ) );
+        },
+        //任何数量的任何字符倍
         anything : function() {
             this.add( "(?:.*)" );
             return( this );
         },
-
-        // Anything but these characters
         anythingBut : function( value ) {
             value = this.sanitize( value );
             this.add( "(?:[^" + value + "]*)" );
             return( this );
         },
-
-        // Any character at least one time
+        // 任何字符至少一次
         something : function() {
             this.add( "(?:.+)" );
             return( this );
         },
-
-        // Any character at least one time except for these characters
         somethingBut : function( value ) {
             value = this.sanitize( value );
             this.add( "(?:[^" + value + "]+)" );
             return( this );
         },
+        // 几个特殊的正则
+        lineBreak : function() {
+            this.add( "(?:(?:\\n)|(?:\\r\\n))" ); // Unix + windows CLRF换行符
+            return( this );
+        },
+        br : function() {
+            return this.lineBreak();
+        },
+        tab : function() {
+            this.add( "\\t" );
+            return( this );
+        },
+        word : function() {         //任何字母数字
+            this.add( "\\w+" );
+            return( this );
+        },
 
-        // Shorthand function for the
-        // String.replace function to
-        // give more logical flow if, for
-        // example, we're doing multiple
-        // replacements on one regexp.
+        find : function( value ) {
+            return this.then( value );
+        },
         replace : function( source, value ) {
             source = source.toString();
             return source.replace( this, value );
         },
 
+        /*range : function() {
+         return this;        //TODO 这一点取消 难于控制 因为必须要求用户 " number  string  由小到大  "输入 其实质 [1-9a-z] 范围选择
+         var value = "[";
 
-        /// Add regular expression special ///
-        /// characters                     ///
+         for(var _from = 0; _from < arguments.length; _from += 2) {
+         var _to = _from+1;
+         if(arguments.length <= to) break;     //TODO 不知作者为什么这么判断
 
-        // Line break
-        lineBreak : function() {
-            this.add( "(?:(?:\\n)|(?:\\r\\n))" ); // Unix + windows CLRF
-            return( this );
-        },
-        // And a shorthand for html-minded
-        br : function() {
-            return this.lineBreak();
-        },
+         var from = this.sanitize( arguments[_from] );
+         var to = this.sanitize( arguments[_to]);
 
-        // Tab (duh?)
-        tab : function() {
-            this.add( "\\t" );
-            return( this );
-        },
+         value += from + "-" + to;
+         }
 
-        // Any alphanumeric
-        word : function() {
-            this.add( "\\w+" );
-            return( this );
-        },
+         value += "]";
 
-        // Any given character
-        anyOf : function( value ) {
-            value = this.sanitize(value);
-            this.add( "["+ value +"]" );
-            return( this );
-        },
-
-        // Shorthand
-        any : function( value ) {
-            return( this.anyOf( value ) );
-        },
-
-        // Usage: .range( from, to [, from, to ... ] )
-        range : function() {
-
-            var value = "[";
-
-            for(var _from = 0; _from < arguments.length; _from += 2) {
-                var _to = _from+1;
-                if(arguments.length <= to) break;
-
-                var from = this.sanitize( arguments[_from] );
-                var to = this.sanitize( arguments[_to] );
-
-                value += from + "-" + to;
-            }
-
-            value += "]";
-
-            this.add( value );
-            return( this );
-        },
+         this.add( value );
+         return( this );
+         },*/
 
 
-        /// Modifiers      ///
-
-        // Modifier abstraction
-        addModifier : function( modifier ) {
-            if( this._modifiers.indexOf( modifier ) == -1 ) {
-                this._modifiers += modifier;
-            }
+        /// 规定匹配的类型  i:忽略大小写 g:全局 m:多行匹配
+        modifierChange:function(modifier){
+            var _modifier=this._modifiers;
+            this._modifiers=_modifier[_modifier.indexOf(modifier)===-1?'concat':'replace'](modifier,'');
             this.add("");
-            return( this );
-        },
-        removeModifier : function( modifier ) {
-            this._modifiers = this._modifiers.replace( modifier, "" );
-            this.add("");
-            return( this );
+            return this;
         },
 
-        // Case-insensitivity modifier
-        withAnyCase : function( enable ) {
+        /*addModifier : function( modifier ) {
+         if( this._modifiers.indexOf( modifier ) === -1 ) {
+         this._modifiers += modifier;
+         }
+         this.add("");
+         return( this );
+         },
+         removeModifier : function( modifier ) {
+         this._modifiers = this._modifiers.replace( modifier, "" );
+         this.add("");
+         return( this );
+         },
+         //不区分大小写的修饰符
+         withAnyCase : function( enable ) {
 
-            if(enable != false) this.addModifier( "i" );
-            else this.removeModifier( "i" );
+         if(enable != false) this.addModifier( "i" );
+         else this.removeModifier( "i" );
 
-            this.add( "" );
-            return( this );
+         this.add( "" );
+         return( this );
 
-        },
+         },
+         stopAtFirst : function( enable ) {
 
-        // Default behaviour is with "g" modifier,
-        // so we can turn this another way around
-        // than other modifiers
-        stopAtFirst : function( enable ) {
+         if(enable != false) this.removeModifier( "g" );
+         else this.addModifier( "g" );
 
-            if(enable != false) this.removeModifier( "g" );
-            else this.addModifier( "g" );
+         this.add( "" );
+         return( this );
 
-            this.add( "" );
-            return( this );
+         },
+         searchOneLine : function( enable ) {
 
-        },
+         if(enable != false) this.removeModifier( "m" );
+         else this.addModifier( "m" );
 
-        // Multiline, also reversed
-        searchOneLine : function( enable ) {
+         this.add( "" );
+         return( this );
 
-            if(enable != false) this.removeModifier( "m" );
-            else this.addModifier( "m" );
+         },*/
 
-            this.add( "" );
-            return( this );
-
-        },
-
-        multiple : function( value ) {
+        /*multiple : function( value ) {        // TODO 移植到add方法中
             // Use expression or string
             value = value.source ? value.source : this.sanitize(value);
             switch(value.substr(-1)) {
@@ -258,37 +220,27 @@
             }
             this.add( value );
             return( this );
-        },
+        },*/
 
-        // Adds alternative expressions
-        or : function( value ) {
 
-            this._prefixes += "(?:";
-            this._suffixes = ")" + this._suffixes;
-
-            this.add( ")|(?:" );
-            if(value) this.then( value );
-
-            return( this );
-        },
-
-        //starts a capturing group
+        // TODO 开始、结束捕获组  这里暂不了解  研究捕获  http://www.jb51.net/tools/zhengze.html
         beginCapture : function() {
             //add the end of the capture group to the suffixes for now so compilation continues to work
             this._suffixes += ")";
-            this.add( "(", false );
-
-            return( this );
+            this.add( "(", false );             // TODO  这里啥意思 为什么还有加多余的第二形参
+            return this;
         },
-
-        //ends a capturing group
         endCapture : function() { //remove the last parentheses from the _suffixes and add to the regex itself
             this._suffixes = this._suffixes.substring(0, this._suffixes.length - 1 );
             this.add( ")", true );
 
-            return( this );
+            return this;
+        },
+        reset:function(){
+            this._source='';
+            this.add('');
+            return this;
         }
-
     };
 
     function createVerbalExpression() {

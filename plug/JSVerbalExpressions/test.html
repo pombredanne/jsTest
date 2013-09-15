@@ -7,6 +7,8 @@
 </head>
 <body>
     <script>
+        var test=VerEx();
+
         var tester = VerEx()
             .startOfLine()
             .then( "http" )
@@ -25,18 +27,11 @@
         console.log(tester); // RegExp 对象
 
         // Create a test string
-        var replaceMe = "Replace bird with a duck";
+        var replaceMe = "Replace bird with a duck",
+            expression = VerEx().find( "bird"),
+            result = expression.replace( replaceMe, "duck" );
 
-        // Create an expression that seeks for word "bird"
-        var expression = VerEx().find( "bird" );
-
-        // Execute the expression like a normal RegExp object
-        var result = expression.replace( replaceMe, "duck" );
-
-        console.log( result ); // Outputs "Replace duck with a duck"
-
-        var result = VerEx().find( "red" ).replace( "We have a red house", "blue" );
-        alert( result ); // Outputs "We have a blue house"
+        console.log("正则表达式: %c%s %c结果：%c%s", 'color:blue;font-size:x-large;',expression ,'', 'color:blue;font-size:x-large;',result);
     </script>
 </body>
 </html>
