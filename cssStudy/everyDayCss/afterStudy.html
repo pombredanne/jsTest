@@ -5,10 +5,30 @@
 <meta charset="utf-8">
 <title>after before学习</title>
 <style>
-/* 
+/*
     after:在元素内部后边插入  相当与jquery的append;
     before:在元素内部前边插入  相当与jquery的prepend;;
+
+    CSS伪类与CSS伪元素的区别及由来      --http://hi.baidu.com/wwp0726/item/c81a3af901db421be3e3bd1a
+        其区别在于目标是否为元素（差不多就是Dom结点的意思吧）。
+        当目标对象作为一个元素时，此时作用于它身的,这就是伪类。
+        当目标对象不是作为元素存在时，作用于它身上的，就是伪元素。
+        :first-letter
+          "first-letter"伪元素用于向文本的首字母设置特殊样式。
+          很明显首字母不是元素，所以，"first-letter"是伪元素就不难理解了~~
+
+    CSS3:伪类前的冒号和两个冒号区别
+        1:单冒号(:)用于CSS2伪类.  css3 推荐使用的是 :: 双
+        2:
+            {
+                    ie9-: 'use :',
+                    noIe:  'use css3's ::'
+            }
+
+    ps:
+        css3的未来:http://www.qianduan.net/the-future-of-css-experimental-css-properties.html
  */
+
 *{
     margin:0;
     padding:0;

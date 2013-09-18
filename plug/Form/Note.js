@@ -1,5 +1,8 @@
 /*
-     上传渐进方案:  http://kb.cnblogs.com/page/153741/
+     上传渐进方案: 
+        http://kb.cnblogs.com/page/153741/
+        http://www.html5rocks.com/zh/tutorials/file/dndfiles/
+        http://www.micmiu.com/lang/javascript/js-check-filesize/   --- TODO 兼容旧ie获取 文件大小 利用了dynsrc  属性  我草 竟然妹想起来 只适用于ie 目前检测 ie10 也适用
      iframe上传: 上传中最难但针对跨域上传 最有效的一个方法 同时也是 jquery-form 插件中的难点:
      关于获取文件路径一个小注意点:
             js 取得的是图片的数据 不建议使用FireFox

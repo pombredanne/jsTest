@@ -430,6 +430,15 @@
             因此必须进行判断一下 或者建议使用第一种 去掉a.proty`````
             判断方法:  见(1)
 
+    3:自定义选择器的差异
+        $.extend($.expr[":"], {
+            between: function(dom,index,array){
+                index=jQuery.fn.jquery>'1.79'?$(dom).index():index; // jquery1.8以后采用新的选择引擎 因为其Sizzle选择器机制更新 这一点算是bug吧 以后继续弄这里
+                var tmp = array[3].split(",");
+                return tmp[0]-0<index && index<tmp[1]-0;
+             }
+        });
+
 ---------    javascript Date对象的特殊点
     1:new Date('2013-03-4');   // 非chrome浏览器[sarfa opera未测试]无法正常换算成Date对象
        解决办法:
