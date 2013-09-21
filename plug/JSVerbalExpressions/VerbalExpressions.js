@@ -46,10 +46,27 @@
             return (value+'').replace(/[^\w]/g, function(character) { return "\\" + character; });
         },
         add: function( value ) {
-            value=value.source?/[*|+]{1}/.test(value.source.substr(-1))?'':'+':value?value+'':'';                   // 这里也可以用+= 太TM神奇了
+            //value=value.source?/[*|+]{1}/.test(value.source.substr(-1))?'':value.source+'+':value?value+'':'';                 // 这里也可以用+= 太TM神奇了
+            if(value.source){
+                var reg=value.source,
+                    end=reg.substr(-1),
+                    begin=reg.substr(0,1);
+                if(begin.search('^')){  //  TODO 修补不能使用类似  /^.....$/   这得在startOfLine 使用
+                    reg=reg.substr(1);
+                    if(end.search('$')){
+                        reg=reg.substr(0,value.source.length-1);
+                    }
+                    this.startOfLine(true,reg);
+                    this.endOfLine(true);
+                    return this;
+                }else if(!(/[*|+]{1}/.test(end))){
+                    value=reg+'+';
+                }
+            }
+            value=value||'';
             this._source+=value;
             this.compile(this._prefixes + this._source + this._suffixes, this._modifiers);  //重新编译正则表达式
-            return( this );
+            return this;
         },
         or : function( value ) {
 
@@ -62,17 +79,17 @@
             return( this );
         },
         // 一段完整的正则语句的开始/结束 比如案例中的 url
-        startOfLine: function( enable ) {
-            enable = ( enable != false );
+        startOfLine: function( enable,reg) {
+            enable =  enable||false;
             this._prefixes = enable ? "^" : "";
-            this.add( "" );
-            return( this );
+            this.add( reg||'');
+            return this ;
         },
-        endOfLine : function( enable ) {
-            enable = ( enable != false );
+        endOfLine : function( enable,reg ) {
+            enable =  enable||false;
             this._suffixes = enable ? "$" : "";
-            this.add( "" );
-            return( this );
+            this.add( reg||'' );
+            return this;
         },
 
         then : function( value ) {          //开始了 然后。。。
@@ -236,9 +253,9 @@
 
             return this;
         },
-        reset:function(){
+        reset:function(reg){
             this._source='';
-            this.add('');
+            this.add(reg||'');
             return this;
         }
     };

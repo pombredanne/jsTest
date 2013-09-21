@@ -69,6 +69,22 @@
     };
 
     String.prototype._strToDate=function(formatString){
+        //TODO 为了 严谨  禁止 使用 23-4-5 类似这样的日期格式  [0-9]{2,4}  以及取消自动给month+1
+        var day=trim(this.split(formatString)[2]).substr(0,2)-0;
+        formatString=trim(formatString);
+        if(formatString && new RegExp('^[0-9]{4}'+formatString+'(0[1-9]|[1-9]|1[1-2])'+formatString+'(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])(\s*([01]\d|2[0-3])(:([0-5]?\d)){1,2})*').test(trim(this))){
+             formatString=new Date(this.replace(new RegExp("\\"+formatString,'g'),'/'));  // 浏览器都默认为 /
+             //formatString.setMonth(formatString.getMonth()+1);
+            if(formatString.getDate() ===day) {
+                return formatString;
+            }else{
+                throw '哥们 前后月份不对哦'
+            }
+        }else{
+             throw '请检查日期格式是否正确？';
+        }
+
+
         if(validateDate(this, formatString)) {
             var now = new Date(),
                 vals = regexp.exec(this),
