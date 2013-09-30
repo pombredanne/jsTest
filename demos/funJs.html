@@ -14,6 +14,10 @@
         };
 
         //js中隐式bool转换   http://www.dewen.org/q/3848/%E4%B8%BA%E4%BB%80%E4%B9%88%22null%26gt%3B%3D0%22%E4%B8%BAtrue%EF%BC%8C%E4%BD%86%E6%98%AF%22null%3D%3D0%22%E4%B8%BAfalse%3F
+
+            var myVar= "3.14159",
+                int = ~~myVar;      // parseInt(myVar)
+
             var tmp = 'a';
             if([] == false) tmp += 'b';
             if([] === false) tmp += 'rambo';

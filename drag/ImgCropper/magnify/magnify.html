@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8" />
     <title>图片展示 示例</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(window).load(function(){
             /*
@@ -11,28 +11,30 @@
                 2:见下面测试    这种方法可以阻止ie 包括11在内 会将图片进行换存起来
              */
             // 测试ie  与本项目无关
-            $.ajaxSetup({cache:false});
-            $('body').load('http://b.hiphotos.baidu.com/ting/pic/item/a8773912b31bb051065c8db5377adab44aede037.jpg',function(data){
-                console.log(data);  //仅仅在ie会返回data信息 别的浏览器都是undefined
-                delete $.ajaxSettings.cache
-            });
-            $.ajax({
-               cache:false,
-                url:'http://b.hiphotos.baidu.com/ting/pic/item/a8773912b31bb051065c8db5377adab44aede037.jpg',
-                success:function(){
+            if(document.all){
+                $.ajaxSetup({cache:false});
+                $('body').load('http://b.hiphotos.baidu.com/ting/pic/item/a8773912b31bb051065c8db5377adab44aede037.jpg',function(data){
+                    console.log(data);  //仅仅在ie会返回data信息 别的浏览器都是undefined
+                    delete $.ajaxSettings.cache
+                });
+                $.ajax({
+                   cache:false,
+                   url:'http://b.hiphotos.baidu.com/ting/pic/item/a8773912b31bb051065c8db5377adab44aede037.jpg',
+                   success:function(){
 
-                }
-            });
+                   }
+                });
+            }
             // 测试ie  与本项目无关  测试结束
 
-            var mouseX,		//鼠标移动的位置X
-                mouseY,		//鼠标移动的位置Y
-                markLeft,	//放大镜移动的左部距离
-                markTop,	//放大镜移动的顶部距离
-                perX,	//移动的X百分比
-                perY,	//移动的Y百分比
-                bigLeft ,	//大图要移动left的距离
-                bigTop,	//大图要移动top的距离
+            var mouseX,     //鼠标移动的位置X
+                mouseY,     //鼠标移动的位置Y
+                markLeft,   //放大镜移动的左部距离
+                markTop,    //放大镜移动的顶部距离
+                perX,   //移动的X百分比
+                perY,   //移动的Y百分比
+                bigLeft ,   //大图要移动left的距离
+                bigTop, //大图要移动top的距离
                 ELELEFT=$('.small').offset().left,
                 ELETOP=$('.small').offset().top,
                 MARKHIG=$('.mark').outerHeight(),
@@ -112,8 +114,6 @@
             height:160px;
             overflow:hidden;
         }
-
-
     </style>
 </head>
 <body>

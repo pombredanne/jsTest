@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sky Forms Pro</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../style/sky-forms.css" />
+    <link rel="stylesheet" href="../style/demo.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body class="bg-cyan">
+<div class="body body-s">
+    <div class="modal">Click <a href="#sky-form" class="modal-opener">here</a> to open modal form.</div>
+</div>
+<form id="sky-form" class="sky-form sky-form-modal mySelfForm" />
+<header>Login form</header>
+<fieldset>
+    <section>
+        <div class="row">
+            <label class="label col col-4">E-mail</label>
+            <div class="col col-8">
+                <label class="input">
+                    <i class="icon-append icon-user"></i>
+                    <input type="email" name="email" placeholder="输入个email 不能为空" id="email" />
+                    <b class="tooltip tooltip-top-left">Some helpful information</b>
+                </label>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="row">
+            <label class="label col col-4">安全问题</label>
+            <div class="col col-8">
+                <label class="input">
+                    <input type="text" placeholder="选择你的安全问题" list="list">
+                    <datalist id="list">
+                        <option value="def">name</option>
+                        <option value="abc">abcfsdfsd</option>
+                        <option value="fdfdsfsdfsdf">fdfdsfsdfsdf</option>
+                    </datalist>
+                </label>
+                <div class="note"><strong>Note:</strong> 仅仅为了学习list属性</div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="row">
+            <label class="label col col-4">Password</label>
+            <div class="col col-8">
+                <label class="input">
+                    <i class="icon-append icon-lock"></i>
+                    <input type="password" name="password" id="password" />
+                </label>
+                <div class="note"><a href="#">Forgot password?</a></div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="row">
+            <div class="col col-4"></div>
+            <div class="col col-8">
+                <label class="checkbox"><input type="checkbox" name="checkbox-inline" checked="" /><i></i>Keep me logged in</label>
+            </div>
+        </div>
+    </section>
+</fieldset>
+<footer>
+    <button type="submit" class="button">Log in</button>
+    <a href="#" class="button button-secondary modal-closer">Close</a>
+</footer>
+</form>
+<div id="sky-form-modal-overlay" class="sky-form-modal-overlay"></div>
+<script type="text/javascript" src="../js/jquery.2.0.js"></script>
+<script type="text/javascript">
+    $(function(){
+        "use strict";
+        var password=document.getElementById('password'),
+                name=document.getElementById('email'),
+                fn=function(event){
+                    var self=event.currentTarget;
+                    if(!(/rambo|liluwei123@163.com/g.test(self.value)) || !self.value){
+                        self.parentNode.classList.add('state-error');
+                        return
+                    }
+                    self.parentNode.classList.remove('state-error');
+                };
+
+        password.addEventListener('blur',fn,false);
+        name.addEventListener('blur',fn,false);
+    });
+</script>
+</body>
+</html>

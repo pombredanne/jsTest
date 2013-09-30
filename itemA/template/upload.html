@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>上传形式</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../style/sky-forms.css" />
+    <link rel="stylesheet" href="../style/demo.css" />
+    <style type="text/css">
+        #drag {
+            border: 2px dashed #bbb;
+            border-radius: 5px;
+            margin: 20px auto;
+            padding: 25px;
+            text-align: center;
+            font: 20pt bold 'Vollkorn';
+            color: #bbb;
+            display: none;
+        }
+        #drag.hover {
+            border: 2px dashed #0c0;
+        }
+    </style>
+</head>
+<body class="bg-black">
+<div class="body">
+
+    <form action="" class="sky-form" />
+    <header>各种新型上传方式 2M图片为例</header>
+    <fieldset>
+        <div class="row">
+            <section class="col col-5">
+                <label class="toggle"><input type="checkbox" id="timeView" name="checkbox-toggle" checked=""><i></i>实时查看上传图片</label>
+                <label class="toggle"><input type="checkbox" id="pasteView"  name="checkbox-toggle"><i></i>粘贴上传</label>
+                <label class="toggle"><input type="checkbox" id="dragView"   name="checkbox-toggle"><i></i>拖拽上传</label>
+            </section>
+            <div class="col col-2"></div>
+            <section class="col col-5">
+                <label class="toggle"><input type="checkbox" id="multiple" name="checkbox-toggle"><i></i>多张上传</label> <!-- 多张上传 可以上传多张图片 只不过处理的时候 需要循环处理 所以只做一个选取操作-->
+                <label class="toggle"><input type="checkbox" name="checkbox-toggle"><i></i>Clemencia</label>
+                <label class="toggle"><input type="checkbox" name="checkbox-toggle"><i></i>Desiderata</label>
+            </section>
+        </div>
+    </fieldset>
+    <fieldset>
+        <section>
+             <label class="input">
+                <input placeholder="填写手机号码,以便我们更好服务" id="tel"  type="text" />
+            </label>
+        </section>
+        <section>
+            <label for="file" class="input input-file">
+                <div class="button"><input type="file" single  id="file" accept="image/gif,image/jpeg,image/png" onchange="this.parentNode.nextSibling.value = this.value" />Browse</div><input type="text" readonly="" />
+            </label>
+        </section>
+        <section>
+            <div id="drag">将文件拖拽到这</div>
+            <img src="" id="view" width="500" alt="">
+        </section>
+        <section>
+            <p id="content">因没有服务器,所以只能简单做一下介绍了. HTML5推出XMLhttp2 中推荐使用window.FormData ie10+可以使用
+            <a href="../download/uploadForm.js" download="upload讲解">upload讲解</a>
+            </p>
+        </section>
+    </fieldset>
+    </form>
+    <div id="divTest" contenteditable='true' style="opacity: 0;">我是用来辅助火狐Ctrl+v的</div>
+</div>
+</body>
+<div id="sky-form-modal-overlay" class="sky-form-modal-overlay"></div>
+<script type="text/javascript" src="../js/jquery.2.0.js"></script>
+<script type="text/javascript" src="../js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        "use strict";
+
+        var readFile=function(files){
+            for(var i=0;i<files.length;i++){
+                var file=files[i];
+                if(file.type.search('image')>-1){
+                    var fileReader = new FileReader();
+                    fileReader.onloadend = function () {
+                        var url = this.result.substr( this.result.indexOf(',')+1);
+                        $('#view')[0].src=url.search('data:image/jpeg;base64')===0?url:"data:image/jpeg;base64,"+url;
+                    };
+                    return fileReader.readAsDataURL(file.getAsFile?file.getAsFile():file);
+                }
+            }
+        };
+
+        // 拖拽上传
+        $('#dragView').click(function(){
+            if($('#dragView').is(':checked')){
+                $('#drag').show();
+            }else{
+                $('#drag').hide();
+            }
+        });
+        $('#drag').bind('drop',function(event){
+            if($('#dragView').is(':checked')){
+                event.stopPropagation();
+                event.preventDefault();
+                this.className = '';
+                var files = event.originalEvent.dataTransfer.files; // FileList object.
+                readFile(files);
+            }
+        }).bind('dragover',function(event){
+                    if($('#dragView').is(':checked')){
+                        event.originalEvent.dataTransfer.dropEffect = 'copy'; // 明确表明这是一个副本。
+                        this.className = 'hover';
+                        return false;
+                    }
+                }).bind('dragend',function(){
+                    if($('#dragView').is(':checked')){
+                        this.className = '';
+                        return false;
+                    }
+                });
+
+        // 复制上传
+        var paste=function(e){
+            if($('#pasteView').is(':checked')){
+                if(e.clipboardData.items){  //chrome
+                    var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有  items目前只支持chrome
+                    readFile(items);
+                }else{
+                    $('#divTest').focus();
+                    setTimeout(function(){
+                        var img=$('#divTest').find('img');
+                        img=img.length?img[0].src:'';
+                        $('#view')[0].src=img;
+                        $('#divTest').html('');
+                    },800);
+                }
+            }
+        };
+        document.addEventListener('paste',paste,false);
+
+        // 正常的上传
+        $('#file').change(function(event){
+                var acceptedTypes = {
+                            'image/png': true,
+                            'image/jpeg': true,
+                            'image/gif': true
+                        },
+                        files=this.files[0];
+                if(files.size>2097152){
+                    throw '图片太大了 伙计';
+                }
+                if ($('#timeView').is(':checked')&& acceptedTypes[files.type]=== true) {    // 是否实时查看
+                    var reader = new FileReader ();
+                    reader.onload = function (event) {
+                        $('#view')[0].src=event.target.result;
+                    };
+                    reader.readAsDataURL (files);
+                }
+
+        });
+
+        $('#multiple').click(function(){        // 多选操作
+            if(this.checked){
+                $('#file')[0].multiple=true;
+            }else{
+                $('#file')[0].multiple=false;
+            }
+        });
+
+        $('#tel').mask('999 9999 9999', {placeholder:'X'})
+    });
+</script>
+</body>
+</html>

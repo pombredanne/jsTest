@@ -294,6 +294,8 @@ Object.prototype.equals = function(obj) {
     return false;
 };
 
+
+// jquery bind live degate on 方法不同点  http://www.alfajango.com/blog/the-difference-between-jquerys-bind-live-and-delegate/
 var addEventListener = (function() {
     if (HTMLElement.prototype.addEventListener) {       // removeEventListener
         return function(element, type, handler) {

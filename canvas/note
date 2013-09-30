@@ -1,13 +1,13 @@
 work:
-	关系图：
-		http://philogb.github.io/jit/static/v20/Jit/Examples/Hypertree/example1.html   --9
-		http://philogb.github.io/jit/static/v20/Jit/Examples/Spacetree/example1.html   --8
-		http://runjs.cn/detail/khxxbdef  ||  http://www.jointjs.com/demos/run.html?unit=org  --7
+    关系图：
+        http://philogb.github.io/jit/static/v20/Jit/Examples/Hypertree/example1.html   --9
+        http://philogb.github.io/jit/static/v20/Jit/Examples/Spacetree/example1.html   --8
+        http://runjs.cn/detail/khxxbdef  ||  http://www.jointjs.com/demos/run.html?unit=org  --7
 
-		一个看上去还可以的库
-		http://datavlab.org/2012/08/23/3385
+        一个看上去还可以的库
+        http://datavlab.org/2012/08/23/3385
 
-	统计图：
+    统计图：
         --rgraph
             http://marshal.easymorse.com/archives/2823
             http://www.rgraph.net/examples/index.html
@@ -16,32 +16,32 @@ work:
             http://blog.raphaelzhang.com/2012/11/flotcharts-briefing/
             http://www.flotcharts.org/flot/examples/
         http://www.elated.com/articles/snazzy-animated-pie-chart-html5-jquery/    ---pie chart原理 制作
-		http://www.anxioussilence.co.uk/blog/2010/04/27/html-5-graph-slider/	  --- line chart原理
+        http://www.anxioussilence.co.uk/blog/2010/04/27/html-5-graph-slider/      --- line chart原理
 
-		牛逼的半开源的
-		Highcharts 			fusioncharts
+        牛逼的半开源的
+        Highcharts          fusioncharts
 
 blog( Javascript InfoVis Toolkit)--
     http://blog.pixelingene.com/2011/07/building-a-tree-diagram-in-d3-js/
 
 ----svg   ie9+    
-	http://msdn.microsoft.com/zh-cn/library/ie/bg124139(v=vs.85).aspx
+    http://msdn.microsoft.com/zh-cn/library/ie/bg124139(v=vs.85).aspx
     https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement  --火狐讲解svg
-	http://svgjs.com/test/    
-	http://keith-wood.name/svg.html
-	http://commons.oreilly.com/wiki/index.php/SVG_Essentials/Getting_Started
-	http://www.ibm.com/developerworks/cn/xml/x-svgint/
-	http://raphaeljs.com/index.html
-	http://julying.com/lab/raphael-js/docs/
+    http://svgjs.com/test/    
+    http://keith-wood.name/svg.html
+    http://commons.oreilly.com/wiki/index.php/SVG_Essentials/Getting_Started
+    http://www.ibm.com/developerworks/cn/xml/x-svgint/
+    http://raphaeljs.com/index.html
+    http://julying.com/lab/raphael-js/docs/
 
 
  ---  ie svg的插件  svgviewer  SVGWeb  
-	http://www.savarese.com/software/svgplugin/
+    http://www.savarese.com/software/svgplugin/
  
  
  ----vml   ie9-
-	 http://www.itlearner.com/code/vml/step1.html
-	 Raphaël JavaScript   在 SVG 可用时使用 SVG，在 SVG 不可用时使用 VML。
+     http://www.itlearner.com/code/vml/step1.html
+     Raphaël JavaScript   在 SVG 可用时使用 SVG，在 SVG 不可用时使用 VML。
 
 -----canvas plug
     http://jcscript.com/documentation/functions/down
@@ -53,20 +53,25 @@ blog( Javascript InfoVis Toolkit)--
 
 
  --- canvas  svg 比较
- 	Canvas
-		依赖分辨率
-		不支持事件处理器
-		弱的文本渲染能力
-		能够以 .png 或 .jpg 格式保存结果图像
-		最适合图像密集型的游戏，其中的许多对象会被频繁重绘
-	SVG
-		不依赖分辨率
-		支持事件处理器
-		最适合带有大型渲染区域的应用程序（比如谷歌地图）
-		复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）
-		不适合游戏应用
+    Canvas
+        依赖分辨率
+        不支持事件处理器
+        弱的文本渲染能力
+        能够以 .png 或 .jpg 格式保存结果图像
+        最适合图像密集型的游戏，其中的许多对象会被频繁重绘
+    SVG
+        不依赖分辨率
+        支持事件处理器
+        最适合带有大型渲染区域的应用程序（比如谷歌地图）
+        复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）
+        不适合游戏应用
  
 http://www.clanfei.com/category/front-end/2/  --优化
 
  clearShadow:  
  一个还未搞懂的东西   http://searchcode.com/codesearch/view/1035559
+
+ throw Security error的情况:
+     在Canvas中使用跨域图片
+     在本地无服务器环境下进行调试    火狐可以读取本地的chrome不可以
+     无法获取当前域与图片的关系

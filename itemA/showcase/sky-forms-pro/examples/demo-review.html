@@ -1,0 +1,181 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<title>Sky Forms Pro</title>
+		
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+		
+		<link rel="stylesheet" href="css/demo.css" />
+		<link rel="stylesheet" href="css/sky-forms.css" />
+		<link rel="stylesheet" href="css/sky-forms-orange.css" />
+		<!--[if lt IE 9]>
+			<link rel="stylesheet" href="css/sky-forms-ie8.css">
+		<![endif]-->
+		
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/jquery.validate.min.js"></script>		
+		<!--[if lt IE 10]>
+			<script src="js/jquery.placeholder.min.js"></script>
+		<![endif]-->		
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="js/sky-forms-ie8.js"></script>
+		<![endif]-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+	
+	<body class="bg-orange">
+		<div class="body body-s">		
+			<form action="" id="sky-form" class="sky-form" />
+				<header>Review form</header>
+				
+				<fieldset>					
+					<section>
+						<label class="input">
+							<i class="icon-append icon-user"></i>
+							<input type="text" name="name" id="name" placeholder="Your name" />
+						</label>
+					</section>
+					
+					<section>
+						<label class="input">
+							<i class="icon-append icon-envelope-alt"></i>
+							<input type="email" name="email" id="email" placeholder="Your e-mail" />
+						</label>
+					</section>
+					
+					<section>
+						<label class="label"></label>
+						<label class="textarea">
+							<i class="icon-append icon-comment"></i>
+							<textarea rows="3" name="review" id="review" placeholder="Text of the review"></textarea>
+						</label>
+					</section>
+					
+					<section>
+						<div class="rating">
+							<input type="radio" name="quality" id="quality-5" />
+							<label for="quality-5"><i class="icon-star"></i></label>
+							<input type="radio" name="quality" id="quality-4" />
+							<label for="quality-4"><i class="icon-star"></i></label>
+							<input type="radio" name="quality" id="quality-3" />
+							<label for="quality-3"><i class="icon-star"></i></label>
+							<input type="radio" name="quality" id="quality-2" />
+							<label for="quality-2"><i class="icon-star"></i></label>
+							<input type="radio" name="quality" id="quality-1" />
+							<label for="quality-1"><i class="icon-star"></i></label>
+							Quality of the product
+						</div>						
+						
+						<div class="rating">
+							<input type="radio" name="reliability" id="reliability-5" />
+							<label for="reliability-5"><i class="icon-star"></i></label>
+							<input type="radio" name="reliability" id="reliability-4" />
+							<label for="reliability-4"><i class="icon-star"></i></label>
+							<input type="radio" name="reliability" id="reliability-3" />
+							<label for="reliability-3"><i class="icon-star"></i></label>
+							<input type="radio" name="reliability" id="reliability-2" />
+							<label for="reliability-2"><i class="icon-star"></i></label>
+							<input type="radio" name="reliability" id="reliability-1" />
+							<label for="reliability-1"><i class="icon-star"></i></label>
+							Reliability of the product
+						</div>				
+						
+						<div class="rating">
+							<input type="radio" name="overall" id="overall-5" />
+							<label for="overall-5"><i class="icon-star"></i></label>
+							<input type="radio" name="overall" id="overall-4" />
+							<label for="overall-4"><i class="icon-star"></i></label>
+							<input type="radio" name="overall" id="overall-3" />
+							<label for="overall-3"><i class="icon-star"></i></label>
+							<input type="radio" name="overall" id="overall-2" />
+							<label for="overall-2"><i class="icon-star"></i></label>
+							<input type="radio" name="overall" id="overall-1" />
+							<label for="overall-1"><i class="icon-star"></i></label>
+							Overall rating
+						</div>
+					</section>
+				</fieldset>
+				<footer>
+					<button type="submit" class="button">Submit a review</button>
+				</footer>
+			</form>			
+		</div>
+		
+		<script type="text/javascript">
+			$(function()
+			{
+				// Validation
+				$("#sky-form").validate(
+				{					
+					// Rules for form validation
+					rules:
+					{
+						name:
+						{
+							required: true
+						},
+						email:
+						{
+							required: true,
+							email: true
+						},
+						review:
+						{
+							required: true,
+							minlength: 20
+						},
+						quality:
+						{
+							required: true
+						},
+						reliability:
+						{
+							required: true
+						},
+						overall:
+						{
+							required: true
+						}
+					},
+										
+					// Messages for form validation
+					messages:
+					{
+						name:
+						{
+							required: 'Please enter your name'
+						},
+						email:
+						{
+							required: 'Please enter your email address',
+							email: 'Please enter a VALID email address'
+						},
+						review:
+						{
+							required: 'Please enter your review'
+						},
+						quality:
+						{
+							required: 'Please rate quality of the product'
+						},
+						reliability:
+						{
+							required: 'Please rate reliability of the product'
+						},
+						overall:
+						{
+							required: 'Please rate the product'
+						}
+					},					
+					
+					// Do not change code below
+					errorPlacement: function(error, element)
+					{
+						error.insertAfter(element.parent());
+					}
+				});
+			});			
+		</script>
+	</body>
+</html>

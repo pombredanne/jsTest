@@ -1,5 +1,6 @@
 /*
  https://github.com/localhost
+ http://rangy.googlecode.com/svn/trunk/demos/textrange.html     --一个selection插件
  主要用于:
  input textarea 可編輯div  的光标位置 以及选取内容
  getSelection  針對div 是強制使用trim  input 則可以進行調節
