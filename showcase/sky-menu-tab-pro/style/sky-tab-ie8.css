@@ -1,0 +1,25 @@
+/**/
+/* defaults */
+/**/
+.sky-tabs > label span {
+    background: #fff;
+}
+.sky-tabs > .active {
+    cursor: default;
+}
+.sky-tabs > .active span span {
+    background: #2da5da;
+    color: #fff;
+}
+.sky-tabs > ul > li {
+    display: none;
+    background: #fff;
+}
+
+
+/**/
+/* grid */
+/**/
+.sky-tabs .grid-col .inner {
+    background: #f2f2f2;
+}

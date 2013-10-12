@@ -468,7 +468,7 @@
 /* icons */
 /**/
 /*
-    如果是本地测试 为了兼容火狐font文件夹必须放在同html一个级别  如果是服务器 最好放在 style内部  
+    TODO 如果是本地测试 为了兼容火狐font文件夹必须放在同html一个级别  如果是服务器 最好放在 style内部
     火狐支持woff truetype
 */
 @font-face

@@ -294,6 +294,52 @@ Object.prototype.equals = function(obj) {
     return false;
 };
 
+// Object.toSource
+Object.prototype.toSource=(function(){
+    if('toSource' in Object.prototype){
+        return Object.prototype.toSource;
+      /*
+        return function(){
+            return Object.protype.toSouce(this);
+        };*/
+    }else if(JSON && 'stringify' in JSON){
+        return function(){
+            return JSON.stringify(this);
+        };
+    }else if(jQuery){
+       return  function(){
+            return jQuery.parseJSON(this);
+       };
+   }else{
+       return function(){   // http://www.phpernote.com/javascript-function/261.html  http://stackoverflow.com/questions/171407/implementing-mozillas-tosource-method-in-internet-explorer
+                var r=[],
+                     o=this.toString();
+                if(typeof o=="string"){
+                    return "\""+o.replace(/([\'\"\\])/g,"\\$1").replace(/(\n)/g,"\\n").replace(/(\r)/g,"\\r").replace(/(\t)/g,"\\t")+"\"";
+                }
+                if(typeof o=="object"){
+                    var i;
+                    if(!o.sort){
+                        for(i in o){
+                            r.push(i+":"+obj2string(o[i]));
+                        }
+                        if(!!document.all&&!/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/.test(o.toString)){
+                            r.push("toString:"+o.toString.toString());
+                        }
+                        r="{"+r.join()+"}";
+                    }else{
+                        for(i=0;i<o.length;i++){
+                            r.push(obj2string(o[i]));
+                        }
+                        r="["+r.join()+"]";
+                    } 
+                    return r;
+                } 
+                return o.toString();
+       } ;
+   }
+})();
+
 
 // jquery bind live degate on 方法不同点  http://www.alfajango.com/blog/the-difference-between-jquerys-bind-live-and-delegate/
 var addEventListener = (function() {

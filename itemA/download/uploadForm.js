@@ -437,11 +437,71 @@ var fileUploadIframe=function (a) {
     关于file 上传框 在各个浏览器中的不同 http://liunian.info/input-file-in-different-browsers.html
     html5 新file框 http://www.cnblogs.com/meteoric_cry/archive/2011/06/07/2073987.html
     Data URL:   http://www.cnblogs.com/XL-Liang/archive/2012/06/01/2530509.html
+    用JS 判断图片已经加载完成(兼容IE 和 Firefox) 主要针对ie 草:  http://www.cnblogs.com/niniwzw/archive/2009/08/27/1555281.html
 
     ifrane 操作   --  http://www.58lou.com/separticle.php?artid=179
     chorme:使用 ownerDocument  _iframe.contentWindow.document? _iframe.contentWindow.document.body : _iframe.ownerDocument.body; 
 */
+/*
+         跨域讲解:
+            document.domain:
+                适用于相同主域名的情况 eg: a.bbb.com  ipc.bbb.com
+                设置domain  只能设置当前的域名或者基础域名 
+            
+            window.postMessage:
+                ie8+;
+                这个api比较牛逼 比较简单 可以直接参考:http://www.css88.com/archives/4895   
+                里面推荐啦一个postMessage插件 学习一下里面的前端代理: http://www.planeart.cn/?p=1620
+                一个插件:https://github.com/eligrey/libxdr/blob/master/libxdr.js
+                TODO:  最好判断Origin 来源 安全考虑
+            
+            CORS:
+                简单来说 a.html 想跨域 b.html   b.html在后台返回信息中添加 Access-Control-Allow-Origin:a.html  即可
+                http://www.html5rocks.com/en/tutorials/cors/
 
+            iframe+form:
+                a.html中设置一个 iframe 和 一个form  form的action为跨域目标, target:为iframe.id||name
+
+            后台代理:
+                http://www.impng.com/web-dev/ajax-crossdomain-by-proxy.html
+
+            jsonp:
+                一种脚本注入(Script Injection)方式，存在一定的安全隐患。但使用较为方便,只能使用get方法进行跨域交互.
+                jsonp通过向其它域传入一个callback参数，通过其他域的后台将callback参数值和json串包装成javascript函数返回，因为是通过script标签发出的请求，浏览器会将返回来的字符串按照javascript进行解析执行，实现了域与域之间的数据传输。 
+                jquery已经讲解很详细啦  http://www.impng.com/web-dev/ajax-crossdomain-by-jsonp.html
+
+            window.name:
+                所谓代理页面就是一个没有任何内容的html文件  不过可以同 上面[window.postMessage]中介绍的那个插件中的带来对比.
+                http://www.cnblogs.com/rainman/archive/2011/02/21/1960044.html
+                一个写好的js库,附件中有许多jsString的好方法 可以采纳一下:http://www.iteye.com/topic/901182
+
+            动态DOM:
+                主要针对js  css这类的文件操作:
+                js.onload = js.onreadystatechange = function() {
+                    if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+                        // callback在此处执行
+                        js.onload = js.onreadystatechange = null;
+                    }
+                };
+
+            location.hash: 不推荐
+                主要代码:
+                    function hash(){
+                        try {
+                            parent.location.hash = 'somedata';  //somedata 就是给a页面传递的参数
+                        } catch (e) {
+                            // ie、chrome的安全机制无法修改parent.location.hash，
+                            // 所以要利用一个中间的cnblogs域下的代理iframe
+                            var ifrproxy = document.createElement('iframe');
+                            ifrproxy.style.display = 'none';
+                            ifrproxy.src = 'http://a.com/test/cscript/cs3.html#somedata';    // 注意该文件在"a.com"域下
+                            document.body.appendChild(ifrproxy);
+                        }
+                    }
+
+              flash:
+
+ */
 //   我个人在跨欲 做的上传 原理同上:
 var iframeID = 'bafUploadIframe',
     $iframe = $('#' + iframeID);

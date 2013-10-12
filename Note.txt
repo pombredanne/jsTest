@@ -151,8 +151,7 @@
     var ie6=!-[1,]&&!window.XMLHttpRequest;
 
     var _IE = (function(){          // 我不能判断ie10浏览器哦 判断ie10 看这里http://newhtml.net/%E5%87%86%E5%A4%87%E4%B8%8Eie10%E4%BD%9C%E6%88%98%E5%90%A7-%E5%A6%82%E4%BD%95%E9%89%B4%E5%88%ABie10/
-            var v = 3, div = document.createElement('div'), all =
-            div.getElementsByTagName('i');
+            var v = 3, div = document.createElement('div'), all=div.getElementsByTagName('i');
             while ( div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->', all[0]);
             return v > 4 ? v : false ;
     }());
@@ -570,3 +569,19 @@
     //上面的缩写形式
     i=0;
     while(console.log(i),i++,i<10);
+
+------   空白汉字占位符号
+     &#12288;可以看作一个空白的汉字占位符  会阻挡一般编译器格式化代码
+
+------   script的defer和async
+     相同点：
+         加载文件时不阻塞页面渲染
+         对于inline的script无效
+         使用这两个属性的脚本中不能调用document.write方法
+         有脚本的onload的事件回调
+     区别点：
+         async:html5的新玩意
+         两者支持不一样 不过根据目前情况 不需考虑    ie最早支持defer 关于firefox对 嵌入式script脚本不同点 可以参照http://ued.ctrip.com/blog/?p=3121
+         执行时刻
+            async: 执行顺序不一样,会在window.load事件前执行
+            defer: 执行顺序一样,同时会在document的DOMContentLoaded之前执行。

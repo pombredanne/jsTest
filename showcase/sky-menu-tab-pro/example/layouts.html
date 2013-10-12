@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sky Tabs</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <link rel="stylesheet" href="../style/demo.css">
+    <link rel="stylesheet" href="../style/sky-tabs.css">
+    <link rel="stylesheet" href="../style/sky-tab-red.css">
+
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="../style/sky-tab-ie8.css">
+        <script src="../../_js/jquery.min.js"></script>
+        <script>
+            $(function(){
+                var active = $('.sky-tabs > input:checked');
+                active.next().addClass('active');
+                $('.sky-tabs ul .' + active.attr('class')).show();
+
+                $('.sky-tabs > label').on('click', function()
+                {
+                    $(this).addClass('active').siblings().removeClass('active');
+                    $('.sky-tabs ul .' + $(this).prev().attr('class')).show().siblings().hide();
+                });
+            });
+        </script>
+    <![endif]-->
+</head>
+
+<body class="bg-cyan">
+
+    <div class="body">
+        <!-- tabs -->
+        <div class="sky-tabs">
+            <input type="radio" name="sky-tabs" checked id="sky-ta1b1" class="sky-tab-content-1">
+            <label for="sky-tab1"><span><span><i class="icon-bolt"></i>Tesla</span></span></label>
+            <input type="radio" name="sky-tabs" checked id="sky-ta2b1" class="sky-tab-content-1">
+            <label for="sky-tab1"><span><span><i class="icon-bolt"></i>Tesla</span></span></label>
+        </div>
+        <br>
+        <div class="sky-tabs sky-tabs-pos-left sky-tabs-anim-flip sky-tabs-response-to-icons">
+            <input type="radio" name="sky-tabs" checked id="sky-tab1" class="sky-tab-content-1">
+            <label for="sky-tab1"><span><span><i class="icon-bolt"></i>Tesla</span></span></label>
+
+            <input type="radio" name="sky-tabs" id="sky-tab2" class="sky-tab-content-2">
+            <label for="sky-tab2"><span><span><i class="icon-picture"></i>da Vinci</span></span></label>
+
+            <input type="radio" name="sky-tabs" id="sky-tab3" class="sky-tab-content-3">
+            <label for="sky-tab3"><span><span><i class="icon-cogs"></i>Einstein</span></span></label>
+
+            <input type="radio" name="sky-tabs" id="sky-tab4" class="sky-tab-content-4">
+            <label for="sky-tab4"><span><span><i class="icon-globe"></i>Lists</span></span></label>
+
+            <input type="radio" name="sky-tabs" id="sky-tab5" class="sky-tab-content-5">
+            <label for="sky-tab5"><span><span><i class="icon-collapse"></i>Paragraphs</span></span></label>
+
+            <input type="radio" name="sky-tabs" id="sky-tab6" class="sky-tab-content-6">
+            <label for="sky-tab6"><span><span><i class="icon-headphones"></i>Headings</span></span></label>
+
+            <label class="switcher"><span><span><a href="#"><i class="icon-reorder"></i>Tabs</a></span></span></label>
+
+            <ul>
+                <li class="sky-tab-content-1">
+                    <div class="typography">
+                        <h1>Nikola Tesla</h1>
+                        <p>Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist best known for his contributions to the design of the modern alternating current (AC) electrical supply system.<br><br><br></p>
+                    </div>
+
+                    <div class="sky-tabs sky-tabs-pos-top-left sky-tabs-anim-slide-top sky-tabs-response-to-stack">
+                        <input type="radio" name="sky-tabs-1" checked="" id="sky-tab1-1" class="sky-tab-content-1">
+                        <label for="sky-tab1-1"><span><span>Early years</span></span></label>
+
+                        <input type="radio" name="sky-tabs-1" id="sky-tab-1-2" class="sky-tab-content-2">
+                        <label for="sky-tab-1-2"><span><span>Middle years</span></span></label>
+
+                        <input type="radio" name="sky-tabs-1" id="sky-tab1-3" class="sky-tab-content-3">
+                        <label for="sky-tab1-3"><span><span>Later years</span></span></label>
+
+                        <ul>
+                            <li class="sky-tab-content-1">
+                                <div class="typography">
+                                    <p>Nikola Tesla was born on 10 July (O.S. 28 June) 1856 to Serbian parents in the village of Smiljan, Austrian Empire (modern-day Croatia). His father, Milutin Tesla, was a Serbian Orthodox priest. Tesla's mother, Đuka Tesla (née Mandić), whose father was also a Serbian Orthodox priest, had a talent for making home craft tools, mechanical appliances, and the ability to memorize Serbian epic poems. Đuka had never received a formal education. Nikola credited his eidetic memory and creative abilities to his mother's genetics and influence. Tesla's progenitors were from western Serbia, near Montenegro.</p>
+                                </div>
+                            </li>
+                            <li class="sky-tab-content-2">
+                                <div class="typography">
+                                    <p>In 1886, Tesla formed his own company, Tesla Electric Light &amp; Manufacturing. The company installed electrical arc light based illumination systems designed by Tesla and also had designs for dynamo electric machine commutators, the first patents issued to Tesla in the US. Tesla proposed that the company should go on to develop his ideas for alternating current transmission systems and motors. The investors disagreed and eventually fired him, leaving him penniless; Tesla was forced to work as a ditch digger for US$2 per day. Tesla considered the winter of 1886/1887 as a time of "terrible headaches and bitter tears". During this time, he questioned the value of his education.</p>
+                                </div>
+                            </li>
+                            <li class="sky-tab-content-3">
+                                <div class="typography">
+                                    <p>In 1928, Tesla received his last patent, U.S. Patent 1,655,114, for a biplane capable of taking off vertically (VTOL aircraft) and then be "gradually tilted through manipulation of the elevator devices" in flight until it was flying like a conventional plane. Tesla stated it would weigh 800 pounds and would sell at $1,000 for both military and consumer uses. Although the aircraft was probably impractical, it may be the earliest known design for what became the tiltrotor/tilt-wing concept as well as the earliest proposal for the use of turbine engines in rotor aircraft.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="typography">
+                        <p class="text-right"><br><br><em>Find out more about Nikola Tesla from <a href="http://en.wikipedia.org/wiki/Nikola_Tesla" target="_blank">Wikipedia</a>.</em></p>
+                    </div>
+                </li>
+
+                <li class="sky-tab-content-2">
+                    <div class="typography">
+                        <h1>Grid System</h1>
+                        <p>Grid system is fully responsive, utilizes 12 fluid columns. Below 768px viewports, the columns stack vertically.</p>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-1"><div class="inner">1/12</div></div>
+                            <div class="grid-col grid-col-11"><div class="inner">11/12</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-2"><div class="inner">2/12</div></div>
+                            <div class="grid-col grid-col-10"><div class="inner">10/12</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-3"><div class="inner">3/12</div></div>
+                            <div class="grid-col grid-col-9"><div class="inner">9/12</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-4"><div class="inner">4/12</div></div>
+                            <div class="grid-col grid-col-8"><div class="inner">8/12</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-5"><div class="inner">5/12</div></div>
+                            <div class="grid-col grid-col-7"><div class="inner">7/12</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-6"><div class="inner">6/12</div></div>
+                            <div class="grid-col grid-col-6"><div class="inner">6/12</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col"><div class="inner">12/12</div></div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="sky-tab-content-3">
+                    <div class="typography">
+                        <h1>Offsetting columns</h1>
+                        <p>Move columns to the right using <strong>grid-col-offset-*</strong> classes. Each class increases the left margin of a column by a whole column.</p>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-11 grid-col-offset-1"><div class="inner">11/12 offset 1</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-10 grid-col-offset-2"><div class="inner">10/12 offset 2</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-9 grid-col-offset-3"><div class="inner">9/12 offset 3</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-8 grid-col-offset-4"><div class="inner">8/12 offset 4</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-7 grid-col-offset-5"><div class="inner">7/12 offset 5</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-6 grid-col-offset-6"><div class="inner">6/12 offset 6</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-5 grid-col-offset-7"><div class="inner">5/12 offset 7</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-4 grid-col-offset-8"><div class="inner">4/12 offset 8</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-3 grid-col-offset-9"><div class="inner">3/12 offset 9</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-2 grid-col-offset-10"><div class="inner">2/12 offset 10</div></div>
+                        </div>
+
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-1 grid-col-offset-11"><div class="inner">1/12</div></div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="sky-tab-content-4">
+                    <div class="typography">
+                        <div class="grid-row">
+                            <div class="grid-col grid-col-6">
+                                <h2>Unordered list</h2>
+                                <ul>
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Consectetur adipiscing elit</li>
+                                    <li>Integer molestie lorem at massa</li>
+                                    <li>Facilisis in pretium nisl aliquet</li>
+                                    <li>Nulla volutpat aliquam velit</li>
+                                </ul>
+
+                                <h2>Nested unordered list</h2>
+                                <ul>
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Consectetur adipiscing elit
+                                        <ul>
+                                            <li>Lorem ipsum dolor sit amet</li>
+                                            <li>Consectetur adipiscing elit</li>
+                                            <li>Integer molestie lorem at massa</li>
+                                        </ul>
+                                    </li>
+                                    <li>Integer molestie lorem at massa</li>
+                                    <li>Facilisis in pretium nisl aliquet</li>
+                                    <li>Nulla volutpat aliquam velit</li>
+                                </ul>
+                            </div>
+
+                            <div class="grid-col grid-col-6">
+                                <h2>Ordered list</h2>
+                                <ol>
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Consectetur adipiscing elit</li>
+                                    <li>Integer molestie lorem at massa</li>
+                                    <li>Facilisis in pretium nisl aliquet</li>
+                                    <li>Nulla volutpat aliquam velit</li>
+                                </ol>
+
+                                <h2>Nested ordered list</h2>
+                                <ol>
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Consectetur adipiscing elit
+                                        <ol>
+                                            <li>Lorem ipsum dolor sit amet</li>
+                                            <li>Consectetur adipiscing elit</li>
+                                            <li>Integer molestie lorem at massa</li>
+                                        </ol>
+                                    </li>
+                                    <li>Integer molestie lorem at massa</li>
+                                    <li>Facilisis in pretium nisl aliquet</li>
+                                    <li>Nulla volutpat aliquam velit</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="sky-tab-content-5">
+                    <div class="typography">
+                        <h2>Left aligned text</h2>
+                        <p>German-born theoretical <strong>physicist</strong> who developed the general theory of relativity, one of the two pillars of modern physics (alongside quantum mechanics). While best known for his mass–energy equivalence formula E = mc2 (which has been dubbed "the world's most famous equation"), he received the 1921 Nobel Prize in Physics "for his services to theoretical physics, and especially for his discovery of the law of the photoelectric effect". The latter was pivotal in establishing quantum theory.</p>
+
+                        <h2 class="text-center">Center aligned text</h2>
+                        <p class="text-center">Near the beginning of his career, Einstein thought that Newtonian mechanics was no longer enough to reconcile the laws of classical mechanics with the laws of the electromagnetic field. This led to the development of his special theory of relativity.</p>
+
+                        <h2 class="text-right">Right aligned text</h2>
+                        <p class="text-right">He realized, however, that the principle of relativity could also be extended to gravitational fields, and with his subsequent theory of gravitation in 1916, he published a paper on the general theory of relativity.</p>
+                    </div>
+                </li>
+                <li class="sky-tab-content-6">
+                    <div class="typography">
+                        <h1>Brown fox jumps over the lazy dog (h1)</h1>
+                        <h2>Brown fox jumps over the lazy dog (h2)</h2>
+                        <h3>Brown fox jumps over the lazy dog (h3)</h3>
+                        <h4>Brown fox jumps over the lazy dog (h4)</h4>
+                        <h5>Brown fox jumps over the lazy dog (h5)</h5>
+                        <h6>Brown fox jumps over the lazy dog (h6)</h6>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--/ tabs -->
+    </div>
+    <script type="text/javascript">
+        /*
+        *    如果想一个页面弄两个 一定要注意input:radio的 name class id属性 不能相同
+        *
+        *    right sky-tabs-pos-top-right
+        *    center sky-tabs-pos-top-center
+        *    full: sky-tabs-amount-4 sky-tabs-pos-top-justify
+        *    分开: sky-tabs sky-tabs-pos-top-left sky-tabs-anim-flip sky-tabs-response-to-icons
+        *    left:sky-tabs sky-tabs-pos-left sky-tabs-anim-flip sky-tabs-response-to-icons
+        *    right:sky-tabs sky-tabs-pos-right sky-tabs-anim-flip sky-tabs-response-to-icons
+        *
+        *    anim:
+        *    flip: sky-tabs-anim-flip
+        *    rotate: sky-tabs-anim-rotate
+        *    fade: defult
+        *    slide-up:sky-tabs-anim-slide-up
+        *    slide-up-right:sky-tabs-anim-slide-up-right
+        *    Slide right:sky-tabs-anim-slide-right
+        *    down-right:sky-tabs-anim-slide-down-right
+        *    slide-down:sky-tabs-anim-slide-down
+        *    slide-down-left:sky-tabs-anim-slide-down-left
+        *    slide-left:sky-tabs-anim-slide-left
+        *    slide-up-left:sky-tabs-anim-slide-up-left
+        */
+    </script>
+</body>
+</html>

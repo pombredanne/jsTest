@@ -1,0 +1,12 @@
+/**/
+/* defaults */
+/**/
+.sky-tabs > label:hover span span {
+    background: #cc3d3d;
+}
+.sky-tabs > input:checked + label span span {
+    background: #cc3d3d;
+}
+.sky-tabs > .active span span {
+    background: #cc3d3d !important;
+}
