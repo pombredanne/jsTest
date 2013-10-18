@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <script src="jquery-2.0.3.js"></script>
+        <style>
+            .chatInput:focus {
+                background: #fff;
+            }
+            .chatInput {
+                border-color: #ddd;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+                float: left;
+                width: 403px;
+                width: 400px\9;
+                height: 26px;
+                margin: 0 10px 0 10px;
+                padding: 7px 10px 2px;
+                outline: none;
+                background: #EEE;
+                background: #fafafa\9;
+                border-radius: 2px;
+                border: none;
+                border-bottom: 1px solid #fff;
+                border: 1px solid #ccc\9;
+                font: 14px/1.5 Helvetica,"微软雅黑","黑体",Arial,Tahoma;
+                line-height: 1.2em;
+                resize: none;
+            }
+        </style>
+    </head>
+    <body>
+        <textarea type="text" id="textInput" class="chatInput" placeholder="jquery textarea 高度演示"></textarea>
+        <input id="ffff" class="chatInput" placeholder="jquery input 宽度演示" />
+        <script>
+              /*
+                  1:div模拟textarea文本域
+                  2:js/jquery 以下的方法
+                  3:德问的方法 设置另一个隐藏textarea   http://segmentfault.com/q/1010000000095238  这里也有讨论
+                  4: 不推荐判断  textarea的 换行符      http://www.dewen.org/q/2633/js%E6%8E%A7%E5%88%B6textarea%E9%AB%98%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E7%9A%84%E9%97%AE%E9%A2%98
+              */
+              $.fn.textareaAutoHeight=function(options){        // 网友方法: http://www.xuanfengge.com/textarea-on-how-to-achieve-a-high-degree-of-adaptive.html  http://www.111cn.net/wy/jquery/46712.htm
+                var $self=this,
+                    _options={
+                        minHeight:0,
+                        maxHeight:1000,
+                        width:false
+                    },
+                    init=function(){
+                        $.extend(_options,options);
+                        if (_options.minHeight-0 === 0) {
+                            _options.minHeight=parseFloat($self.height());
+                        }
+                        _options._padding='mozInnerScreenX' in window && 'ChromeWindow' in window ? 0:_options.padding?_options.padding:parseFloat($self.css('paddingBottom'))+parseFloat($self.css('paddingTop'));
+                        var method=_options.width&&$self[0].tagName.toUpperCase()==='INPUT'?resetWidth:resetHeight;
+                        $self.bind('propertychange input keyup focus change',method);
+                        $self.css('overflow-y','hidden');
+                    },
+                    resetWidth=function(){
+                        //TODO: 控制input长度的变化比率
+                        var _size=this.value.replace(/[^\u0000-\u00ff]/g,"aa").length;
+                        // 默认20 min:1
+                        this.size=_size;
+                    },
+                    resetHeight=function(){
+                        var _minHeight = parseFloat(_options.minHeight),
+                            _maxHeight = parseFloat(_options.maxHeight);
+                        if (!window.ActiveXObject) {        // TODO 这是重点
+                            $(this).height(0);
+                        }
+                        var height=parseFloat(this.scrollHeight-_options._padding);
+                        height = height < _minHeight ? _minHeight :height > _maxHeight ? _maxHeight : height; 
+                        $(this).height(height).scrollTop(height);   // TODO:  或者可以直接  $(this).height()+$(this).scrollTop();
+                        /* // TODO 这里需要嘛? 
+                        if (height >= _maxHeight) {
+                            $(this).css("overflow-y", "scroll");
+                        }else {
+                            $(this).css("overflow-y", "hidden");
+                        }*/
+                        $.isFunction(_options.fn)&&(_options.fn.call(this,height,_options,event));
+                    };
+                init();
+            }
+            $('#ffff').textareaAutoHeight({width:true});
+            $('#textInput').textareaAutoHeight();
+        </script>
+    </body>
+</html>

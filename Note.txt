@@ -138,7 +138,7 @@
 ----------jquery hide意外
     $('div.box').hide(e);   //意外的惊喜 哈哈 效果为 slide上下缓慢卷动
 
------------判断ie
+-----------判断浏览器
     var isIE=!!window.ActiveXObject,
         isIE6=isIE&&!window.XMLHttpRequest,
         isIE8=isIE&&!!document.documentMode,
@@ -157,6 +157,10 @@
     }());
 
     [注意----注意]  !-[-1,]  !+[1,]    !+"v1"   这些无法判断ie9,10 因此如果需要判断9,10不要使用它们
+
+    chrome:
+        window.chrome
+    firefox:  现在不定  可以参考  使用 window.moz系列方法  mozInnerScreenX    ChromeWindow
 
 -----------js判断当前窗口是否被激活(获取焦点)
     http://blog.sina.com.cn/s/blog_4d38a3b001019zd6.html
@@ -296,13 +300,13 @@
     更多widnow对象的函数:  http://www.dreamdu.com/javascript/window.resizeTo/
 
 ----------- A标签模拟点击
-    if(navigator.userAgent.search('Chrome')>-1){    //谷歌中 没有给他click属性
-            var sub=$('#t1')[0];
-            var e = document.createEvent('MouseEvent');
-            e.initEvent('click', false, false);
-            sub.dispatchEvent(e);
-    }else{
+    try{
         $('#t1')[0].click();//火狐ie可以
+    }catch(e){
+        var sub=$('#t1')[0];
+        var e = document.createEvent('MouseEvent');
+        e.initEvent('click', false, false);
+        sub.dispatchEvent(e);
     }
 
 -----------  jquery jsonp跨域请求
