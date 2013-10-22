@@ -261,9 +261,10 @@
         1:它代表的是浏览器以何种模式呈现页面。
         2:不同的文本模式对应不同的排版引擎，不同的JS引擎。
         3:影响ie的 document.documentMode
-        使用:
+        使用:           -- http://www.iefans.net/dingyi-wendang-jianrongxing-zhiding-banben-jiexi/
             <meta http-equiv="X-UA-Compatible" content="IE=7" >            <!-- (1) 使用ie7兼容模式渲染-->
             <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />  <!--(2)  模仿ie7  >ie8 才会有 对于>ie8的浏览器 (1) (2) 都可以使用效果一样 -->
+            <meta http-equiv="X-UA-Compatible" content="edge" />             触发标准模式  http://www.weste.net/2013/8-9/93109.html
              <!--
                 两者区别:
                     1: (1)不管页面是否使用<!DOCTYPE>指令，都像是使用了 Windows Internet Explorer 7的标准模式。
