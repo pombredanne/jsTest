@@ -4,83 +4,83 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>测试DOM</title>
 <style type="text/css">
-	a{
-		margin:0 10px 0 0;
-	}
-	.current{
-		color: red
-	}
+    a{
+        margin:0 10px 0 0;
+    }
+    .current{
+        color: red
+    }
 </style>
 
 <script type="text/javascript">
-//http://www.cnblogs.com/doug/archive/2012/06/23/2559568.html   另一种	
-	/*
-		我对于这种分页思想   没有
-		1: 分出 显示页数的关系<=总共的页数 正常排版
-		2: 分出 
-			1:中立关系:  var lrNum=Math.ceil(总页数/2)
-			2: for(var i=lrNum;i<showPageNum;i++){
-				//左边
-				for(var k=i;k>0;k--){
-					var page=currpage-1;
-					if(page==0){
-						break;
-					}
-				}
-				i //self
-				for(k=i;k<showPageNum;k++){
-					page=currpage+1;
-					if(page>allPageNum){
-						break;	
-					}
-				}
-				str=left+center+right
-				break;
-			}
-		3:上下页的分析
-		if(curpageNum>1){}
-		if(curpageNum<allPageNum){}
-	*/
-	
-	function showPage(totalPages, curPage, showPage) {		//他这里 将showPage分开  所以不用考虑要显示的页数  这里避免了计算的复杂
-		//并且个人认为 直接使用  str html拼接会更好
+//http://www.cnblogs.com/doug/archive/2012/06/23/2559568.html   另一种  
+    /*
+        我对于这种分页思想   没有
+        1: 分出 显示页数的关系<=总共的页数 正常排版
+        2: 分出 
+            1:中立关系:  var lrNum=Math.ceil(总页数/2)
+            2: for(var i=lrNum;i<showPageNum;i++){
+                //左边
+                for(var k=i;k>0;k--){
+                    var page=currpage-1;
+                    if(page==0){
+                        break;
+                    }
+                }
+                i //self
+                for(k=i;k<showPageNum;k++){
+                    page=currpage+1;
+                    if(page>allPageNum){
+                        break;  
+                    }
+                }
+                str=left+center+right
+                break;
+            }
+        3:上下页的分析
+        if(curpageNum>1){}
+        if(curpageNum<allPageNum){}
+    */
+    
+    function showPage(totalPages, curPage, showPage) {      //他这里 将showPage分开  所以不用考虑要显示的页数  这里避免了计算的复杂
+        //并且个人认为 直接使用  str html拼接会更好
 
-	 	var page = document.getElementById("page");
-	 	var first; //第一页
-	 	var last; //最后一页
-	 	var newNode; //插入的新节点
-	 	if ((curPage - showPage) > 0) {
-	 		first = curPage - showPage;
-			//上一页 下一页
-			newNode = document.createElement("span");
- 			newNode.innerHTML = "--上一页 --";
- 			newNode.className = "上一页";
- 			page.appendChild(newNode);
-	 	} else {
-	 		first = 1;
-	 	}
+        var page = document.getElementById("page");
+        var first; //第一页
+        var last; //最后一页
+        var newNode; //插入的新节点
+        if ((curPage - showPage) > 0) {
+            first = curPage - showPage;
+            //上一页 下一页
+            newNode = document.createElement("span");
+            newNode.innerHTML = "--上一页 --";
+            newNode.className = "上一页";
+            page.appendChild(newNode);
+        } else {
+            first = 1;
+        }
 
-	 	if (totalPages > (curPage + showPage)) {
-	 		last = curPage + showPage;
-	 	} else {
-	 		last = totalPages;
-	 	}
+        if (totalPages > (curPage + showPage)) {
+            last = curPage + showPage;
+        } else {
+            last = totalPages;
+        }
 
-	 	for (; first <= last; first++) {
-	 		if (first == curPage) {
-	 			newNode = document.createElement("span");
-	 			newNode.innerHTML = "--" + first + "--";
-	 			newNode.className = "current";
-	 			page.appendChild(newNode);
-	 		} else {
-	 			newNode = document.createElement("span");
-	 			newNode.innerHTML = "--" + first + "--";
-	 			page.appendChild(newNode);
-	 		}
-	 	}
- 	}
- 	//showPage(20,4,4)
- 	//showPage(20,8,4)
+        for (; first <= last; first++) {
+            if (first == curPage) {
+                newNode = document.createElement("span");
+                newNode.innerHTML = "--" + first + "--";
+                newNode.className = "current";
+                page.appendChild(newNode);
+            } else {
+                newNode = document.createElement("span");
+                newNode.innerHTML = "--" + first + "--";
+                page.appendChild(newNode);
+            }
+        }
+    }
+    //showPage(20,4,4)
+    //showPage(20,8,4)
     window.onload=function(){
         showPage(20,9,4)
     }
@@ -89,7 +89,7 @@
 
 <body>
 <div id="page">
-	
+    
 </div>
 </body>
 </html>

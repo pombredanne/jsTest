@@ -50,41 +50,26 @@ $.fn.extend({
             this.removeAttr(argument[i])
         }
         return this
+    }.
+    escapeHtmlEntities:function (str,bool) { //> 转换为 &gb  TODO 另外见 demos/Str.proto.js String.prototype.stripHTML方法
+        if(bool){   // 将html tag 代码直接去掉  但会保留<>这种
+            var reTag = /<[^>].*?>/g;
+            return str.replace(reTag, "");
+        }
+        var tempEle = document.createElement("textarea");
+        tempText = document.createTextNode(str);
+        tempEle.appendChild(tempText);
+        var result = tempEle.innerHTML;
+        return result;
+    },
+    unescapeHtmlEntities:function(str){
+        //也可以考虑 xmp标签  但是要防止代码攻击 加上 return this.replace(/<\\?xmp>/g,'');   //pre 标签区别是 pre仅仅是保留空格 tab格式
+        var tempEle = document.createElement("div");
+        tempEle.innerHTML = str;
+        //return tempEle.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
+        return tempEle.textContent||tempEle.innerText;
     }
 });
-
-
-   $.extend({
-        escapeHtmlEntities:function (str,bool) { //> 转换为 &gb  TODO 另外见 demos/Str.proto.js String.prototype.stripHTML方法
-            if(bool){   // 将html tag 代码直接去掉  但会保留<>这种
-                var reTag = /<[^>].*?>/g;
-                return str.replace(reTag, "");
-            }
-            var tempEle = document.createElement("textarea");
-            tempText = document.createTextNode(str);
-            tempEle.appendChild(tempText);
-            var result = tempEle.innerHTML;
-            return result;
-        },
-        unescapeHtmlEntities:function(str){
-            //也可以考虑 xmp标签  但是要防止代码攻击 加上 return this.replace(/<\\?xmp>/g,'');   //pre 标签区别是 pre仅仅是保留空格 tab格式
-            var tempEle = document.createElement("div");
-            tempEle.innerHTML = str;
-            //return tempEle.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;nbsp;/g," ");
-            return tempEle.textContent||tempEle.innerText;
-        }
-   });
-
-   function clearConObj(){
-        if(!window.console){
-            window.console = {};
-            var func = ['log','debug','info','warn','error','assert','dir','dirxml','trace',
-                'group','groupEnd','time','timeEnd','profile','profileEnd','count','exception','table'];
-            for( var i = 0 , j = func.length ; i < j ; i++ ){
-                window.console[func[i]] = function(){}
-            }
-        }
-   }
 
    //查看鼠标从那个方向进入
    (function($,window,undefined){

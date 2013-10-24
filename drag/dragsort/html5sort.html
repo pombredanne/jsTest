@@ -1,0 +1,163 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>HTML5 dragsort</title>
+    <style>
+        /* Prevent the text contents of draggable elements from being selectable. */
+        [draggable] {
+          -moz-user-select: none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          user-select: none;
+          /* Required to make elements draggable in old WebKit */
+          -khtml-user-drag: element;
+          -webkit-user-drag: element;
+        }
+        .column {
+          height: 150px;
+          width: 150px;
+          float: left;
+          border: 2px solid #666666;
+          background-color: #ccc;
+          margin-right: 5px;
+          -webkit-border-radius: 10px;
+          -ms-border-radius: 10px;
+          -moz-border-radius: 10px;
+          border-radius: 10px;
+          -webkit-box-shadow: inset 0 0 3px #000;
+          -ms-box-shadow: inset 0 0 3px #000;
+          box-shadow: inset 0 0 3px #000;
+          text-align: center;
+          cursor: move;
+        }
+        .column header {
+          color: #fff;
+          text-shadow: #000 0 1px;
+          box-shadow: 5px;
+          padding: 5px;
+          background: -moz-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+          background: -webkit-gradient(linear, left top, right top,
+                                       color-stop(0, rgb(0,0,0)),
+                                       color-stop(0.50, rgb(79,79,79)),
+                                       color-stop(1, rgb(21,21,21)));
+          background: -webkit-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+          background: -ms-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+          border-bottom: 1px solid #ddd;
+          -webkit-border-top-left-radius: 10px;
+          -moz-border-radius-topleft: 10px;
+          -ms-border-radius-topleft: 10px;
+          border-top-left-radius: 10px;
+          -webkit-border-top-right-radius: 10px;
+          -ms-border-top-right-radius: 10px;
+          -moz-border-radius-topright: 10px;
+          border-top-right-radius: 10px;
+        }
+
+        .column.over {
+          border: 2px dashed #000;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="color:red;"> 还未测试ie, 请抓紧事件测试ie浏览器</h2> <a href="http://www.html5rocks.com/zh/tutorials/dnd/basics/"> 所用到的样式 来自这里 也可以在这里查询ie的原因</a>
+    <div id="columns">
+        <div class="column" draggable="true">
+            <header>A</header>
+        </div>
+        <div class="column" draggable="true">
+            <header>B</header>
+        </div>
+        <div class="column" draggable="true">
+            <header>C</header>
+        </div>
+        <div class="column" draggable="true">
+            <header>D</header>
+        </div>
+        <div class="column" draggable="true">
+            <header>E</header>
+        </div>
+    </div>
+    <script>
+        var addEventListener = (function() {
+                if (HTMLElement.prototype.addEventListener) {
+                    return function(element, type, handler) {
+                        element.addEventListener(type, handler, false);
+                        elements['Listener_' + type] = handler;
+                    }
+                } else if (HTMLElement.prototype.attachEvent) {
+                    return function(element, type, handler) {
+                        element.attachEvent("on" + type, handler);
+                        elements['Listener_' + type] = handler;
+                    }
+                } else {
+                    return function() {
+                        element["on" + type] = handler;
+                    }
+                }
+            })(),       
+            targets=document.querySelectorAll('#columns .column'),
+            dragSrcEl=null,
+            dragTarget=null,
+            stopDefault=function(e){
+                 if ( e && e.preventDefault ){
+                    e.preventDefault();
+                 }else{
+                    window.event.returnValue = false;
+                 }
+                 return false;  
+            },
+            stopBubble=function(e){
+                if ( e && e.stopPropagation ){
+                    e.stopPropagation();
+                } else{
+                    window.event.cancelBubble = true;
+                }
+            },
+            mousedown=function(e){
+                dragTarget=this;
+            },
+            dragStart=function(e){
+                this.style.opacity = '0.4'; 
+                dragSrcEl =this;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);        // TODO IE10 (IE9 根本不能用) 在这里将会报  "意外地调用了方法或属性访问" 改成text || html 就没事 怀疑是不能使用text/html "/"原因 
+            },
+            dragEnter=function(e){
+                this.classList.add('over');
+            },
+            dragOver=function(e){
+                stopDefault(e);
+                e.dataTransfer.dropEffect = 'move';
+                return false;
+            },
+            dragLeave=function(e){
+                this.classList.remove('over');
+            },
+            Drop=function(e){
+                stopDefault(e);
+                if (dragSrcEl != this) {
+                    dragSrcEl.innerHTML = this.innerHTML;
+                    this.innerHTML = e.dataTransfer.getData('text/html');
+                }
+                return false;
+            },
+            DragEnd=function(e){
+                [].forEach.call(targets, function (col) {
+                    col.classList.remove('over');   // 这里应该可以避免循环
+                });
+                //this.classList.remove('over');
+                dragSrcEl.style.opacity=1;
+            };
+
+            [].forEach.call(targets, function(col) {
+              col.addEventListener('mousedown', mousedown, false);
+              col.addEventListener('dragstart', dragStart, false);
+              col.addEventListener('dragenter', dragEnter, false);
+              col.addEventListener('dragover', dragOver, false);
+              col.addEventListener('dragleave', dragLeave, false);
+              col.addEventListener('drop', Drop, false);
+              col.addEventListener('dragend',DragEnd, false);
+            });
+    </script>
+</body>
+</html>

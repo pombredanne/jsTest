@@ -3,7 +3,7 @@
         return this.each(function(index, element) {
 
              var defaultOpt = {
-                isFF: false,
+                isFF: false,        // 目前检测到 ie10+ 都属于 有焦点即消失 firefox是必须输入文字才会消失   2013-10-23
                 className: 'placeholder',
                 normal:false,
                 textarea:20,   //因为默认的行高 都是Dom元素的 一半 因此 对于textarea 进行设置

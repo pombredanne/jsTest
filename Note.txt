@@ -1,25 +1,9 @@
-
 ----------回收
-    回收:
-        主要代码:  destroy-----ui.js
-         if (CollectGarbage) CollectGarbage(); ie回收
-         总结:
-             null和undefined的区别:
-                http://www.cnblogs.com/xiaohui108/archive/2011/08/31/2160488.html  仅限了解 深入的话就有点钻牛角尖啦
-
-----------可编辑div操作
-    http://hi.baidu.com/louve01/item/efb14e1add258f6b3f87cedb  -------------DIV(contenteditable="true")鼠标光标处插入图片
-    http://hi.baidu.com/tjy9999/item/bdbd56e1051ce9adcf2d4f1f  --------------input textarea光标读写操作
-    http://www.jb51.net/article/31795.htm                      --------------兼容包括div
-    http://hi.baidu.com/alimyself/item/0ce9d8f76e441dbe30c19939  ---------selection() range方法讲解
-    当有焦点的时候,里面默认的<br>就取消了  没有焦点的时候 里面会自带一个<br>
+         if(CollectGarbage) CollectGarbage(); ie回收
 
 ----------this.src $(this).src
         this.src:获取Dom处理后的结构 比如:files://rambo/work/rambo.jpg
         this.getAttribute('src')===$(this).attr('src'): 获取属性上真是的结构   eg: ../work/rambo.jpg
-
-----------<img>浏览器中表现差异
-    <img alt="fdfsd" src="faceimg/2.gif">   在火狐上如果这张图片不存在 那么就是空白 并不出现其他浏览器的那种默认找不到图片
 
 ---------小知识点
     //关闭浏览器的时候 区分是刷新还是关闭     http://www.cnblogs.com/zgqys1980/archive/2008/09/02/1281843.html
@@ -110,32 +94,19 @@
          第2解决代码:
                使用demos/jQ-toggle.html 里的方法
 
-------------IE BUG
-    一:
-        $('<div class="gouriie">') //不能用  必须闭合标签 才能使用
-    三:
-        可编辑div无法自动添加br标签
-        解决办法:
-            if($.browser.msie&&e.keyCode ===13){     //TODO 兼容ie8 暂未测试ie9
-                var sel=document.selection.createRange();
-                sel.pasteHTML('<br>');
-                sel.collapse(false);
-                sel=null;
-                return false;//这里不能去掉 必须
-             }
+------------未知 IE BUG
      四:
         ie8下  聊天窗口丢失焦点事件
          解决办法:
             有时候html('')或者empty()这两个都不行的话,考虑html(' '); 具体为什么?还在探索中
 
-----------jquery获取元素小细节
+----------jquery 小bug 
     if (id==='keer3@163.com'){     //一个email
         $('#'+id);//错误 为空
         document.getElementById(id);//yes  可以的
         $(document.getElementById(id));
     }
 
-----------jquery hide意外
     $('div.box').hide(e);   //意外的惊喜 哈哈 效果为 slide上下缓慢卷动
 
 -----------判断浏览器
@@ -191,6 +162,7 @@
 
 -----------setTimout setInterval
     必须养成习惯
+        最大值: 非ie(3.X 4.x):2147483648ms  ie至少ie8 大于这个值
         setTimeout(function(){fn},time) //使用function
         setTimeout(fn,time);    //坚决抵制 不能这样用
 
@@ -251,6 +223,34 @@
         结论2:查询字符串的编码，用的是操作系统的默认编码 linux:utf-8 windows:gb2312
         结论3:就是，GET和POST方法的编码，用的是网页的编码<meta http-equiv="Content-Type" content="text/html;charset=xxxx">
         结论4:在Ajax调用中，IE总是采用GB2312编码（操作系统的默认编码），而Firefox总是采用utf-8编码。
+
+    获取URL参数:
+       function GetUrlParms(parame,url) {
+
+            if(parame){
+                url=url||location.href;
+                var reg = new RegExp("(^|&|\\?)"+ name +"=([^&]*)(&|$)"),r;
+                if (r=url.match(reg)){
+                       return decodeURIComponent(r[2]);
+                }
+                return false;
+            }
+
+            var args = {}, pos='', argname='',value='', cache='',
+                query = url.split('?')[1]||location.search.substring(1),
+                pairs = query.split("&");
+
+            for (var i = 0,length=pairs.length; i < length; i++) {
+                cache=pairs[i];
+                pos = cache.indexOf('=');
+                if(pos>-1){
+                    argname = cache.substring(0, pos);
+                    value = cache.substring(pos + 1);
+                    args[argname] = decodeURIComponent(value);
+                }
+            }
+            return args;
+      }
 
 -----------IE高级安全测略
     在ie中的input file中,必须是鼠标点击才管用,否则会报无权限
@@ -363,15 +363,18 @@
 -----------  iframe沙箱应用
   //http://www.cnblogs.com/rubylouvre/archive/2012/02/03/2335946.html
   window.alert = function(){};
-  window.alert=function(obj){
+  window.alert=(function(){
       var iframe=document.createElement("iframe");
       iframe.src="javascript:void(0);"
-      document.body.appendChild(iframe)
-      iframe.contentWindow.alert(obj);
-  }
-  alert(1)
+      document.body.appendChild(iframe);
+      var result=iframe.contentWindow.alert;
+      document.body.removeChild(iframe);
+      return function(){
+          return result.apply(window,arguments);
+      }
+  }());
 
-  -----------alert
+-----------alert
    火狐中:
    1:
      alert(); //FF: ''   other:undefined
@@ -576,7 +579,7 @@
     while(console.log(i),i++,i<10);
 
 ------   空白汉字占位符号
-     &#12288;可以看作一个空白的汉字占位符  会阻挡一般编译器格式化代码
+     &#12288;可以看作一个空白的汉字占位符  会阻挡一般编译器格式化代码   pre 标签中 可以使用&#9; 表示
 
 ------   script的defer和async
      相同点：

@@ -64,7 +64,7 @@
         </section>
     </fieldset>
     </form>
-    <div id="divTest" contenteditable='true' style="opacity: 0;">我是用来辅助火狐Ctrl+v的</div>
+    <div id="divTest" contenteditable='true' style="opacity: 0;left:-4000px;position:fixed;top:0px;"> 一个opacity 就可以 为了避免别的影响 我是用来辅助火狐Ctrl+v的</div>
 </div>
 </body>
 <div id="sky-form-modal-overlay" class="sky-form-modal-overlay"></div>
@@ -119,6 +119,12 @@
 
         // 复制上传
         var paste=function(e){
+            /*
+                 复制图片   http://codebits.glennjones.net/copypaste/pasteimagedata.htm
+                 另一种实现 不支持ie  暂时发现非chrome是使用 $('[contenteditable]') div#upload-global-FF-paste-box  跟我想的一样 --  http://imgur.com/gallery
+                 对于document.body 顺序是先paste 再 默认的input事件 
+                 chrome:可以复制qq截图  就是因为他支持 e.clipboardData.items
+             */
             if($('#pasteView').is(':checked')){
                 if(e.clipboardData.items){  //chrome
                     var items = e.clipboardData.items;   //TODO  clipboardData 只有在document.body上有  items目前只支持chrome

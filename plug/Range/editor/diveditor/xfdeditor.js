@@ -28,7 +28,7 @@
             $editor.bind("mouseup", function(event) {
                 updateInsertFaceRange();
             });
-            $editor.bind("keydown",function(event){
+            $editor.bind("keydown",function(event){     //当有焦点的时候,里面默认的<br>就取消了  没有焦点的时候 里面会自带一个<br>
                 if (event.keyCode == 13) {      // ie8回车 是<p></p>  因此强制添加<br> 
                     if (document.selection) {
                         var sel;
