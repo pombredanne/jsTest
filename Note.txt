@@ -165,6 +165,12 @@
         最大值: 非ie(3.X 4.x):2147483648ms  ie至少ie8 大于这个值
         setTimeout(function(){fn},time) //使用function
         setTimeout(fn,time);    //坚决抵制 不能这样用
+        var t=setTimeout(); t=null; 不管用的 必须使用clear
+        setXXX  都是定义一次 +1 一次
+        暴力清除:
+        for(var i = 1; i < 1000; i++) {
+            clearTimeout(i);
+        }
 
         ------  setTimeOut()  设置参数
         one:
@@ -250,7 +256,25 @@
                 }
             }
             return args;
-      }
+        }
+     escape unescape: 
+        函数可对字符串进行编码，这样就可以在所有的计算机上读取该字符串。
+        该方法不会对 ASCII 字母和数字 * @ - _ + . / 。进行编码 其他的将会替换成了十六进制的转义序列。但是 不符合ECMA标准,不赞成使用.
+        js使用数据时可以使用escape
+
+    decodeURI encodeURI  decodeURIComponent encodeURIComponent:  en编码
+        相同:
+            都是用于 url编码 解码操作
+        不同:
+            传递参数时需要使用encodeURIComponent             http://passport.baidu.com/?logout&aid=7&u='+encodeURIComponent("http://cang.baidu.com/bruce42")
+            进行url跳转时可以整体使用encodeURI               http://cang.baidu.com/do/s?word=百度&ct=21
+            encodeURIComponent 最常用 可以将中文、韩文等特殊字符转换成utf-8格式的url编码
+
+    三者关系:
+        escape对0-255以外的unicode值进行编码时输出%u****格式，其它情况下escape，encodeURI，encodeURIComponent编码结果相同。
+        escape不编码字符有69个：*，+，-，.，/，@，_，0-9，a-z，A-Z
+        encodeURI不编码字符有82个：!，#，$，&，'，(，)，*，+，,，-，.，/，:，;，=，?，@，_，~，0-9，a-z，A-Z
+        encodeURIComponent不编码字符有71个：!， '，(，)，*，-，.，_，~，0-9，a-z，A-Z
 
 -----------IE高级安全测略
     在ie中的input file中,必须是鼠标点击才管用,否则会报无权限

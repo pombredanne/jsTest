@@ -343,22 +343,22 @@ Object.prototype.toSource=(function(){
 
 // jquery bind live degate on 方法不同点  http://www.alfajango.com/blog/the-difference-between-jquerys-bind-live-and-delegate/
 var addEventListener = (function() {
-    if (HTMLElement.prototype.addEventListener) {       // removeEventListener
-        return function(element, type, handler) {
-            element.addEventListener(type, handler, false);
-            elements['Listener_' + type] = handler;
+        if (HTMLElement.prototype.addEventListener) {       // removeEventListener
+            return function(element, type, handler) {
+                element.addEventListener(type, handler, false);
+                elements['Listener_' + type] = handler;
+            }
+        } else if (HTMLElement.prototype.attachEvent) {     // detachEvent
+            return function(element, type, handler) {
+                element.attachEvent("on" + type, handler);
+                elements['Listener_' + type] = handler; // use remove or check
+            }
+        } else {
+            return function(element, type, handler) {
+                element["on" + type] = handler;
+            }
         }
-    } else if (HTMLElement.prototype.attachEvent) {     // detachEvent
-        return function(element, type, handler) {
-            element.attachEvent("on" + type, handler);
-            elements['Listener_' + type] = handler; // use remove or check
-        }
-    } else {
-        return function() {
-            element["on" + type] = handler;
-        }
-    }
-})(),
+    })(),
     getDomEvent = function(dom) {
         var usejq = jQuery.fn.jquery ? jQuery.fn.jquery : false,
             domEles = {},

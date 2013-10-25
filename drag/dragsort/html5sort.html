@@ -36,10 +36,7 @@
           box-shadow: 5px;
           padding: 5px;
           background: -moz-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
-          background: -webkit-gradient(linear, left top, right top,
-                                       color-stop(0, rgb(0,0,0)),
-                                       color-stop(0.50, rgb(79,79,79)),
-                                       color-stop(1, rgb(21,21,21)));
+          background: -webkit-gradient(linear, left top, right top, color-stop(0, rgb(0,0,0)), color-stop(0.50, rgb(79,79,79)), color-stop(1, rgb(21,21,21)));
           background: -webkit-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
           background: -ms-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
           border-bottom: 1px solid #ddd;
@@ -60,6 +57,7 @@
 </head>
 <body>
     <h2 style="color:red;"> 还未测试ie, 请抓紧事件测试ie浏览器</h2> <a href="http://www.html5rocks.com/zh/tutorials/dnd/basics/"> 所用到的样式 来自这里 也可以在这里查询ie的原因</a>
+    <a href="http://www.cnblogs.com/yupeng/archive/2012/03/18/2404427.html">讲解dataTransfer</a>
     <div id="columns">
         <div class="column" draggable="true">
             <header>A</header>
@@ -94,7 +92,7 @@
                         element["on" + type] = handler;
                     }
                 }
-            })(),       
+            })(),
             targets=document.querySelectorAll('#columns .column'),
             dragSrcEl=null,
             dragTarget=null,
@@ -119,14 +117,29 @@
             dragStart=function(e){
                 this.style.opacity = '0.4'; 
                 dragSrcEl =this;
+                /*
+                    dataTransfer.effectAllowed:  拖动类型
+                       有none、copy、copyLink、copyMove、link、linkMove、move、all 、uninitialized选项选择
+                */
                 e.dataTransfer.effectAllowed = 'move';
                 e.dataTransfer.setData('text/html', this.innerHTML);        // TODO IE10 (IE9 根本不能用) 在这里将会报  "意外地调用了方法或属性访问" 改成text || html 就没事 怀疑是不能使用text/html "/"原因 
+                //使用图像作为"重像"反馈
+                var dragIcon= document.createElement('img');
+                dragIcon.src = 'data:image/webp;base64,UklGRmwCAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSJ8AAAAN38GgkSRF1zPPzO/f6ZyLiMgiVBtRG6LBHSad8T73t36TfXyHiTSiVUaFKtwIOJIkWVX6u7vhzufjrnP/e71174mI6H9CBcNeAM6lXV2givHpLRoYYqfVYmNPnmBpVhANZqMzmE5cNR9QgyQUUE1XA1fD/5Fo4MrV18CUW5u5YD52y7Q2wPt2x9e0X3o6OL97t4baztPcAee5P0ABAAAAVlA4IKYBAAAQCQCdASowADAAPm0skkYmI6KXGgZkYAbEswBX/QCeqNvi2yedkzuJoXVVRggOp5dVMVaKPJVbgfZ8DrVnVc7Y4sat+GZyuav+HLyFUn00bAAA/vNUwr2v5qIbYG8O8y97Jpn/vBRq39GvR9Qbh14Xv529MPxBWldCsRr6Y98b42Hwms9ZmX7dYyCDK/PjfsQR0c/nu9tr93v2I1iiv/UtToyu9H/59JGUswfnXRQszs8PJZ8gXWeM+tcNAY/Oi5QMdOtR+c09orgGMpi34DfUa3i049xsV8LN/k1f+54AC8ucjwJT15qClReWPKF7SeNsCXNjts/VnNoI9lsfEtz/lqXRvYbX9hAA8mGIf/LLrARO3pZBnnfd/Ym2sbo8/xmUKVOQMFIZ29pbZ/Uzn1H7QyLrU/2EtKh4n1+8Lgj42CroQ02gdBKD0wuOhoSTddYseyyW0B+8xPt5VO5LphtaObRVtKtMzEC7IyN/MDEriv9PJ2EvmeyTTO0vDS5hHIbcjY10cBO6X92dEwtkFtACk0iis0TiE5/Op9BgmPoPDmI7waxAAA==';
+                dragIcon.width = 100;
+                e.dataTransfer.setDragImage(dragIcon, -10, -10);
+
+                console.log(e.dataTransfer.type)
             },
             dragEnter=function(e){
                 this.classList.add('over');
             },
             dragOver=function(e){
                 stopDefault(e);
+                /*
+                    e.dataTransfer.dropEffect 
+                    控制用户在 dragenter 和 dragover 事件期间收到的反馈。当用户将鼠标悬停在目标元素上方时，浏览器的光标会显示即将采取的操作类型（例如复制、移动等）。结果可能呈现为以下某个值：none、copy、link、move。
+                */
                 e.dataTransfer.dropEffect = 'move';
                 return false;
             },
